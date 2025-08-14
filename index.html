@@ -1,163 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<title>Messenger</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<!-- Firebase v8 -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-<!-- Icons -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Social Messenger</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
 <style>
-  :root{
-    --brand:#1877f2; --accent:#c2a679; --bg:#f0f2f5; --text:#111; --muted:#666; --card:#fff;
-  }
+  :root{--brand:#1877f2;--bg:#f0f2f5;--card:#fff;--muted:#667085;}
   *{box-sizing:border-box}
-  body{
-    margin:0; font-family: Arial, Helvetica, sans-serif; background:var(--bg);
-    display:flex; justify-content:center; align-items:center; min-height:100vh;
-  }
-  /* Phone frame */
-  .app{
-    width:100%; max-width:420px; height:100vh; max-height:820px; background:#fff;
-    border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,.15); overflow:hidden;
-    display:flex; flex-direction:column;
-  }
-  /* Header */
-  .header{
-    height:56px; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 14px;
-  }
-  .header .title{font-weight:700; font-size:18px}
-  .header .actions i{margin-left:14px; cursor:pointer}
-  /* Pages */
-  .page{display:none; flex:1; background:#fafafa; overflow:auto; padding:12px 12px 80px}
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);display:flex;justify-content:center;align-items:center;min-height:100vh}
+  .app{width:100%;max-width:420px;height:100vh;max-height:820px;background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.15);overflow:hidden;display:flex;flex-direction:column}
+  .header{height:56px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 14px}
+  .header .title{font-weight:800;font-size:18px}
+  .header i{cursor:pointer;margin-left:14px}
+  .page{display:none;flex:1;background:#fafafa;overflow:auto;padding:12px 12px 80px}
   .page.active{display:block}
-  /* Bottom Nav */
-  .nav{
-    height:64px; background:#fff; border-top:1px solid #e6e6e6; display:flex; justify-content:space-around; align-items:center;
-  }
-  .nav .tab{font-size:12px; color:var(--muted); text-align:center; cursor:pointer}
-  .nav .tab i{font-size:20px; display:block; margin-bottom:2px}
+  .nav{height:64px;background:#fff;border-top:1px solid #e8e8e8;display:flex;justify-content:space-around;align-items:center}
+  .nav .tab{text-align:center;font-size:12px;color:#666;cursor:pointer}
+  .nav .tab i{display:block;font-size:20px;margin-bottom:2px}
   .nav .tab.active{color:var(--brand)}
-  /* Login Card */
-  .login-wrap{padding:20px}
-  .brand{
-    color:var(--brand); font-weight:800; font-size:36px; text-align:center; margin:8px 0 16px;
-  }
-  .card{
-    background:var(--card); border-radius:10px; padding:16px; box-shadow:0 4px 12px rgba(0,0,0,.08);
-  }
-  input, select, button{
-    width:100%; padding:12px; border:1px solid #ddd; border-radius:8px; margin:8px 0; font-size:15px;
-  }
-  button{background:var(--brand); color:#fff; font-weight:700; border:none; cursor:pointer}
-  button.secondary{background:#eee; color:#333}
-  .link{color:var(--brand); text-align:center; cursor:pointer; margin-top:6px}
-  .muted{color:var(--muted); font-size:13px}
-  /* Lists & cards */
-  .list{display:flex; flex-direction:column; gap:8px}
-  .row{
-    background:#fff; padding:12px; border-radius:10px; display:flex; align-items:center; justify-content:space-between;
-    border:1px solid #eee;
-  }
-  .row .left{display:flex; align-items:center; gap:10px}
-  .avatar{
-    width:40px; height:40px; border-radius:50%; background:#ddd; display:flex; align-items:center; justify-content:center; font-weight:700;
-  }
+  /* Login */
+  .login{padding:22px}
+  .brand{color:var(--brand);font-size:36px;font-weight:800;text-align:center;margin:4px 0 14px}
+  .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 16px rgba(0,0,0,.08)}
+  input,button{width:100%;padding:12px;border-radius:8px;border:1px solid #ddd;margin:8px 0;font-size:15px}
+  button{background:var(--brand);color:#fff;border:none;font-weight:700;cursor:pointer}
+  button.secondary{background:#eee;color:#222}
+  .link{color:var(--brand);text-align:center;cursor:pointer}
+  /* Blocks */
+  .row{background:#fff;border:1px solid #eee;border-radius:12px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+  .left{display:flex;align-items:center;gap:10px}
+  .avatar{width:40px;height:40px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .muted{color:var(--muted);font-size:13px}
+  .badge{background:#ff3b30;color:#fff;border-radius:12px;font-size:11px;padding:2px 6px;margin-left:6px}
   /* Chat */
-  .chat{
-    background:#fff; border:1px solid #eee; border-radius:12px; height:56vh; display:flex; flex-direction:column; overflow:hidden;
-  }
-  .chat-messages{flex:1; padding:10px; overflow:auto; background:#f9fbff}
+  .chat{background:#fff;border:1px solid #eee;border-radius:12px;height:58vh;display:flex;flex-direction:column;overflow:hidden}
+  .chat-messages{flex:1;padding:10px;overflow:auto;background:#f6faff}
   .msg{margin:6px 0}
-  .msg .from{font-weight:700; margin-right:6px}
-  .chat-input{display:flex; gap:6px; padding:10px; border-top:1px solid #eee; background:#fff}
+  .msg .from{font-weight:700;margin-right:6px}
+  .chat-input{display:flex;gap:6px;padding:10px;border-top:1px solid #eee;background:#fff}
   .chat-input input{flex:1}
-  /* Profile */
-  .profile-card{background:#fff; border:1px solid #eee; border-radius:12px; padding:14px; margin-bottom:12px}
-  .grid{display:grid; grid-template-columns:1fr 1fr; gap:8px}
-  .opt{background:#fff; border:1px solid #eee; border-radius:10px; padding:12px; text-align:center; cursor:pointer}
-  .badge{background:#ff3b30; color:#fff; font-size:11px; padding:2px 6px; border-radius:10px; margin-left:6px}
+  /* Grid options */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .opt{background:#fff;border:1px solid #eee;border-radius:10px;padding:12px;text-align:center;cursor:pointer}
 </style>
 </head>
 <body>
 <div class="app">
-
-  <!-- Header -->
+  <!-- Header (shared) -->
   <div class="header">
     <div class="title">Messenger</div>
-    <div class="actions">
+    <div>
       <i class="fas fa-magnifying-glass" title="Search"></i>
-      <i class="fas fa-bell" title="Notifications"></i>
+      <i id="notifBtn" class="fas fa-bell" title="Notifications"></i>
+      <span id="notifBadge" class="badge" style="display:none">0</span>
     </div>
   </div>
 
-  <!-- LOGIN PAGE -->
+  <!-- LOGIN -->
   <div id="page-login" class="page active">
-    <div class="login-wrap">
+    <div class="login">
       <div class="brand">facebook</div>
       <div class="card" id="loginCard">
-        <input type="email" id="loginEmail" placeholder="Email">
-        <input type="password" id="loginPassword" placeholder="Password">
+        <input id="loginEmail" type="email" placeholder="Email">
+        <input id="loginPass" type="password" placeholder="Password">
         <button id="loginBtn">Log In</button>
         <div class="link" id="toRegister">Create new account</div>
       </div>
-
       <div class="card" id="registerCard" style="display:none;">
-        <input type="text" id="regName" placeholder="Full Name">
-        <input type="email" id="regEmail" placeholder="Email">
-        <input type="password" id="regPassword" placeholder="Password">
+        <input id="regName" type="text" placeholder="Full Name">
+        <input id="regEmail" type="email" placeholder="Email">
+        <input id="regPass" type="password" placeholder="Password">
         <button id="registerBtn">Create Account</button>
         <button class="secondary" id="toLogin">Back to Login</button>
       </div>
-      <p class="muted" style="text-align:center;margin-top:8px;">Android-sized responsive UI</p>
+      <p class="muted" style="text-align:center;margin-top:6px;">Android-size responsive UI</p>
     </div>
   </div>
 
   <!-- USER PANEL -->
   <div id="page-user" class="page">
-    <!-- Tabs content -->
+    <!-- Chat tab -->
     <div id="user-tab-chat" class="tab-content">
       <h3>Chat</h3>
       <div id="userChatState" class="muted" style="margin-bottom:8px;"></div>
-      <div class="chat" id="userChatWrap" style="display:none;">
-        <div class="chat-messages" id="userChatMessages"></div>
+      <div id="userChatBox" class="chat" style="display:none;">
+        <div id="userChatMessages" class="chat-messages"></div>
         <div class="chat-input">
-          <input type="text" id="userChatInput" placeholder="Type a message..." />
+          <input id="userChatInput" type="text" placeholder="Type a message...">
           <button id="userSendBtn">Send</button>
         </div>
       </div>
     </div>
 
-    <div id="user-tab-requests" class="tab-content" style="display:none;">
-      <h3>Friend Requests</h3>
-      <div class="card">
-        <p>Send friend request to Admin to join group chat.</p>
-        <button id="sendRequestBtn"><i class="fa fa-user-plus"></i> Send Request to Admin</button>
-        <div id="requestStatus" class="muted" style="margin-top:8px;"></div>
-      </div>
+    <!-- Friend tab -->
+    <div id="user-tab-friend" class="tab-content" style="display:none;">
+      <h3>Friend (Admin)</h3>
+      <div id="adminCard"></div>
+      <div id="requestStatus" class="muted"></div>
     </div>
 
-    <div id="user-tab-book" class="tab-content" style="display:none;">
-      <h3>Book</h3>
-      <div class="list">
-        <div class="row"><div class="left"><i class="fa fa-book"></i> <b>Book Section</b></div><span class="muted">Coming soon</span></div>
-      </div>
-    </div>
-
+    <!-- Exam -->
     <div id="user-tab-exam" class="tab-content" style="display:none;">
       <h3>Exam</h3>
-      <div class="row"><div class="left"><i class="fa fa-file-lines"></i> <b>Exam Notices</b></div><span class="muted">Coming soon</span></div>
+      <div class="row"><div class="left"><i class="fa fa-file-lines"></i><b>Exam Notices</b></div><span class="muted">Coming soon</span></div>
     </div>
 
+    <!-- Book -->
+    <div id="user-tab-book" class="tab-content" style="display:none;">
+      <h3>Book</h3>
+      <div class="row"><div class="left"><i class="fa fa-book"></i><b>Book Section</b></div><span class="muted">Coming soon</span></div>
+    </div>
+
+    <!-- Notice -->
+    <div id="user-tab-notice" class="tab-content" style="display:none;">
+      <h3>Notice</h3>
+      <div class="row"><div class="left"><i class="fa fa-bullhorn"></i><b>Latest Notices</b></div><span class="muted">Coming soon</span></div>
+    </div>
+
+    <!-- Profile -->
     <div id="user-tab-profile" class="tab-content" style="display:none;">
       <h3>Profile</h3>
-      <div class="profile-card">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div class="avatar" id="userAvatar">U</div>
+      <div class="row">
+        <div class="left">
+          <div id="userAvatar" class="avatar">U</div>
           <div>
             <div id="userNameText" style="font-weight:700"></div>
             <div id="userEmailText" class="muted"></div>
@@ -169,53 +135,59 @@
         <div class="opt">Edit Profile</div>
         <div class="opt">Settings</div>
         <div class="opt">Help</div>
-        <div class="opt" id="logoutUser">Logout</div>
+        <div id="logoutUser" class="opt">Logout</div>
       </div>
     </div>
 
-    <!-- Bottom Nav (User) -->
-    <div class="nav" id="nav-user">
+    <!-- Bottom nav (user) -->
+    <div id="nav-user" class="nav">
       <div class="tab active" data-tab="chat"><i class="fa fa-comments"></i>Chat</div>
-      <div class="tab" data-tab="requests"><i class="fa fa-user-plus"></i>Requests</div>
-      <div class="tab" data-tab="book"><i class="fa fa-book"></i>Book</div>
+      <div class="tab" data-tab="friend"><i class="fa fa-user-plus"></i>Friend</div>
       <div class="tab" data-tab="exam"><i class="fa fa-file-lines"></i>Exam</div>
+      <div class="tab" data-tab="book"><i class="fa fa-book"></i>Book</div>
+      <div class="tab" data-tab="notice"><i class="fa fa-bullhorn"></i>Notice</div>
       <div class="tab" data-tab="profile"><i class="fa fa-user"></i>Profile</div>
     </div>
   </div>
 
   <!-- ADMIN PANEL -->
   <div id="page-admin" class="page">
+    <!-- Chat -->
     <div id="admin-tab-chat" class="tab-content">
-      <h3>Group Chat (All accepted users)</h3>
+      <h3>Group Chat (Accepted users)</h3>
       <div class="chat">
-        <div class="chat-messages" id="adminChatMessages"></div>
+        <div id="adminChatMessages" class="chat-messages"></div>
         <div class="chat-input">
-          <input type="text" id="adminChatInput" placeholder="Type a message..." />
+          <input id="adminChatInput" type="text" placeholder="Type a message...">
           <button id="adminSendBtn">Send</button>
         </div>
       </div>
     </div>
 
-    <div id="admin-tab-requests" class="tab-content" style="display:none;">
-      <h3>Requests <span id="reqCount" class="badge" style="display:none;">0</span></h3>
-      <div id="adminRequests" class="list"></div>
+    <!-- Exam -->
+    <div id="admin-tab-exam" class="tab-content" style="display:none;">
+      <h3>Exam</h3>
+      <div class="row"><div class="left"><i class="fa fa-file-lines"></i><b>Manage Exams</b></div><span class="muted">Coming soon</span></div>
     </div>
 
+    <!-- Notice -->
+    <div id="admin-tab-notice" class="tab-content" style="display:none;">
+      <h3>Notice</h3>
+      <div class="row"><div class="left"><i class="fa fa-bullhorn"></i><b>Post Notices</b></div><span class="muted">Coming soon</span></div>
+    </div>
+
+    <!-- Book -->
     <div id="admin-tab-book" class="tab-content" style="display:none;">
       <h3>Book</h3>
       <div class="row"><div class="left"><i class="fa fa-book"></i><b>Manage Books</b></div><span class="muted">Coming soon</span></div>
     </div>
 
-    <div id="admin-tab-exam" class="tab-content" style="display:none;">
-      <h3>Exam</h3>
-      <div class="row"><div class="left"><i class="fa fa-file-lines"></i><b>Exam/Notices</b></div><span class="muted">Coming soon</span></div>
-    </div>
-
+    <!-- Profile -->
     <div id="admin-tab-profile" class="tab-content" style="display:none;">
       <h3>Admin Profile</h3>
-      <div class="profile-card">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div class="avatar" id="adminAvatar">A</div>
+      <div class="row">
+        <div class="left">
+          <div id="adminAvatar" class="avatar">A</div>
           <div>
             <div id="adminNameText" style="font-weight:700"></div>
             <div id="adminEmailText" class="muted"></div>
@@ -227,279 +199,274 @@
         <div class="opt">Edit Profile</div>
         <div class="opt">Settings</div>
         <div class="opt">Help</div>
-        <div class="opt" id="logoutAdmin">Logout</div>
+        <div id="logoutAdmin" class="opt">Logout</div>
       </div>
     </div>
 
-    <!-- Bottom Nav (Admin) -->
-    <div class="nav" id="nav-admin">
+    <!-- Bottom nav (admin) -->
+    <div id="nav-admin" class="nav">
       <div class="tab active" data-tab="chat"><i class="fa fa-comments"></i>Chat</div>
-      <div class="tab" data-tab="requests"><i class="fa fa-bell"></i>Requests</div>
-      <div class="tab" data-tab="book"><i class="fa fa-book"></i>Book</div>
       <div class="tab" data-tab="exam"><i class="fa fa-file-lines"></i>Exam</div>
+      <div class="tab" data-tab="notice"><i class="fa fa-bullhorn"></i>Notice</div>
+      <div class="tab" data-tab="book"><i class="fa fa-book"></i>Book</div>
       <div class="tab" data-tab="profile"><i class="fa fa-user"></i>Profile</div>
     </div>
   </div>
-
 </div>
 
-<script>
-  /* ==== Firebase Config ==== */
+<script type="module">
+  /* Firebase v11 (modular) */
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import { getDatabase, ref, get, set, update, onValue, push, remove, child, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+  /* ====== CONFIG (use yours) ====== */
   const firebaseConfig = {
     apiKey: "AIzaSyBVPv24bcX6aLD3colMIP_tPkomhW1hotE",
     authDomain: "darpanbook.firebaseapp.com",
     databaseURL: "https://darpanbook-default-rtdb.firebaseio.com",
     projectId: "darpanbook",
-    storageBucket: "darpanbook.appspot.com",
+    storageBucket: "darpanbook.appspot.com", // <- correct
     messagingSenderId: "791059696742",
     appId: "1:791059696742:web:0bf51e375feaa0545a31a7"
   };
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db   = firebase.database();
 
-  /* ==== Globals ==== */
-  const GROUP_ID = "adminGroup";
-  let CURRENT_USER = null;
-  let ADMIN_UID = null;
-  let ROLE = null;
-  let NAME = "";
-  let EMAIL = "";
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getDatabase(app);
 
-  /* ==== Helpers ==== */
-  const $ = (id) => document.getElementById(id);
-  const show = (el) => el.style.display = 'block';
-  const hide = (el) => el.style.display = 'none';
-  const activatePage = (id) => {
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    $(id).classList.add('active');
-  }
-  function setActiveTab(scope, tab){
-    // scope: 'user' or 'admin'
-    document.querySelectorAll(`#page-${scope} .tab-content`).forEach(t=>t.style.display='none');
-    document.querySelectorAll(`#nav-${scope} .tab`).forEach(t=>t.classList.remove('active'));
+  /* ====== Shortcuts ====== */
+  const $ = (id)=>document.getElementById(id);
+  const showPage = (id)=>{ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); $(id).classList.add('active'); };
+  const setTab = (scope,tab)=>{
+    document.querySelectorAll(`#page-${scope} .tab-content`).forEach(e=>e.style.display='none');
+    document.querySelectorAll(`#nav-${scope} .tab`).forEach(e=>e.classList.remove('active'));
     $(`${scope}-tab-${tab}`).style.display='block';
     document.querySelector(`#nav-${scope} .tab[data-tab="${tab}"]`).classList.add('active');
-  }
+  };
 
-  /* ==== Auth UI ==== */
-  $('toRegister').onclick = ()=>{ hide($('loginCard')); show($('registerCard')); }
-  $('toLogin').onclick = ()=>{ show($('loginCard')); hide($('registerCard')); }
-
-  $('registerBtn').onclick = async ()=>{
-    const name = $('regName').value.trim();
-    const email = $('regEmail').value.trim();
-    const pass = $('regPassword').value.trim();
-    if(!name || !email || !pass) return alert('Fill all fields');
-
-    try{
-      const cred = await auth.createUserWithEmailAndPassword(email, pass);
-      await db.ref('users/'+cred.user.uid).set({name, email, role:'user'});
-      alert('Account created! Please login.');
-      $('toLogin').click();
-    }catch(e){ alert(e.message); }
-  }
+  /* ====== Auth UI ====== */
+  $('toRegister').onclick = ()=>{ $('loginCard').style.display='none'; $('registerCard').style.display='block'; };
+  $('toLogin').onclick    = ()=>{ $('loginCard').style.display='block'; $('registerCard').style.display='none';  };
 
   $('loginBtn').onclick = async ()=>{
     const email = $('loginEmail').value.trim();
-    const pass = $('loginPassword').value.trim();
+    const pass  = $('loginPass').value.trim();
     if(!email || !pass) return alert('Fill all fields');
+    try{ await signInWithEmailAndPassword(auth,email,pass); }catch(e){ alert(e.message); }
+  };
+
+  $('registerBtn').onclick = async ()=>{
+    const name = $('regName').value.trim();
+    const email= $('regEmail').value.trim();
+    const pass = $('regPass').value.trim();
+    if(!name||!email||!pass) return alert('Fill all fields');
     try{
-      const cred = await auth.signInWithEmailAndPassword(email, pass);
-      CURRENT_USER = cred.user;
-      await afterLogin();
+      const cred = await createUserWithEmailAndPassword(auth,email,pass);
+      await set(ref(db,'users/'+cred.user.uid),{name,email,role:'user'});
+      alert('Account created! Please login.');
+      $('toLogin').click();
     }catch(e){ alert(e.message); }
-  }
+  };
 
-  $('logoutUser').onclick = ()=>auth.signOut();
-  $('logoutAdmin').onclick = ()=>auth.signOut();
+  $('logoutUser').onclick  = ()=>signOut(auth);
+  $('logoutAdmin').onclick = ()=>signOut(auth);
 
-  auth.onAuthStateChanged(async (u)=>{
-    if(!u){
-      CURRENT_USER = null;
-      activatePage('page-login');
-      return;
+  /* ====== Globals ====== */
+  const GROUP_ID = 'adminGroup';
+  let CUR=null, ROLE='user', NAME='', EMAIL='', ADMIN_UID=null;
+  let userChatBound=false, adminChatBound=false;
+
+  onAuthStateChanged(auth, async (u)=>{
+    if(!u){ showPage('page-login'); return; }
+    CUR=u;
+    const snap = await get(ref(db,'users/'+u.uid));
+    if(!snap.exists()) return;
+    const data = snap.val();
+    ROLE = (data.role||'user').toString().trim().toLowerCase();
+    NAME = data.name||'';
+    EMAIL = data.email||u.email||'';
+
+    // find admin uid (first user with role=admin)
+    const q = query(ref(db,'users'), orderByChild('role'), equalTo('admin'));
+    const as = await get(q);
+    ADMIN_UID=null;
+    as.forEach(cs=>{ if(!ADMIN_UID) ADMIN_UID = cs.key; });
+    if(ROLE==='admin') ADMIN_UID = u.uid;
+
+    if(ROLE==='admin'){
+      loadAdmin();
+      showPage('page-admin'); setTab('admin','chat');
+    }else{
+      loadUser();
+      showPage('page-user'); setTab('user','chat');
     }
-    CURRENT_USER = u;
-    await afterLogin();
   });
 
-  async function afterLogin(){
-    // user profile
-    const snap = await db.ref('users/'+CURRENT_USER.uid).once('value');
-    if(!snap.exists()){ alert('User data missing'); return; }
-    const data = snap.val();
-    ROLE = data.role || 'user';
-    NAME = data.name || '';
-    EMAIL = data.email || CURRENT_USER.email || '';
-
-    // find admin UID (first user with role=admin)
-    const admins = await db.ref('users').orderByChild('role').equalTo('admin').once('value');
-    ADMIN_UID = null;
-    admins.forEach(cs => { if(!ADMIN_UID) ADMIN_UID = cs.key; });
-    // If current user is admin, ensure ADMIN_UID is self
-    if(ROLE === 'admin') ADMIN_UID = CURRENT_USER.uid;
-
-    if(ROLE === 'admin'){
-      loadAdminPanel();
-      activatePage('page-admin');
-      setActiveTab('admin','chat');
-    }else{
-      loadUserPanel();
-      activatePage('page-user');
-      setActiveTab('user','chat');
-    }
-  }
-
-  /* =========================
-     USER PANEL (requests + chat + profile)
-     ========================= */
-  function loadUserPanel(){
-    // Profile info
+  /* ====== USER PANEL ====== */
+  function loadUser(){
     $('userNameText').innerText = NAME;
     $('userEmailText').innerText = EMAIL;
-    $('userAvatar').innerText = NAME ? NAME.charAt(0).toUpperCase() : 'U';
+    $('userAvatar').innerText = (NAME||'U').charAt(0).toUpperCase();
+    // bottom nav
+    document.querySelectorAll('#nav-user .tab').forEach(t=>t.onclick=()=>setTab('user',t.dataset.tab));
 
-    // Bottom nav switching
-    document.querySelectorAll('#nav-user .tab').forEach(t=>{
-      t.onclick = ()=> setActiveTab('user', t.getAttribute('data-tab'));
-    });
+    // Admin card (Friend tab)
+    renderAdminCardForUser();
 
-    // Request button
-    $('sendRequestBtn').onclick = sendFriendRequestToAdmin;
-
-    // Observe request status & membership
-    observeUserAccessAndChat();
-  }
-
-  async function sendFriendRequestToAdmin(){
-    if(!ADMIN_UID) return alert('Admin not found. Create an admin account.');
-    const reqRef = db.ref(`friendRequests/${ADMIN_UID}/${CURRENT_USER.uid}`);
-    const ss = await reqRef.once('value');
-    if(ss.exists() && ss.val().status === 'pending'){
-      alert('Request already sent. Please wait.');
-      return;
-    }
-    await reqRef.set({from: CURRENT_USER.uid, name: NAME, email: EMAIL, status:'pending', ts: Date.now()});
-    $('requestStatus').innerText = 'Request sent. Waiting for admin approval.';
-    alert('Request sent to admin!');
-  }
-
-  function observeUserAccessAndChat(){
-    const memberRef = db.ref(`groups/${GROUP_ID}/members/${CURRENT_USER.uid}`);
-    memberRef.on('value', (ms)=>{
-      if(ms.exists()){
-        $('userChatState').innerText = 'You are in Admin Group. Start chatting!';
-        show($('userChatWrap'));
-        bindGroupChat('user'); // start listening
+    // Observe membership → chat access
+    const memberRef = ref(db,`groups/${GROUP_ID}/members/${CUR.uid}`);
+    onValue(memberRef, (s)=>{
+      if(s.exists()){
+        $('userChatState').innerText='You are in Admin Group. Start chatting!';
+        $('userChatBox').style.display='block';
+        if(!userChatBound){ bindChat('user'); userChatBound=true; }
       }else{
-        hide($('userChatWrap'));
-        $('userChatState').innerText = 'Not in group. Send request from Requests tab.';
+        $('userChatState').innerText='Not in group. Send request from Friend tab.';
+        $('userChatBox').style.display='none';
       }
     });
 
-    // Send message
-    $('userSendBtn').onclick = ()=> sendGroupMessage(NAME, 'user');
+    $('userSendBtn').onclick = ()=> sendMessage(NAME);
   }
 
-  /* =========================
-     ADMIN PANEL (accept requests + chat + profile)
-     ========================= */
-  function loadAdminPanel(){
-    // Profile info
+  async function renderAdminCardForUser(){
+    const wrap = $('adminCard');
+    wrap.innerHTML='';
+    if(!ADMIN_UID){ wrap.innerHTML='<div class="muted">Admin not found. Create an admin account.</div>'; return; }
+    const asnap = await get(ref(db,'users/'+ADMIN_UID));
+    const adm = asnap.val()||{name:'Admin',email:''};
+
+    const card = document.createElement('div');
+    card.className='row';
+    card.innerHTML = `
+      <div class="left">
+        <div class="avatar">${(adm.name||'A').charAt(0).toUpperCase()}</div>
+        <div>
+          <div><b>${adm.name||'Admin'}</b></div>
+          <div class="muted">${adm.email||''}</div>
+        </div>
+      </div>
+      <div>
+        <button id="addFriendBtn" class="secondary" style="padding:8px 10px;border:1px solid #ddd">Add Friend</button>
+      </div>
+    `;
+    wrap.appendChild(card);
+
+    // status show
+    const statusEl = $('requestStatus');
+    // current status
+    const reqRef = ref(db,`friendRequests/${ADMIN_UID}/${CUR.uid}`);
+    onValue(reqRef,(ss)=>{
+      if(!ss.exists()){ statusEl.textContent = ''; return; }
+      const st = ss.val().status||'pending';
+      statusEl.textContent = (st==='pending')?'Request sent. Waiting for admin approval.':'';
+    });
+
+    $('addFriendBtn').onclick = async ()=>{
+      if(!ADMIN_UID) return alert('Admin not found');
+      const payload = {from:CUR.uid,name:NAME,email:EMAIL,status:'pending',ts:Date.now()};
+      await set(ref(db,`friendRequests/${ADMIN_UID}/${CUR.uid}`), payload);
+      alert('Request sent to admin');
+    };
+  }
+
+  /* ====== ADMIN PANEL ====== */
+  function loadAdmin(){
     $('adminNameText').innerText = NAME;
     $('adminEmailText').innerText = EMAIL;
-    $('adminAvatar').innerText = NAME ? NAME.charAt(0).toUpperCase() : 'A';
+    $('adminAvatar').innerText = (NAME||'A').charAt(0).toUpperCase();
 
-    // Ensure admin is a member of the group
-    db.ref(`groups/${GROUP_ID}/members/${CURRENT_USER.uid}`).set(true);
+    // ensure admin is member of group
+    set(ref(db,`groups/${GROUP_ID}/members/${CUR.uid}`), true);
 
-    // Bottom nav switching
-    document.querySelectorAll('#nav-admin .tab').forEach(t=>{
-      t.onclick = ()=> setActiveTab('admin', t.getAttribute('data-tab'));
-    });
+    document.querySelectorAll('#nav-admin .tab').forEach(t=>t.onclick=()=>setTab('admin',t.dataset.tab));
 
-    // Load requests list
-    const listRef = db.ref(`friendRequests/${CURRENT_USER.uid}`);
-    listRef.on('value', (snap)=>{
-      const list = $('adminRequests');
-      list.innerHTML = '';
-      let count = 0;
-      snap.forEach(r=>{
-        const req = r.val();
-        if(req.status === 'pending'){
-          count++;
-          const item = document.createElement('div');
-          item.className = 'row';
-          item.innerHTML = `
-            <div class="left">
-              <div class="avatar">${(req.name||'U').charAt(0).toUpperCase()}</div>
-              <div>
-                <div><b>${req.name||req.from}</b></div>
-                <div class="muted">${req.email||''}</div>
-              </div>
-            </div>
-            <div>
-              <button data-uid="${r.key}" class="acceptBtn">Accept</button>
-            </div>`;
-          list.appendChild(item);
-        }
-      });
+    // Bind requests to notification badge + list (when notif clicked)
+    const rref = ref(db,`friendRequests/${CUR.uid}`);
+    onValue(rref, (snap)=>{
+      let count=0;
+      const list=[];
+      snap.forEach(c=>{ const v=c.val(); if(v.status==='pending'){count++; list.push({uid:c.key,...v});} });
       // badge
-      if(count>0){ $('reqCount').style.display='inline-block'; $('reqCount').innerText = count; }
-      else { $('reqCount').style.display='none'; }
+      if(count>0){ $('notifBadge').style.display='inline-block'; $('notifBadge').innerText=count; }
+      else { $('notifBadge').style.display='none'; }
+      // store on window for quick open
+      window._pendingReqs = list;
+    });
 
-      // bind accept buttons
-      document.querySelectorAll('.acceptBtn').forEach(btn=>{
-        btn.onclick = async ()=>{
-          const uid = btn.getAttribute('data-uid');
-          await db.ref(`groups/${GROUP_ID}/members/${uid}`).set(true);
-          await db.ref(`friendRequests/${CURRENT_USER.uid}/${uid}`).remove();
-          alert('User added to group!');
-        };
+    // Notification click → show accept cards in a modal-like list (here, top of admin page)
+    $('notifBtn').onclick = ()=>{
+      if(ROLE!=='admin') return; // user मा friend request notification use हुँदैन
+      renderAdminRequests();
+      // switch to profile? keep on current page; requests will render above chat.
+      setTab('admin','chat'); // keep chat visible; list appears on top
+    };
+
+    if(!adminChatBound){ bindChat('admin'); adminChatBound=true; }
+    $('adminSendBtn').onclick = ()=> sendMessage(NAME);
+  }
+
+  function renderAdminRequests(){
+    const cont = document.createElement('div');
+    cont.innerHTML = '<h3>Pending Requests</h3>';
+    (window._pendingReqs||[]).forEach(r=>{
+      const row=document.createElement('div');
+      row.className='row';
+      row.innerHTML = `
+        <div class="left">
+          <div class="avatar">${(r.name||'U').charAt(0).toUpperCase()}</div>
+          <div>
+            <div><b>${r.name||r.uid}</b></div>
+            <div class="muted">${r.email||''}</div>
+          </div>
+        </div>
+        <div>
+          <button class="secondary" style="padding:8px 10px;border:1px solid #ddd" data-uid="${r.uid}">Accept</button>
+        </div>`;
+      cont.appendChild(row);
+    });
+    // place at top of admin content (chat tab)
+    const target = $('admin-tab-chat');
+    // remove old list
+    const olds = target.querySelectorAll('.pending-wrap'); olds.forEach(n=>n.remove());
+    const wrap = document.createElement('div'); wrap.className='pending-wrap'; wrap.appendChild(cont);
+    target.prepend(wrap);
+
+    // bind accept
+    wrap.querySelectorAll('button[data-uid]').forEach(btn=>{
+      btn.onclick = async ()=>{
+        const uid = btn.getAttribute('data-uid');
+        await set(ref(db,`groups/${GROUP_ID}/members/${uid}`), true);
+        await remove(ref(db,`friendRequests/${CUR.uid}/${uid}`));
+        alert('Accepted. User added to group chat.');
+      };
+    });
+  }
+
+  /* ====== CHAT (shared) ====== */
+  function bindChat(scope){
+    const msgList = (scope==='admin')? $('adminChatMessages') : $('userChatMessages');
+    msgList.innerHTML='';
+    onValue(ref(db,`groups/${GROUP_ID}/messages`),(snap)=>{
+      msgList.innerHTML='';
+      snap.forEach(c=>{
+        const m=c.val();
+        const div=document.createElement('div');
+        div.className='msg';
+        div.innerHTML = `<span class="from">${m.name||'User'}:</span><span>${m.text||''}</span>`;
+        msgList.appendChild(div);
       });
+      msgList.scrollTop = msgList.scrollHeight;
     });
-
-    // Bind admin chat
-    bindGroupChat('admin');
-    $('adminSendBtn').onclick = ()=> sendGroupMessage(NAME, 'admin');
   }
 
-  /* =========================
-     GROUP CHAT (shared by user/admin)
-     DB: groups/{GROUP_ID}/messages
-     ========================= */
-  let chatBound = { user:false, admin:false };
-
-  function bindGroupChat(scope){
-    if(chatBound[scope]) return; // already bound
-
-    const listEl = (scope==='admin') ? $('adminChatMessages') : $('userChatMessages');
-    listEl.innerHTML = '';
-
-    db.ref(`groups/${GROUP_ID}/messages`).limitToLast(200).on('child_added', (snap)=>{
-      const m = snap.val();
-      const div = document.createElement('div');
-      div.className = 'msg';
-      const who = m.name || 'Unknown';
-      div.innerHTML = `<span class="from">${who}:</span><span>${m.text}</span>`;
-      listEl.appendChild(div);
-      listEl.scrollTop = listEl.scrollHeight;
-    });
-
-    chatBound[scope] = true;
-  }
-
-  async function sendGroupMessage(senderName, scope){
-    const input = (scope==='admin') ? $('adminChatInput') : $('userChatInput');
+  async function sendMessage(senderName){
+    const input = (ROLE==='admin')? $('adminChatInput') : $('userChatInput');
     const text = input.value.trim();
     if(!text) return;
-    await db.ref(`groups/${GROUP_ID}/messages`).push({
-      uid: CURRENT_USER.uid,
-      name: senderName || 'User',
-      text, ts: Date.now()
-    });
-    input.value = '';
+    await push(ref(db,`groups/${GROUP_ID}/messages`), {uid:CUR.uid,name:senderName||'User',text,ts:Date.now()});
+    input.value='';
   }
 </script>
 </body>
