@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <title>Social Messenger - Login</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+  <!-- Firebase v8 SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -70,21 +71,23 @@
   </div>
 
 <script>
-  // 🔹 Your Firebase Config
+  // Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyBVPv24bcX6aLD3colMIP_tPkomhW1hotE",
     authDomain: "darpanbook.firebaseapp.com",
+    databaseURL: "https://darpanbook-default-rtdb.firebaseio.com",
     projectId: "darpanbook",
-    storageBucket: "darpanbook.firebasestorage.app",
+    storageBucket: "darpanbook.appspot.com", // fixed
     messagingSenderId: "791059696742",
     appId: "1:791059696742:web:0bf51e375feaa0545a31a7"
   };
 
+  // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const db = firebase.database();
 
-  // Toggle between login/register
+  // Toggle Form
   function toggleForm() {
     const loginForm = document.getElementById("loginForm");
     const registerForm = document.getElementById("registerForm");
@@ -104,11 +107,16 @@
     }
   }
 
-  // Register new user
+  // Register User
   function register() {
-    const name = document.getElementById("regName").value;
-    const email = document.getElementById("regEmail").value;
-    const password = document.getElementById("regPassword").value;
+    const name = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim();
+    const password = document.getElementById("regPassword").value.trim();
+
+    if (!name || !email || !password) {
+      alert("Please fill all fields");
+      return;
+    }
 
     auth.createUserWithEmailAndPassword(email, password)
       .then(userCred => {
@@ -116,20 +124,25 @@
         return db.ref("users/" + uid).set({
           name: name,
           email: email,
-          role: "user" // default role
+          role: "user"
         });
       })
       .then(() => {
-        alert("Account created successfully! You can login now.");
+        alert("Account created successfully! Please login.");
         toggleForm();
       })
       .catch(err => alert(err.message));
   }
 
-  // Login user
+  // Login User
   function login() {
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value.trim();
+
+    if (!email || !password) {
+      alert("Please fill all fields");
+      return;
+    }
 
     auth.signInWithEmailAndPassword(email, password)
       .then(userCred => {
