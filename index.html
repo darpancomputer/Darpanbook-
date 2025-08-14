@@ -1,112 +1,211 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Messenger</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-  body { margin:0; font-family: Arial, sans-serif; background: #f5f5f5; }
-  /* Header */
-  .header {
-    display: flex; justify-content: space-between; align-items: center;
-    background: #a67c52; color: white; padding: 12px;
-    position: fixed; top:0; left:0; right:0; z-index:1000;
-  }
-  .header h2 { margin:0; font-size: 20px; }
-  .header-icons i { margin-left: 15px; cursor: pointer; }
-
-  /* Content */
-  .content { padding: 70px 10px 70px; }
-
-  /* Bottom Nav */
-  .bottom-nav {
-    display: flex; justify-content: space-around; align-items: center;
-    background: #fff; border-top: 1px solid #ccc;
-    position: fixed; bottom:0; left:0; right:0; height: 60px;
-  }
-  .bottom-nav i { font-size: 22px; color: #a67c52; }
-  .bottom-nav .active i { color: #ff6600; }
-</style>
+  <meta charset="utf-8">
+  <title>Social Messenger</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f4f4f4; }
+    .page { display: none; padding:20px; }
+    .chat-box { height: 300px; overflow-y: scroll; border:1px solid #ccc; padding:10px; background:white; }
+    .message { margin:5px 0; }
+    .message b { color:#333; }
+    .bottom-bar { display:flex; margin-top:5px; }
+    .bottom-bar input { flex:1; padding:10px; }
+    .bottom-bar button { padding:10px; background:blue; color:white; border:none; }
+    button { margin-top:5px; }
+  </style>
 </head>
 <body>
 
-<!-- Header -->
-<div class="header">
-  <h2>Messenger</h2>
-  <div class="header-icons">
-    <i class="fas fa-search"></i>
-    <i class="fas fa-bell"></i>
+<!-- LOGIN / REGISTER -->
+<div id="loginPage" class="page" style="display:block;">
+  <h2 id="formTitle">Login</h2>
+  <div id="loginForm">
+    <input type="email" id="loginEmail" placeholder="Email"><br>
+    <input type="password" id="loginPassword" placeholder="Password"><br>
+    <button onclick="login()">Login</button>
   </div>
+  <div id="registerForm" style="display:none;">
+    <input type="text" id="regName" placeholder="Full Name"><br>
+    <input type="email" id="regEmail" placeholder="Email"><br>
+    <input type="password" id="regPassword" placeholder="Password"><br>
+    <button onclick="register()">Create Account</button>
+  </div>
+  <div style="margin-top:10px; cursor:pointer; color:blue;" onclick="toggleForm()">Create an account</div>
 </div>
 
-<!-- Content -->
-<div class="content" id="chatList">
-  <!-- Friend list / chat list will appear here -->
-  <p>Loading chats...</p>
+<!-- USER PANEL -->
+<div id="userPanel" class="page">
+  <h2>Welcome, <span id="userName"></span></h2>
+  <button onclick="sendFriendRequest()">Send Friend Request to Admin</button>
+  <button onclick="logout()">Logout</button>
 </div>
 
-<!-- Bottom Navigation -->
-<div class="bottom-nav">
-  <div class="active"><i class="fas fa-comments"></i></div>
-  <div><i class="fas fa-bell"></i></div>
-  <div><i class="fas fa-file-alt"></i></div>
-  <div><i class="fas fa-book"></i></div>
-  <div><i class="fas fa-user"></i></div>
+<!-- ADMIN PANEL -->
+<div id="adminPanel" class="page">
+  <h2>Admin Panel</h2>
+  <div id="requestList"></div>
+  <button onclick="logout()">Logout</button>
 </div>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<!-- CHAT PAGE -->
+<div id="chatPage" class="page">
+  <h2>📩 Admin Group Chat</h2>
+  <div id="chatBox" class="chat-box"></div>
+  <div class="bottom-bar">
+    <input type="text" id="messageInput" placeholder="Type a message">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+  <button onclick="logout()">Logout</button>
+</div>
+
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyBVPv24bcX6aLD3colMIP_tPkomhW1hotE",
-  authDomain: "darpanbook.firebaseapp.com",
-  databaseURL: "https://darpanbook-default-rtdb.firebaseio.com",
-  projectId: "darpanbook",
-  storageBucket: "darpanbook.appspot.com",
-  messagingSenderId: "791059696742",
-  appId: "1:791059696742:web:0bf51e375feaa0545a31a7"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
+  const firebaseConfig = {
+    apiKey: "AIzaSyBVPv24bcX6aLD3colMIP_tPkomhW1hotE",
+    authDomain: "darpanbook.firebaseapp.com",
+    databaseURL: "https://darpanbook-default-rtdb.firebaseio.com",
+    projectId: "darpanbook",
+    storageBucket: "darpanbook.appspot.com",
+    messagingSenderId: "791059696742",
+    appId: "1:791059696742:web:0bf51e375feaa0545a31a7"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
 
-auth.onAuthStateChanged(user => {
-  if (!user) {
-    window.location.href = "index.html";
-  } else {
-    loadChats(user.uid);
-  }
-});
+  let currentUser = null;
+  const adminUID = "ADMIN_UID_HERE"; // Replace with actual admin UID
+  const groupId = "adminGroup";
 
-function loadChats(uid) {
-  const chatList = document.getElementById("chatList");
-  db.ref("friends/" + uid).on("value", snap => {
-    chatList.innerHTML = "";
-    if (!snap.exists()) {
-      chatList.innerHTML = "<p>No friends yet</p>";
-      return;
+  function toggleForm() {
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const formTitle = document.getElementById("formTitle");
+    if (loginForm.style.display === "none") {
+      loginForm.style.display = "block";
+      registerForm.style.display = "none";
+      formTitle.innerText = "Login";
+    } else {
+      loginForm.style.display = "none";
+      registerForm.style.display = "block";
+      formTitle.innerText = "Create Account";
     }
-    snap.forEach(child => {
-      const friendId = child.key;
-      db.ref("users/" + friendId).once("value").then(userSnap => {
-        const friendData = userSnap.val();
-        const div = document.createElement("div");
-        div.style.padding = "10px";
-        div.style.borderBottom = "1px solid #ccc";
-        div.innerHTML = `<strong>${friendData.name}</strong> - ${friendData.email}`;
-        div.onclick = () => openChat(friendId);
-        chatList.appendChild(div);
+  }
+
+  function register() {
+    const name = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim();
+    const password = document.getElementById("regPassword").value.trim();
+    if (!name || !email || !password) return alert("Fill all fields");
+
+    auth.createUserWithEmailAndPassword(email, password).then(userCred => {
+      const uid = userCred.user.uid;
+      let role = (email === "admin@example.com") ? "admin" : "user"; // Simple admin check
+      return db.ref("users/" + uid).set({
+        name, email, role
+      });
+    }).then(() => {
+      alert("Account created! Please login.");
+      toggleForm();
+    }).catch(err => alert(err.message));
+  }
+
+  function login() {
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value.trim();
+    if (!email || !password) return alert("Fill all fields");
+
+    auth.signInWithEmailAndPassword(email, password).then(userCred => {
+      currentUser = userCred.user;
+      return db.ref("users/" + currentUser.uid).once("value");
+    }).then(snapshot => {
+      const userData = snapshot.val();
+      if (!userData) return alert("User not found!");
+      showPanel(userData);
+    }).catch(err => alert(err.message));
+  }
+
+  function showPanel(userData) {
+    document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+    if (userData.role === "admin") {
+      document.getElementById("adminPanel").style.display = "block";
+      loadFriendRequests();
+    } else {
+      document.getElementById("userPanel").style.display = "block";
+      document.getElementById("userName").innerText = userData.name;
+    }
+  }
+
+  function sendFriendRequest() {
+    db.ref(`friendRequests/${adminUID}/${currentUser.uid}`).set({
+      from: currentUser.uid,
+      status: "pending"
+    }).then(() => {
+      alert("Friend request sent to admin!");
+    });
+  }
+
+  function loadFriendRequests() {
+    db.ref(`friendRequests/${currentUser.uid}`).on("value", snap => {
+      const list = document.getElementById("requestList");
+      list.innerHTML = "";
+      snap.forEach(reqSnap => {
+        let req = reqSnap.val();
+        let uid = req.from;
+        let btn = `<button onclick="acceptRequest('${uid}')">Accept</button>`;
+        list.innerHTML += `<div>${uid} ${btn}</div>`;
       });
     });
-  });
-}
+  }
 
-function openChat(friendId) {
-  window.location.href = "chat.html?friendId=" + friendId;
-}
+  function acceptRequest(uid) {
+    db.ref(`groups/${groupId}/members/${uid}`).set(true);
+    db.ref(`friendRequests/${currentUser.uid}/${uid}`).remove();
+    alert("User added to group!");
+  }
+
+  function joinGroupChat() {
+    db.ref(`groups/${groupId}/members/${currentUser.uid}`).set(true);
+    loadMessages();
+    document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+    document.getElementById("chatPage").style.display = "block";
+  }
+
+  function loadMessages() {
+    db.ref(`groups/${groupId}/messages`).on("value", snap => {
+      const chatBox = document.getElementById("chatBox");
+      chatBox.innerHTML = "";
+      snap.forEach(msgSnap => {
+        let m = msgSnap.val();
+        chatBox.innerHTML += `<div class="message"><b>${m.senderName}:</b> ${m.text}</div>`;
+      });
+      chatBox.scrollTop = chatBox.scrollHeight;
+    });
+  }
+
+  function sendMessage() {
+    const text = document.getElementById("messageInput").value.trim();
+    if (!text) return;
+    db.ref(`users/${currentUser.uid}/name`).once("value").then(nameSnap => {
+      const senderName = nameSnap.val();
+      db.ref(`groups/${groupId}/messages`).push({
+        senderName, text, timestamp: Date.now()
+      });
+      document.getElementById("messageInput").value = "";
+    });
+  }
+
+  function logout() {
+    auth.signOut().then(() => {
+      currentUser = null;
+      document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+      document.getElementById("loginPage").style.display = "block";
+    });
+  }
 </script>
+
 </body>
 </html>
