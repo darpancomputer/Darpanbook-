@@ -1,166 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Social Messenger - Login</title>
-  <!-- Firebase v8 SDK -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0e6d6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .book {
-      width: 320px;
-      padding: 20px;
-      background: #fff8dc;
-      border: 2px solid #c2a679;
-      box-shadow: 4px 4px 12px rgba(0,0,0,0.2);
-      border-radius: 8px;
-    }
-    h2 { text-align: center; }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin: 6px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background: #c2a679;
-      color: white;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover { background: #a67c52; }
-    .toggle {
-      text-align: center;
-      margin-top: 10px;
-      cursor: pointer;
-      color: blue;
-    }
-  </style>
+<meta charset="utf-8">
+<title>Messenger</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  body { margin:0; font-family: Arial, sans-serif; background: #f5f5f5; }
+  /* Header */
+  .header {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #a67c52; color: white; padding: 12px;
+    position: fixed; top:0; left:0; right:0; z-index:1000;
+  }
+  .header h2 { margin:0; font-size: 20px; }
+  .header-icons i { margin-left: 15px; cursor: pointer; }
+
+  /* Content */
+  .content { padding: 70px 10px 70px; }
+
+  /* Bottom Nav */
+  .bottom-nav {
+    display: flex; justify-content: space-around; align-items: center;
+    background: #fff; border-top: 1px solid #ccc;
+    position: fixed; bottom:0; left:0; right:0; height: 60px;
+  }
+  .bottom-nav i { font-size: 22px; color: #a67c52; }
+  .bottom-nav .active i { color: #ff6600; }
+</style>
 </head>
 <body>
-  <div class="book">
-    <h2 id="formTitle">Login</h2>
 
-    <!-- Login Form -->
-    <div id="loginForm">
-      <input type="email" id="loginEmail" placeholder="Email">
-      <input type="password" id="loginPassword" placeholder="Password">
-      <button onclick="login()">Login</button>
-    </div>
-
-    <!-- Create Account Form -->
-    <div id="registerForm" style="display:none;">
-      <input type="text" id="regName" placeholder="Full Name">
-      <input type="email" id="regEmail" placeholder="Email">
-      <input type="password" id="regPassword" placeholder="Password">
-      <button onclick="register()">Create Account</button>
-    </div>
-
-    <div class="toggle" onclick="toggleForm()">Create an account</div>
+<!-- Header -->
+<div class="header">
+  <h2>Messenger</h2>
+  <div class="header-icons">
+    <i class="fas fa-search"></i>
+    <i class="fas fa-bell"></i>
   </div>
+</div>
 
+<!-- Content -->
+<div class="content" id="chatList">
+  <!-- Friend list / chat list will appear here -->
+  <p>Loading chats...</p>
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+  <div class="active"><i class="fas fa-comments"></i></div>
+  <div><i class="fas fa-bell"></i></div>
+  <div><i class="fas fa-file-alt"></i></div>
+  <div><i class="fas fa-book"></i></div>
+  <div><i class="fas fa-user"></i></div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script>
-  // Firebase Config
-  const firebaseConfig = {
-    apiKey: "AIzaSyBVPv24bcX6aLD3colMIP_tPkomhW1hotE",
-    authDomain: "darpanbook.firebaseapp.com",
-    databaseURL: "https://darpanbook-default-rtdb.firebaseio.com",
-    projectId: "darpanbook",
-    storageBucket: "darpanbook.appspot.com", // fixed
-    messagingSenderId: "791059696742",
-    appId: "1:791059696742:web:0bf51e375feaa0545a31a7"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyBVPv24bcX6aLD3colMIP_tPkomhW1hotE",
+  authDomain: "darpanbook.firebaseapp.com",
+  databaseURL: "https://darpanbook-default-rtdb.firebaseio.com",
+  projectId: "darpanbook",
+  storageBucket: "darpanbook.appspot.com",
+  messagingSenderId: "791059696742",
+  appId: "1:791059696742:web:0bf51e375feaa0545a31a7"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
 
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.database();
-
-  // Toggle Form
-  function toggleForm() {
-    const loginForm = document.getElementById("loginForm");
-    const registerForm = document.getElementById("registerForm");
-    const formTitle = document.getElementById("formTitle");
-    const toggleText = document.querySelector(".toggle");
-
-    if (loginForm.style.display === "none") {
-      loginForm.style.display = "block";
-      registerForm.style.display = "none";
-      formTitle.innerText = "Login";
-      toggleText.innerText = "Create an account";
-    } else {
-      loginForm.style.display = "none";
-      registerForm.style.display = "block";
-      formTitle.innerText = "Create Account";
-      toggleText.innerText = "Already have an account? Login";
-    }
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = "index.html";
+  } else {
+    loadChats(user.uid);
   }
+});
 
-  // Register User
-  function register() {
-    const name = document.getElementById("regName").value.trim();
-    const email = document.getElementById("regEmail").value.trim();
-    const password = document.getElementById("regPassword").value.trim();
-
-    if (!name || !email || !password) {
-      alert("Please fill all fields");
+function loadChats(uid) {
+  const chatList = document.getElementById("chatList");
+  db.ref("friends/" + uid).on("value", snap => {
+    chatList.innerHTML = "";
+    if (!snap.exists()) {
+      chatList.innerHTML = "<p>No friends yet</p>";
       return;
     }
+    snap.forEach(child => {
+      const friendId = child.key;
+      db.ref("users/" + friendId).once("value").then(userSnap => {
+        const friendData = userSnap.val();
+        const div = document.createElement("div");
+        div.style.padding = "10px";
+        div.style.borderBottom = "1px solid #ccc";
+        div.innerHTML = `<strong>${friendData.name}</strong> - ${friendData.email}`;
+        div.onclick = () => openChat(friendId);
+        chatList.appendChild(div);
+      });
+    });
+  });
+}
 
-    auth.createUserWithEmailAndPassword(email, password)
-      .then(userCred => {
-        const uid = userCred.user.uid;
-        return db.ref("users/" + uid).set({
-          name: name,
-          email: email,
-          role: "user"
-        });
-      })
-      .then(() => {
-        alert("Account created successfully! Please login.");
-        toggleForm();
-      })
-      .catch(err => alert(err.message));
-  }
-
-  // Login User
-  function login() {
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value.trim();
-
-    if (!email || !password) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    auth.signInWithEmailAndPassword(email, password)
-      .then(userCred => {
-        const uid = userCred.user.uid;
-        return db.ref("users/" + uid + "/role").once("value");
-      })
-      .then(snapshot => {
-        const role = snapshot.val();
-        if (role === "admin") {
-          window.location.href = "admin.html";
-        } else if (role === "user") {
-          window.location.href = "user.html";
-        } else {
-          alert("Role not assigned in database!");
-        }
-      })
-      .catch(err => alert(err.message));
-  }
+function openChat(friendId) {
+  window.location.href = "chat.html?friendId=" + friendId;
+}
 </script>
 </body>
 </html>
