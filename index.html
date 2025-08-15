@@ -16,7 +16,7 @@
   .app{position:relative;max-width:420px;height:100vh;margin:0 auto;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.15);display:flex;flex-direction:column}
 
   /* Global header */
-  .header{height:56px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 14px}
+  .header{height:56px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 14px;position:fixed;top:0;left:0;right:0;max-width:420px;margin:0 auto;z-index:100}
   .title{font-weight:800;font-size:18px}
   .hdr-actions i{font-size:18px;margin-left:14px;cursor:pointer;position:relative}
   .badge{position:absolute;top:-6px;right:-8px;background:#ff3b30;color:#fff;font-size:10px;border-radius:10px;padding:1px 5px;display:none}
@@ -24,6 +24,7 @@
   /* Pages */
   .page{display:none;flex:1;overflow:auto;background:#fafafa;padding:12px 12px 84px;} /* keep bottom padding so content not hidden behind nav */
   .page.active{display:block}
+  .page-content{padding-top:56px;padding-bottom:68px;height:100%;overflow:auto}
 
   /* Login */
   .login{padding:24px}
@@ -55,11 +56,11 @@
   .small{font-size:12px}
 
   /* Chat */
-  .chat{background:#fff;border:1px solid #eee;border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
+  .chat{background:#fff;border:1px solid #eee;border-radius:14px;display:flex;flex-direction:column;overflow:hidden;height:100%}
   .chat-top{height:52px;background:#f0f6ff;border-bottom:1px solid #e5eefc;display:flex;align-items:center;justify-content:space-between;padding:0 12px}
   .chat-title{display:flex;align-items:center;gap:10px;font-weight:700}
   .chat-actions i{font-size:18px;margin-left:12px;cursor:pointer}
-  .chat-messages{height:56vh;overflow:auto;padding:12px;background:#f7fbff}
+  .chat-messages{flex:1;overflow:auto;padding:12px;background:#f7fbff}
   .msg-row{display:flex;align-items:flex-end;margin:8px 0;gap:8px}
   .msg-row.mine{justify-content:flex-end}
   .msg-bubble{max-width:70%;padding:10px 12px;border-radius:14px;line-height:1.25;font-size:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
@@ -97,6 +98,56 @@
   /* Notice cards */
   .notice-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:10px;margin:8px 0}
   .notice-img{width:100%;max-height:220px;object-fit:cover;border-radius:8px;border:1px solid #eee;margin-top:6px}
+
+  /* Profile Edit */
+  .profile-edit{display:none}
+  .profile-edit.active{display:block}
+  .profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;margin:0 auto;display:block;border:3px solid var(--brand)}
+  .profile-center{text-align:center;margin:16px 0}
+  .back-btn{background:none;border:none;font-size:20px;cursor:pointer;position:absolute;left:16px;top:16px}
+  
+  /* Profile Sidebar */
+  .profile-sidebar{width:100%;background:#fff;border-right:1px solid #eee}
+  .profile-menu{padding:0;margin:0;list-style:none}
+  .profile-menu li{padding:12px 16px;border-bottom:1px solid #eee;cursor:pointer;display:flex;align-items:center;gap:10px}
+  .profile-menu li i{width:24px;text-align:center}
+  .profile-menu li.active{background:#f5f5f5;color:var(--brand)}
+  .profile-content{padding:16px;flex:1}
+
+  /* Results Page */
+  .results-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .results-header h3{margin:0}
+  .results-container{max-height:calc(100vh - 180px);overflow:auto}
+
+  /* Photo Selector */
+  .photo-selector{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:1000;align-items:center;justify-content:center}
+  .photo-selector.active{display:flex}
+  .photo-selector-content{background:#fff;border-radius:12px;padding:16px;width:90%;max-width:400px;max-height:90vh;overflow:auto}
+  .photo-selector-title{font-weight:bold;margin-bottom:12px}
+  .photo-selector-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .photo-selector-option{width:100%;height:100px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent}
+  .photo-selector-option.selected{border-color:var(--brand)}
+  .photo-selector-actions{margin-top:12px;display:flex;justify-content:flex-end;gap:8px}
+
+  /* Exam status toggle */
+  .toggle-container{display:flex;align-items:center;gap:8px}
+  .toggle-switch{position:relative;display:inline-block;width:50px;height:24px}
+  .toggle-switch input{opacity:0;width:0;height:0}
+  .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;transition:.4s;border-radius:24px}
+  .slider:before{position:absolute;content:"";height:16px;width:16px;left:4px;bottom:4px;background-color:white;transition:.4s;border-radius:50%}
+  input:checked + .slider{background-color:var(--ok)}
+  input:checked + .slider:before{transform:translateX(26px)}
+  .toggle-label{font-size:14px}
+
+  /* Exam quick access */
+  .exam-quick-access{margin-top:12px}
+  .exam-quick-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #eee}
+  .exam-quick-item:last-child{border-bottom:none}
+  .exam-quick-info{flex:1}
+  .exam-quick-status{padding:4px 8px;border-radius:4px;font-size:12px}
+  .exam-quick-status.active{background-color:#e6f7ee;color:var(--ok)}
+  .exam-quick-status.inactive{background-color:#ffebee;color:var(--danger)}
+  .exam-quick-action{width:80px;text-align:right}
 
   @media print{
     body{background:#fff}
@@ -149,118 +200,163 @@
   <div id="page-user" class="page">
     <!-- Chat -->
     <div id="user-tab-chat" class="tab-content">
-      <div class="chat">
-        <div class="chat-top">
-          <div class="chat-title">
-            <div class="mini-avatar" id="userChatIcon">A</div>
-            <div>
-              <div id="userChatName">Admin Group</div>
-              <div class="muted small">Group chat</div>
+      <div class="page-content">
+        <div class="chat">
+          <div class="chat-top">
+            <div class="chat-title">
+              <div class="mini-avatar" id="userChatIcon">A</div>
+              <div>
+                <div id="userChatName">Admin Group</div>
+                <div class="muted small">Group chat</div>
+              </div>
+            </div>
+            <div class="chat-actions">
+              <i class="fas fa-phone"></i>
+              <i class="fas fa-video"></i>
             </div>
           </div>
-          <div class="chat-actions">
-            <i class="fas fa-phone"></i>
-            <i class="fas fa-video"></i>
+          <div class="chat-messages" id="userChatMessages"></div>
+          <div class="chat-input">
+            <input id="userChatInput" type="text" placeholder="Type a message...">
+            <button id="userSendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
           </div>
         </div>
-        <div class="chat-messages" id="userChatMessages"></div>
-        <div class="chat-input">
-          <input id="userChatInput" type="text" placeholder="Type a message...">
-          <button id="userSendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
-        </div>
+        <div id="userChatState" class="muted" style="margin:10px 4px 0;"></div>
       </div>
-      <div id="userChatState" class="muted" style="margin:10px 4px 0;"></div>
     </div>
 
     <!-- Friend -->
     <div id="user-tab-friend" class="tab-content" style="display:none;">
-      <h3>Friend Request</h3>
-      <div class="row">
-        <div class="left">
-          <i class="fa fa-user-shield"></i>
-          <div>
-            <div><b>Connect with Admin</b></div>
-            <div class="muted">Send request to join Admin Group Chat.</div>
+      <div class="page-content">
+        <h3>Friend Request</h3>
+        <div class="row">
+          <div class="left">
+            <i class="fa fa-user-shield"></i>
+            <div>
+              <div><b>Connect with Admin</b></div>
+              <div class="muted">Send request to join Admin Group Chat.</div>
+            </div>
           </div>
+          <button id="sendRequestBtn">Add Friend</button>
         </div>
-        <button id="sendRequestBtn">Add Friend</button>
+        <div id="requestStatus" class="muted"></div>
       </div>
-      <div id="requestStatus" class="muted"></div>
     </div>
 
     <!-- Exam (USER) -->
     <div id="user-tab-exam" class="tab-content" style="display:none;">
-      <h3>Exam</h3>
+      <div class="page-content">
+        <h3>Exam</h3>
 
-      <div class="card" id="userExamChooser">
-        <div class="flex">
-          <select id="uCourse"></select>
-          <select id="uSubject"></select>
+        <div class="card" id="userExamChooser">
+          <div class="flex">
+            <select id="uCourse"></select>
+            <select id="uSubject"></select>
+          </div>
+          <button id="uLoadExamBtn">Load Exam</button>
+          <div id="uExamMeta" class="muted small"></div>
         </div>
-        <button id="uLoadExamBtn">Load Exam</button>
-        <div id="uExamMeta" class="muted small"></div>
+
+        <div class="card" id="userInfoCard" style="display:none;">
+          <h4>Student Information</h4>
+          <input id="stName" placeholder="Student Name">
+          <input id="stFather" placeholder="Father's Name">
+          <input id="stDob" type="date" placeholder="Date of Birth">
+          <input id="stSymbol" placeholder="Symbol Number">
+          <div class="flex">
+            <input id="stPhoto" type="file" accept="image/*">
+            <img id="stPreview" class="passport" alt="photo preview">
+          </div>
+          <button id="uStartExamBtn" class="btn-ok">Start Exam</button>
+        </div>
+
+        <div class="card" id="userExamCard" style="display:none;">
+          <div class="flex" style="justify-content:space-between">
+            <div><b id="uexTitle"></b> • <span id="uexCount" class="muted small"></span></div>
+            <div class="timer">⏳ <span id="uTimer">00:00</span></div>
+          </div>
+          <div id="uQList"></div>
+          <div class="flex" style="justify-content:space-between">
+            <button id="uSubmitBtn" class="btn-ok">Submit</button>
+            <button id="uCancelBtn" class="btn-ghost">Cancel</button>
+          </div>
+        </div>
+
+        <div id="uResultWrap"></div>
       </div>
-
-      <div class="card" id="userInfoCard" style="display:none;">
-        <h4>Student Information</h4>
-        <input id="stName" placeholder="Student Name">
-        <input id="stFather" placeholder="Father's Name">
-        <input id="stDob" type="date" placeholder="Date of Birth">
-        <input id="stSymbol" placeholder="Symbol Number">
-        <div class="flex">
-          <input id="stPhoto" type="file" accept="image/*">
-          <img id="stPreview" class="passport" alt="photo preview">
-        </div>
-        <button id="uStartExamBtn" class="btn-ok">Start Exam</button>
-      </div>
-
-      <div class="card" id="userExamCard" style="display:none;">
-        <div class="flex" style="justify-content:space-between">
-          <div><b id="uexTitle"></b> • <span id="uexCount" class="muted small"></span></div>
-          <div class="timer">⏳ <span id="uTimer">00:00</span></div>
-        </div>
-        <div id="uQList"></div>
-        <div class="flex" style="justify-content:space-between">
-          <button id="uSubmitBtn" class="btn-ok">Submit</button>
-          <button id="uCancelBtn" class="btn-ghost">Cancel</button>
-        </div>
-      </div>
-
-      <div id="uResultWrap"></div>
     </div>
 
     <!-- Book -->
     <div id="user-tab-book" class="tab-content" style="display:none;">
-      <h3>Book</h3>
-      <div class="row"><div class="left"><i class="fa fa-book"></i><b>Book Section</b></div><span class="muted">Coming soon</span></div>
+      <div class="page-content">
+        <h3>Book</h3>
+        <div class="row"><div class="left"><i class="fa fa-book"></i><b>Book Section</b></div><span class="muted">Coming soon</span></div>
+      </div>
     </div>
 
     <!-- Notice (USER) -->
     <div id="user-tab-notice" class="tab-content" style="display:none;">
-      <h3>Notice</h3>
-      <div id="userNoticeList"></div>
+      <div class="page-content">
+        <h3>Notice</h3>
+        <div id="userNoticeList"></div>
+      </div>
     </div>
 
     <!-- Profile -->
     <div id="user-tab-profile" class="tab-content" style="display:none;">
-      <h3>Profile</h3>
-      <div class="profile-card">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div id="userAvatar" class="avatar">U</div>
-          <div>
-            <div id="userNameText" style="font-weight:700"></div>
-            <div id="userEmailText" class="muted"></div>
+      <div class="page-content">
+        <div id="user-profile-view">
+          <div class="profile-card">
+            <div class="profile-center">
+              <img id="userProfilePic" class="profile-pic" src="" alt="Profile Picture">
+              <div id="userNameText" style="font-weight:700;font-size:18px;margin-top:8px"></div>
+              <div id="userEmailText" class="muted"></div>
+            </div>
+          </div>
+          
+          <div class="flex" style="flex-direction:column;gap:12px">
+            <div class="profile-sidebar">
+              <ul class="profile-menu">
+                <li id="openUserResults"><i class="fas fa-poll"></i> Exam Results</li>
+                <li id="editUserProfile"><i class="fas fa-user-edit"></i> Edit Profile</li>
+                <li><i class="fas fa-cog"></i> Settings</li>
+                <li><i class="fas fa-question-circle"></i> Help</li>
+                <li id="logoutUser"><i class="fas fa-sign-out-alt"></i> Logout</li>
+              </ul>
+            </div>
+            
+            <div id="userResultsContainer" style="display:none">
+              <div class="results-header">
+                <h3>Your Exam Results</h3>
+                <button id="backFromResults" class="btn-ghost"><i class="fas fa-arrow-left"></i> Back</button>
+              </div>
+              <div class="results-container" id="userResultsList"></div>
+            </div>
+
+            <!-- Quick Exam Access in Profile -->
+            <div class="exam-quick-access" id="userExamQuickAccess">
+              <h4>Available Exams</h4>
+              <div id="userExamQuickList"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Edit Profile Section -->
+        <div id="user-profile-edit" class="profile-edit">
+          <button class="back-btn" id="backFromEditProfile"><i class="fas fa-arrow-left"></i></button>
+          <div class="profile-card">
+            <div class="profile-center">
+              <img id="userProfilePicEdit" class="profile-pic" src="" alt="Profile Picture">
+              <button class="btn-ghost" style="margin-top:8px" id="changePhotoBtn">Change Photo</button>
+            </div>
+            <div style="margin-top:16px">
+              <input type="text" id="editUserName" placeholder="Full Name">
+              <input type="email" id="editUserEmail" placeholder="Email">
+              <button id="saveUserProfile" class="btn-ok">Save Changes</button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="grid">
-        <div id="openUserResults" class="opt">Exam Results</div>
-        <div class="opt">Edit Profile</div>
-        <div class="opt">Settings</div>
-        <div class="opt">Help</div>
-        <div id="logoutUser" class="opt">Logout</div>
-      </div>
-      <div id="userResultsList"></div>
     </div>
 
     <!-- Bottom nav (USER) -->
@@ -278,118 +374,165 @@
   <div id="page-admin" class="page">
     <!-- Chat -->
     <div id="admin-tab-chat" class="tab-content">
-      <div class="chat">
-        <div class="chat-top">
-          <div class="chat-title">
-            <div class="mini-avatar" id="adminChatIcon">G</div>
-            <div>
-              <div id="adminChatName">Admin Group</div>
-              <div class="muted small">All accepted users</div>
+      <div class="page-content">
+        <div class="chat">
+          <div class="chat-top">
+            <div class="chat-title">
+              <div class="mini-avatar" id="adminChatIcon">G</div>
+              <div>
+                <div id="adminChatName">Admin Group</div>
+                <div class="muted small">All accepted users</div>
+              </div>
+            </div>
+            <div class="chat-actions">
+              <i class="fas fa-phone"></i>
+              <i class="fas fa-video"></i>
             </div>
           </div>
-          <div class="chat-actions">
-            <i class="fas fa-phone"></i>
-            <i class="fas fa-video"></i>
+          <div class="chat-messages" id="adminChatMessages"></div>
+          <div class="chat-input">
+            <input id="adminChatInput" type="text" placeholder="Type a message...">
+            <button id="adminSendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
           </div>
-        </div>
-        <div class="chat-messages" id="adminChatMessages"></div>
-        <div class="chat-input">
-          <input id="adminChatInput" type="text" placeholder="Type a message...">
-          <button id="adminSendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>
     </div>
 
     <!-- Requests -->
     <div id="admin-tab-requests" class="tab-content" style="display:none;">
-      <h3>Friend Requests</h3>
-      <div id="adminRequests"></div>
+      <div class="page-content">
+        <h3>Friend Requests</h3>
+        <div id="adminRequests"></div>
+      </div>
     </div>
 
     <!-- Exam (ADMIN) -->
     <div id="admin-tab-exam" class="tab-content" style="display:none;">
-      <h3>Create/Manage Exam</h3>
-      <div class="card">
-        <div class="flex">
-          <select id="aCourse"></select>
-          <select id="aSubject"></select>
-          <input id="aDuration" type="number" min="1" max="240" placeholder="Duration (min)">
-        </div>
-        <div class="row" style="display:block">
-          <textarea id="aQ" rows="2" placeholder="Question text"></textarea>
-          <div class="flex" style="flex-wrap:wrap">
-            <input id="aO1" placeholder="Option A">
-            <input id="aO2" placeholder="Option B">
-            <input id="aO3" placeholder="Option C">
-            <input id="aO4" placeholder="Option D">
-          </div>
-          <select id="aCorrect">
-            <option value="0">Correct: A</option>
-            <option value="1">Correct: B</option>
-            <option value="2">Correct: C</option>
-            <option value="3">Correct: D</option>
-          </select>
+      <div class="page-content">
+        <h3>Create/Manage Exam</h3>
+        <div class="card">
           <div class="flex">
-            <button id="addQBtn">Add Question</button>
-            <button id="saveExamBtn" class="btn-ok">Save Exam</button>
-            <button id="clearQBtn" class="btn-ghost">Clear</button>
+            <select id="aCourse"></select>
+            <select id="aSubject"></select>
+            <input id="aDuration" type="number" min="1" max="240" placeholder="Duration (min)">
           </div>
-          <div class="muted small">Tip: You can add up to 200+ questions (one by one).</div>
+          <div class="toggle-container">
+            <label class="toggle-switch">
+              <input type="checkbox" id="examActiveToggle">
+              <span class="slider"></span>
+            </label>
+            <span class="toggle-label" id="examStatusLabel">Exam Status: Inactive</span>
+          </div>
+          <div class="row" style="display:block">
+            <textarea id="aQ" rows="2" placeholder="Question text"></textarea>
+            <div class="flex" style="flex-wrap:wrap">
+              <input id="aO1" placeholder="Option A">
+              <input id="aO2" placeholder="Option B">
+              <input id="aO3" placeholder="Option C">
+              <input id="aO4" placeholder="Option D">
+            </div>
+            <select id="aCorrect">
+              <option value="0">Correct: A</option>
+              <option value="1">Correct: B</option>
+              <option value="2">Correct: C</option>
+              <option value="3">Correct: D</option>
+            </select>
+            <div class="flex">
+              <button id="addQBtn">Add Question</button>
+              <button id="saveExamBtn" class="btn-ok">Save Exam</button>
+              <button id="clearQBtn" class="btn-ghost">Clear</button>
+              <button id="deleteExamBtn" class="btn-danger">Delete</button>
+            </div>
+            <div class="muted small">Tip: You can add up to 200+ questions (one by one).</div>
+          </div>
         </div>
-      </div>
-      <div class="card">
-        <b>Questions (<span id="aCount">0</span>)</b>
-        <div id="aQList"></div>
+        <div class="card">
+          <b>Questions (<span id="aCount">0</span>)</b>
+          <div id="aQList"></div>
+        </div>
       </div>
     </div>
 
     <!-- Notice (ADMIN) -->
     <div id="admin-tab-notice" class="tab-content" style="display:none;">
-      <h3>Post Notice</h3>
-      <div class="card">
-        <textarea id="noticeText" rows="3" placeholder="Type notice message..."></textarea>
-        <div class="flex">
-          <input id="noticeImage" type="file" accept="image/*">
-          <img id="noticePreview" class="passport" alt="preview">
+      <div class="page-content">
+        <h3>Post Notice</h3>
+        <div class="card">
+          <textarea id="noticeText" rows="3" placeholder="Type notice message..."></textarea>
+          <div class="flex">
+            <input id="noticeImage" type="file" accept="image/*">
+            <img id="noticePreview" class="passport" alt="preview">
+          </div>
+          <div class="flex" style="justify-content:space-between">
+            <button id="sendNoticeBtn" class="btn-ok">Send Notice</button>
+            <button id="clearNoticeBtn" class="btn-ghost">Clear</button>
+          </div>
+          <div class="muted small">Photo optional. Notice will appear for all users.</div>
         </div>
-        <div class="flex" style="justify-content:space-between">
-          <button id="sendNoticeBtn" class="btn-ok">Send Notice</button>
-          <button id="clearNoticeBtn" class="btn-ghost">Clear</button>
+        <div class="card">
+          <b>All Notices</b>
+          <div id="adminNoticeList"></div>
         </div>
-        <div class="muted small">Photo optional. Notice will appear for all users.</div>
-      </div>
-      <div class="card">
-        <b>All Notices</b>
-        <div id="adminNoticeList"></div>
       </div>
     </div>
 
     <!-- Book -->
     <div id="admin-tab-book" class="tab-content" style="display:none;">
-      <h3>Book</h3>
-      <div class="row"><div class="left"><i class="fa fa-book"></i><b>Manage Books</b></div><span class="muted">Coming soon</span></div>
+      <div class="page-content">
+        <h3>Book</h3>
+        <div class="row"><div class="left"><i class="fa fa-book"></i><b>Manage Books</b></div><span class="muted">Coming soon</span></div>
+      </div>
     </div>
 
     <!-- Profile -->
     <div id="admin-tab-profile" class="tab-content" style="display:none;">
-      <h3>Admin Profile</h3>
-      <div class="profile-card">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div id="adminAvatar" class="avatar">A</div>
-          <div>
-            <div id="adminNameText" style="font-weight:700"></div>
-            <div id="adminEmailText" class="muted"></div>
+      <div class="page-content">
+        <div id="admin-profile-view">
+          <div class="profile-card">
+            <div class="profile-center">
+              <img id="adminProfilePic" class="profile-pic" src="" alt="Profile Picture">
+              <div id="adminNameText" style="font-weight:700;font-size:18px;margin-top:8px"></div>
+              <div id="adminEmailText" class="muted"></div>
+            </div>
+          </div>
+          
+          <div class="flex" style="flex-direction:column;gap:12px">
+            <div class="profile-sidebar">
+              <ul class="profile-menu">
+                <li id="loadAllResults"><i class="fas fa-poll"></i> Student Results</li>
+                <li id="editAdminProfile"><i class="fas fa-user-edit"></i> Edit Profile</li>
+                <li><i class="fas fa-cog"></i> Settings</li>
+                <li><i class="fas fa-question-circle"></i> Help</li>
+                <li id="logoutAdmin"><i class="fas fa-sign-out-alt"></i> Logout</li>
+              </ul>
+            </div>
+            
+            <div id="adminResultsContainer" style="display:none">
+              <div class="results-header">
+                <h3>All Student Results</h3>
+                <button id="backFromAdminResults" class="btn-ghost"><i class="fas fa-arrow-left"></i> Back</button>
+              </div>
+              <div class="results-container" id="adminResultsList"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Edit Profile Section -->
+        <div id="admin-profile-edit" class="profile-edit">
+          <button class="back-btn" id="backFromEditAdminProfile"><i class="fas fa-arrow-left"></i></button>
+          <div class="profile-card">
+            <div class="profile-center">
+              <img id="adminProfilePicEdit" class="profile-pic" src="" alt="Profile Picture">
+              <button class="btn-ghost" style="margin-top:8px" id="changeAdminPhotoBtn">Change Photo</button>
+            </div>
+            <div style="margin-top:16px">
+              <input type="text" id="editAdminName" placeholder="Full Name">
+              <input type="email" id="editAdminEmail" placeholder="Email">
+              <button id="saveAdminProfile" class="btn-ok">Save Changes</button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="grid">
-        <div id="loadAllResults" class="opt">Student Results</div>
-        <div class="opt">Edit Profile</div>
-        <div class="opt">Settings</div>
-        <div class="opt">Help</div>
-        <div id="logoutAdmin" class="opt">Logout</div>
-      </div>
-      <div id="adminResultsWrap"></div>
     </div>
 
     <!-- Bottom nav (ADMIN) -->
@@ -400,6 +543,20 @@
       <div class="tab" data-tab="notice"><i class="fa fa-bullhorn"></i>Notice</div>
       <div class="tab" data-tab="book"><i class="fa fa-book"></i>Book</div>
       <div class="tab" data-tab="profile"><i class="fa fa-user"></i>Profile</div>
+    </div>
+  </div>
+
+  <!-- Photo Selector Modal -->
+  <div id="photoSelector" class="photo-selector">
+    <div class="photo-selector-content">
+      <div class="photo-selector-title">Select Profile Photo</div>
+      <div class="photo-selector-options" id="photoOptions">
+        <!-- Options will be added dynamically -->
+      </div>
+      <div class="photo-selector-actions">
+        <button id="cancelPhotoSelect" class="btn-ghost">Cancel</button>
+        <button id="confirmPhotoSelect" class="btn-ok">Select</button>
+      </div>
     </div>
   </div>
 
@@ -445,7 +602,7 @@
   const gpaFromPct = p => p>=90?4.0:p>=80?3.6:p>=70?3.2:p>=60?2.8:p>=50?2.4:p>=40?2.0:0.0;
   const initialFrom = n => (n||'?').trim().charAt(0).toUpperCase();
   const timeMini = ts => new Date(ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-  let currentUser=null, role="user", name="", email="", adminUid=null;
+  let currentUser=null, role="user", name="", email="", adminUid=null, lastPhotoChange=0;
 
   /* ===== LOGIN / REGISTER ===== */
   $('toRegister').onclick = ()=>{ $('loginCard').style.display='none'; $('registerCard').style.display='block'; $('error').style.display='none'; }
@@ -460,7 +617,13 @@
     if(!nm||!em||!pw){ alert("Please fill all fields"); return; }
     try{
       const cred = await createUserWithEmailAndPassword(auth, em, pw);
-      await set(ref(db, `users/${cred.user.uid}`), { name:nm, email:em, role:"user" });
+      await set(ref(db, `users/${cred.user.uid}`), { 
+        name:nm, 
+        email:em, 
+        role:"user",
+        photoUrl: `https://ui-avatars.com/api/?name=${initialFrom(nm)}&background=random&color=fff&size=120`,
+        lastPhotoChange: 0
+      });
       alert("Account created! Please log in."); $('toLogin').click();
     }catch(e){ alert(cleanFirebaseError(e.message)); }
   };
@@ -473,13 +636,20 @@
     const usRef = ref(db, `users/${u.uid}`);
     let snap = await get(usRef);
     if(!snap.exists()){
-      await set(usRef, { name: u.email?.split('@')[0]||'User', email: u.email||'', role:'user' });
+      await set(usRef, { 
+        name: u.email?.split('@')[0]||'User', 
+        email: u.email||'', 
+        role:'user',
+        photoUrl: `https://ui-avatars.com/api/?name=${initialFrom(u.email?.split('@')[0]||'U')}&background=random&color=fff&size=120`,
+        lastPhotoChange: 0
+      });
       snap = await get(usRef);
     }
     const data = snap.val();
     role = (data.role||'user').toString().trim().toLowerCase();
     name = data.name || '';
     email = data.email || u.email || '';
+    lastPhotoChange = data.lastPhotoChange || 0;
 
     // find admin uid (first found)
     adminUid = null;
@@ -492,8 +662,8 @@
     }
     if(role==='admin') adminUid = u.uid;
 
-    if(role==='admin'){ loadAdmin(); showPage('page-admin'); setActiveTab('admin','chat'); }
-    else { loadUser();  showPage('page-user');  setActiveTab('user','chat'); }
+    if(role==='admin'){ loadAdmin(data.photoUrl); showPage('page-admin'); setActiveTab('admin','chat'); }
+    else { loadUser(data.photoUrl);  showPage('page-user');  setActiveTab('user','chat'); }
   });
 
   function showErr(msg){ const el=$('error'); el.innerText=msg; el.style.display='block'; }
@@ -502,11 +672,37 @@
   /* ======== USER PANEL ======== */
   let userChatBound=false, adminChatBound=false;
 
-  function loadUser(){
+  function loadUser(photoUrl){
     // profile
     $('userNameText').innerText = name;
     $('userEmailText').innerText = email;
-    $('userAvatar').innerText = initialFrom(name);
+    $('userProfilePic').src = photoUrl;
+    $('userProfilePicEdit').src = photoUrl;
+    
+    // edit profile
+    $('editUserProfile').onclick = ()=>{
+      $('user-profile-view').style.display='none';
+      $('user-profile-edit').classList.add('active');
+      $('editUserName').value = name;
+      $('editUserEmail').value = email;
+    };
+    $('backFromEditProfile').onclick = ()=>{
+      $('user-profile-edit').classList.remove('active');
+      $('user-profile-view').style.display='block';
+    };
+    
+    // photo selector with gallery access
+    $('changePhotoBtn').onclick = showPhotoSelectorWithGallery;
+    $('cancelPhotoSelect').onclick = ()=> $('photoSelector').classList.remove('active');
+    $('confirmPhotoSelect').onclick = confirmPhotoSelection;
+    
+    // results
+    $('openUserResults').onclick = async ()=>{
+      $('userResultsContainer').style.display = 'block';
+      const s = await get(ref(db, `results/${auth.currentUser.uid}`));
+      renderResultsList('userResultsList', s, true);
+    };
+    $('backFromResults').onclick = ()=> $('userResultsContainer').style.display = 'none';
 
     // bottom nav
     document.querySelectorAll('#nav-user .tab').forEach(t=> t.onclick = ()=> setActiveTab('user', t.dataset.tab));
@@ -534,15 +730,98 @@
       const f=e.target.files?.[0]; if(!f) return;
       const url = URL.createObjectURL(f); $('stPreview').src=url;
     });
-    $('openUserResults').onclick = async ()=>{
-      const s = await get(ref(db, `results/${auth.currentUser.uid}`));
-      renderResultsList('userResultsList', s, true);
-    };
 
     // Notices (user view)
     onValue(ref(db,'notices'), (snap)=>{
       renderNotices('userNoticeList', snap);
     });
+
+    // Load available exams in profile
+    loadAvailableExamsForUser();
+  }
+
+  function showPhotoSelectorWithGallery() {
+    const now = Date.now();
+    const sixMonths = 6 * 30 * 24 * 60 * 60 * 1000; // 6 months in milliseconds
+    
+    if (now - lastPhotoChange < sixMonths) {
+      const nextChange = new Date(lastPhotoChange + sixMonths);
+      alert(`You can only change your profile photo once every 6 months. Next change available on ${nextChange.toLocaleDateString()}`);
+      return;
+    }
+    
+    $('photoOptions').innerHTML = '';
+    
+    // Add device gallery option
+    const galleryOption = document.createElement('div');
+    galleryOption.className = 'photo-selector-option';
+    galleryOption.innerHTML = '<i class="fas fa-images" style="font-size:40px;margin:20px 0"></i><div>Choose from Gallery</div>';
+    galleryOption.onclick = function() {
+      $('photoSelector').classList.remove('active');
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = e => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            $('userProfilePicEdit').src = event.target.result;
+            confirmPhotoSelection(event.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+      input.click();
+    };
+    $('photoOptions').appendChild(galleryOption);
+    
+    // Sample photos
+    const samplePhotos = [
+      'https://randomuser.me/api/portraits/men/1.jpg',
+      'https://randomuser.me/api/portraits/women/1.jpg',
+      'https://randomuser.me/api/portraits/men/2.jpg',
+      'https://randomuser.me/api/portraits/women/2.jpg',
+      'https://randomuser.me/api/portraits/men/3.jpg',
+      'https://randomuser.me/api/portraits/women/3.jpg'
+    ];
+    
+    samplePhotos.forEach((photo, index) => {
+      const img = document.createElement('img');
+      img.src = photo;
+      img.className = 'photo-selector-option';
+      img.dataset.url = photo;
+      img.onclick = function() {
+        document.querySelectorAll('.photo-selector-option').forEach(opt => 
+          opt.classList.remove('selected'));
+        this.classList.add('selected');
+      };
+      $('photoOptions').appendChild(img);
+    });
+    
+    $('photoSelector').classList.add('active');
+  }
+  
+  async function confirmPhotoSelection(photoUrl) {
+    if (!photoUrl) {
+      const selected = document.querySelector('.photo-selector-option.selected');
+      if (!selected) {
+        alert('Please select a photo');
+        return;
+      }
+      photoUrl = selected.dataset.url;
+    }
+    
+    $('userProfilePicEdit').src = photoUrl;
+    $('photoSelector').classList.remove('active');
+    
+    // Save to database
+    await set(ref(db, `users/${currentUser.uid}/photoUrl`), photoUrl);
+    await set(ref(db, `users/${currentUser.uid}/lastPhotoChange`), Date.now());
+    
+    // Update in UI
+    $('userProfilePic').src = photoUrl;
+    lastPhotoChange = Date.now();
   }
 
   async function sendFriendRequestToAdmin(){
@@ -556,10 +835,34 @@
   }
 
   /* ======== ADMIN PANEL ======== */
-  function loadAdmin(){
+  function loadAdmin(photoUrl){
     $('adminNameText').innerText = name;
     $('adminEmailText').innerText = email;
-    $('adminAvatar').innerText = initialFrom(name);
+    $('adminProfilePic').src = photoUrl;
+    $('adminProfilePicEdit').src = photoUrl;
+    
+    // edit profile
+    $('editAdminProfile').onclick = ()=>{
+      $('admin-profile-view').style.display='none';
+      $('admin-profile-edit').classList.add('active');
+      $('editAdminName').value = name;
+      $('editAdminEmail').value = email;
+    };
+    $('backFromEditAdminProfile').onclick = ()=>{
+      $('admin-profile-edit').classList.remove('active');
+      $('admin-profile-view').style.display='block';
+    };
+    
+    // photo selector with gallery access
+    $('changeAdminPhotoBtn').onclick = showPhotoSelectorWithGallery;
+    
+    // results
+    $('loadAllResults').onclick = async ()=>{
+      $('adminResultsContainer').style.display = 'block';
+      const all = await get(ref(db,'results'));
+      renderAllResultsForAdmin(all);
+    };
+    $('backFromAdminResults').onclick = ()=> $('adminResultsContainer').style.display = 'none';
 
     // Ensure admin is in the group
     set(ref(db, `groups/${GROUP_ID}/members/${auth.currentUser.uid}`), true);
@@ -610,13 +913,8 @@
     $('clearQBtn').onclick = ()=>{
       aQuestions.length=0; renderAdminQList();
     };
-
-    $('loadAllResults').onclick = async ()=>{
-      // load every user's results
-      const all = await get(ref(db,'results'));
-      renderAllResultsForAdmin(all);
-      setActiveTab('admin','profile');
-    };
+    $('deleteExamBtn').onclick = deleteExamAdmin;
+    $('examActiveToggle').onchange = toggleExamStatus;
 
     // Notice composer
     $('noticeImage').addEventListener('change', e=>{
@@ -675,6 +973,8 @@
 
   /* ======== EXAM BUILDER (ADMIN) ======== */
   const aQuestions = []; // {q, opts:[a,b,c,d], ans:idx}
+  let currentExamStatus = false;
+  
   function fillCourseSubject(courseId, subjectId){
     const cSel=$(courseId), sSel=$(subjectId);
     cSel.innerHTML = Object.keys(COURSES).map(c=>`<option>${c}</option>`).join('');
@@ -695,6 +995,7 @@
     $('aQ').value=''; $('aO1').value=''; $('aO2').value=''; $('aO3').value=''; $('aO4').value='';
     renderAdminQList();
   }
+  
   function renderAdminQList(){
     $('aCount').innerText = aQuestions.length;
     const box=$('aQList'); box.innerHTML='';
@@ -707,26 +1008,68 @@
       box.appendChild(div);
     });
   }
+  
   async function saveExamAdmin(){
     const course=$('aCourse').value, subject=$('aSubject').value;
     const duration=parseInt($('aDuration').value,10)||0;
     if(!course||!subject||!duration){ alert('Select course/subject and duration.'); return; }
     if(aQuestions.length===0){ alert('Add at least 1 question.'); return; }
+    
     await set(ref(db, `exams/${course}/${subject}`), {
-      duration, createdBy: auth.currentUser.uid, ts: Date.now(),
+      duration, 
+      createdBy: auth.currentUser.uid, 
+      ts: Date.now(),
+      active: currentExamStatus,
       questions: aQuestions
     });
+    
     alert('Exam saved!');
+    updateExamStatusUI();
+  }
+  
+  async function deleteExamAdmin(){
+    const course=$('aCourse').value, subject=$('aSubject').value;
+    if(!course||!subject){ alert('Select course/subject to delete.'); return; }
+    
+    if(confirm(`Delete ${course} - ${subject} exam? This cannot be undone.`)){
+      await remove(ref(db, `exams/${course}/${subject}`));
+      aQuestions.length = 0;
+      renderAdminQList();
+      alert('Exam deleted!');
+    }
+  }
+  
+  async function toggleExamStatus(){
+    const course=$('aCourse').value, subject=$('aSubject').value;
+    if(!course||!subject){ alert('Select course/subject first.'); return; }
+    
+    currentExamStatus = $('examActiveToggle').checked;
+    await set(ref(db, `exams/${course}/${subject}/active`), currentExamStatus);
+    updateExamStatusUI();
+  }
+  
+  function updateExamStatusUI(){
+    const status = currentExamStatus ? 'Active' : 'Inactive';
+    const color = currentExamStatus ? 'var(--ok)' : 'var(--danger)';
+    $('examStatusLabel').innerText = `Exam Status: ${status}`;
+    $('examStatusLabel').style.color = color;
   }
 
   /* ======== USER EXAM PLAYER ======== */
   let loadedExam=null, uTimerInt=null, remainingSec=0, userAnswers={}, lockSet={};
+  
   async function loadExamForUser(){
     const course=$('uCourse').value, subject=$('uSubject').value;
-    // MODIFIED: Removed the exam retake check to allow multiple attempts
     const snap = await get(ref(db, `exams/${course}/${subject}`));
     if(!snap.exists()){ $('uExamMeta').innerText='No exam found for selection.'; $('userInfoCard').style.display='none'; return; }
+    
     loadedExam = snap.val();
+    if(!loadedExam.active){
+      $('uExamMeta').innerText = 'This exam is currently inactive.';
+      $('userInfoCard').style.display='none';
+      return;
+    }
+    
     $('uExamMeta').innerText = `Duration: ${loadedExam.duration} min • Questions: ${loadedExam.questions?.length||0}`;
     $('userInfoCard').style.display='block';
     $('userExamCard').style.display='none';
@@ -736,6 +1079,60 @@
     $('uexTitle').innerText = `${course} • ${subject}`;
     $('uexCount').innerText = `${loadedExam.questions.length} questions`;
     $('uStartExamBtn').onclick = ()=> startExam(course,subject);
+  }
+  
+  async function loadAvailableExamsForUser() {
+    const examsRef = ref(db, 'exams');
+    const snapshot = await get(examsRef);
+    const quickList = $('userExamQuickList');
+    quickList.innerHTML = '';
+    
+    if (!snapshot.exists()) {
+      quickList.innerHTML = '<div class="muted">No exams available</div>';
+      return;
+    }
+    
+    let hasExams = false;
+    
+    snapshot.forEach(courseNode => {
+      const course = courseNode.key;
+      courseNode.forEach(subjectNode => {
+        const subject = subjectNode.key;
+        const exam = subjectNode.val();
+        
+        if (exam.active) {
+          hasExams = true;
+          const item = document.createElement('div');
+          item.className = 'exam-quick-item';
+          item.innerHTML = `
+            <div class="exam-quick-info">
+              <div><strong>${course} - ${subject}</strong></div>
+              <div class="small muted">${exam.questions?.length || 0} questions • ${exam.duration} mins</div>
+            </div>
+            <div class="exam-quick-action">
+              <button class="btn-ghost small" data-course="${course}" data-subject="${subject}">Start</button>
+            </div>
+          `;
+          quickList.appendChild(item);
+        }
+      });
+    });
+    
+    if (!hasExams) {
+      quickList.innerHTML = '<div class="muted">No active exams available</div>';
+    }
+    
+    // Add event listeners to quick start buttons
+    quickList.querySelectorAll('button').forEach(btn => {
+      btn.onclick = function() {
+        const course = this.getAttribute('data-course');
+        const subject = this.getAttribute('data-subject');
+        $('uCourse').value = course;
+        $('uSubject').value = subject;
+        setActiveTab('user', 'exam');
+        loadExamForUser();
+      };
+    });
   }
 
   function startExam(course,subject){
@@ -806,12 +1203,14 @@
       }
     };
   }
+  
   function updateTimer(){
     const m = Math.max(0,Math.floor(remainingSec/60)).toString().padStart(2,'0');
     const s = Math.max(0,remainingSec%60).toString().padStart(2,'0');
     $('uTimer').innerText = `${m}:${s}`;
   }
-  function autoSubmitExam(course,subject,student){
+  
+  function autoSubmitExam(course,subject,student,isAuto=false){
     alert('Time up! Auto-submitting.');
     finalizeExam(course,subject,student,true);
   }
@@ -899,7 +1298,7 @@
   }
 
   async function renderAllResultsForAdmin(allSnap){
-    const wrap=$('adminResultsWrap'); wrap.innerHTML='';
+    const wrap=$('adminResultsList'); wrap.innerHTML='';
     if(!allSnap.exists()){ wrap.innerHTML='<div class="muted">No student results.</div>'; return; }
     allSnap.forEach(userNode=>{
       userNode.forEach(resNode=>{
