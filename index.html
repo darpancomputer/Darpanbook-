@@ -3,107 +3,230 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Social Messenger</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<title>Darpan Book - Social Messenger & Exam System</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-  :root{--brand:#1877f2;--bg:#f0f2f5;--card:#fff;--muted:#667085;}
+  :root{
+    --brand:#1877f2; --bg:#f0f2f5; --card:#fff; --muted:#6b6b6b;
+    --mine:#DCF8C6; --theirs:#ffffff; --danger:#ff3b30; --ok:#15a34a;
+  }
   *{box-sizing:border-box}
-  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);display:flex;justify-content:center;align-items:center;min-height:100vh}
-  .app{width:100%;max-width:420px;height:100vh;max-height:820px;background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.15);overflow:hidden;display:flex;flex-direction:column}
+  html,body{height:100%}
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);}
+  .app{position:relative;max-width:420px;height:100vh;margin:0 auto;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.15);display:flex;flex-direction:column}
+
+  /* Global header */
   .header{height:56px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 14px}
-  .header .title{font-weight:800;font-size:18px}
-  .header i{cursor:pointer;margin-left:14px}
-  .page{display:none;flex:1;background:#fafafa;overflow:auto;padding:12px 12px 80px}
+  .title{font-weight:800;font-size:18px}
+  .hdr-actions i{font-size:18px;margin-left:14px;cursor:pointer;position:relative}
+  .badge{position:absolute;top:-6px;right:-8px;background:#ff3b30;color:#fff;font-size:10px;border-radius:10px;padding:1px 5px;display:none}
+
+  /* Pages */
+  .page{display:none;flex:1;overflow:auto;background:#fafafa;padding:12px 12px 84px;} /* keep bottom padding so content not hidden behind nav */
   .page.active{display:block}
-  .nav{height:64px;background:#fff;border-top:1px solid #e8e8e8;display:flex;justify-content:space-around;align-items:center}
-  .nav .tab{text-align:center;font-size:12px;color:#666;cursor:pointer}
-  .nav .tab i{display:block;font-size:20px;margin-bottom:2px}
-  .nav .tab.active{color:var(--brand)}
+
   /* Login */
-  .login{padding:22px}
-  .brand{color:var(--brand);font-size:36px;font-weight:800;text-align:center;margin:4px 0 14px}
-  .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 16px rgba(0,0,0,.08)}
-  input,button{width:100%;padding:12px;border-radius:8px;border:1px solid #ddd;margin:8px 0;font-size:15px}
+  .login{padding:24px}
+  .brand{color:var(--brand);font-weight:800;font-size:36px;text-align:center;margin:8px 0 16px}
+  .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,.08);margin-bottom:10px}
+  input,button,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #ddd;margin:8px 0;font-size:15px}
+  textarea{resize:vertical}
   button{background:var(--brand);color:#fff;border:none;font-weight:700;cursor:pointer}
-  button.secondary{background:#eee;color:#222}
-  .link{color:var(--brand);text-align:center;cursor:pointer}
-  /* Blocks */
+  .btn-ghost{background:#eee;color:#333}
+  .btn-danger{background:var(--danger)}
+  .btn-ok{background:var(--ok)}
+  .link{color:var(--brand);text-align:center;cursor:pointer;margin-top:6px}
+
+  /* Bottom Nav (fixed, flush to bottom) */
+  .nav{
+    height:68px;background:#fff;border-top:1px solid #e9e9e9;
+    display:flex;justify-content:space-around;align-items:center;
+    position:fixed;left:0;right:0;bottom:0;max-width:420px;margin:0 auto;z-index:50;
+  }
+  .nav .tab{text-align:center;font-size:12px;color:#555;cursor:pointer;line-height:1}
+  .nav .tab i{display:block;font-size:20px;margin-bottom:4px}
+  .nav .tab.active{color:var(--brand)}
+
+  /* Generic */
   .row{background:#fff;border:1px solid #eee;border-radius:12px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
   .left{display:flex;align-items:center;gap:10px}
-  .avatar{width:40px;height:40px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .avatar{width:36px;height:36px;border-radius:50%;background:#e3e3e3;display:flex;align-items:center;justify-content:center;font-weight:700}
   .muted{color:var(--muted);font-size:13px}
-  .badge{background:#ff3b30;color:#fff;border-radius:12px;font-size:11px;padding:2px 6px;margin-left:6px}
+  .small{font-size:12px}
+
   /* Chat */
-  .chat{background:#fff;border:1px solid #eee;border-radius:12px;height:58vh;display:flex;flex-direction:column;overflow:hidden}
-  .chat-messages{flex:1;padding:10px;overflow:auto;background:#f6faff}
-  .msg{margin:6px 0}
-  .msg .from{font-weight:700;margin-right:6px}
-  .chat-input{display:flex;gap:6px;padding:10px;border-top:1px solid #eee;background:#fff}
-  .chat-input input{flex:1}
-  /* Grid options */
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .opt{background:#fff;border:1px solid #eee;border-radius:10px;padding:12px;text-align:center;cursor:pointer}
+  .chat{background:#fff;border:1px solid #eee;border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
+  .chat-top{height:52px;background:#f0f6ff;border-bottom:1px solid #e5eefc;display:flex;align-items:center;justify-content:space-between;padding:0 12px}
+  .chat-title{display:flex;align-items:center;gap:10px;font-weight:700}
+  .chat-actions i{font-size:18px;margin-left:12px;cursor:pointer}
+  .chat-messages{height:56vh;overflow:auto;padding:12px;background:#f7fbff}
+  .msg-row{display:flex;align-items:flex-end;margin:8px 0;gap:8px}
+  .msg-row.mine{justify-content:flex-end}
+  .msg-bubble{max-width:70%;padding:10px 12px;border-radius:14px;line-height:1.25;font-size:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  .msg-row.mine .msg-bubble{background:var(--mine); border-top-right-radius:6px}
+  .msg-row.theirs .msg-bubble{background:var(--theirs); border-top-left-radius:6px}
+  .msg-meta{font-size:11px;color:#8a8a8a;margin-top:3px}
+  .mini-avatar{width:26px;height:26px;border-radius:50%;background:#e3e3e3;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+  .msg-row.mine .mini-avatar{display:none}
+  .chat-input{display:flex;gap:8px;padding:10px;border-top:1px solid #eee;background:#fff}
+  .chat-input input{flex:1;border-radius:999px;padding:12px 14px}
+  .send-btn{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+
+  /* Profile + grid */
+  .profile-card{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:12px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opt{background:#fff;border:1px solid #eee;border-radius:12px;padding:12px;text-align:center;cursor:pointer}
+  #error{color:#ff3b30;font-size:13px;text-align:center;margin-top:6px;display:none}
+
+  /* Exam builder / player */
+  .flex{display:flex;gap:8px;align-items:center}
+  .pill{display:inline-block;padding:6px 10px;border:1px solid #ddd;border-radius:999px;font-size:12px;margin-right:6px}
+  .q-item{background:#fff;border:1px solid #eee;border-radius:10px;padding:10px;margin:8px 0}
+  .q-meta{font-size:12px;color:#666}
+  .timer{font-weight:800}
+
+  /* A4-like result card */
+  .a4{background:#fff;border:1px solid #ddd;border-radius:6px;padding:12px;margin:10px 0}
+  .a4-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed #ccc;padding-bottom:8px;margin-bottom:8px}
+  .logo-title{font-weight:800}
+  .passport{width:64px;height:80px;border:1px solid #aaa;background:#f3f3f3;object-fit:cover}
+  table{width:100%;border-collapse:collapse}
+  th,td{border:1px solid #ddd;padding:6px;text-align:left}
+  .right{text-align:right}
+
+  /* Notice cards */
+  .notice-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:10px;margin:8px 0}
+  .notice-img{width:100%;max-height:220px;object-fit:cover;border-radius:8px;border:1px solid #eee;margin-top:6px}
+
+  @media print{
+    body{background:#fff}
+    .nav,.header{display:none!important}
+    .page{padding:0}
+    .a4{width:210mm;min-height:297mm;margin:0 auto;border:none}
+  }
 </style>
 </head>
 <body>
 <div class="app">
-  <!-- Header (shared) -->
+
+  <!-- Header -->
   <div class="header">
-    <div class="title">Messenger</div>
-    <div>
+    <div class="title">Darpan Book</div>
+    <div class="hdr-actions">
       <i class="fas fa-magnifying-glass" title="Search"></i>
-      <i id="notifBtn" class="fas fa-bell" title="Notifications"></i>
-      <span id="notifBadge" class="badge" style="display:none">0</span>
+      <i id="bell" class="fas fa-bell" title="Notifications">
+        <span id="bellBadge" class="badge">0</span>
+      </i>
     </div>
   </div>
 
-  <!-- LOGIN -->
+  <!-- LOGIN PAGE -->
   <div id="page-login" class="page active">
     <div class="login">
-      <div class="brand">facebook</div>
+      <div class="brand">Darpan Book</div>
+
       <div class="card" id="loginCard">
-        <input id="loginEmail" type="email" placeholder="Email">
-        <input id="loginPass" type="password" placeholder="Password">
+        <input type="email" id="loginEmail" placeholder="Email">
+        <input type="password" id="loginPassword" placeholder="Password">
         <button id="loginBtn">Log In</button>
+        <div id="error"></div>
         <div class="link" id="toRegister">Create new account</div>
       </div>
+
       <div class="card" id="registerCard" style="display:none;">
-        <input id="regName" type="text" placeholder="Full Name">
-        <input id="regEmail" type="email" placeholder="Email">
-        <input id="regPass" type="password" placeholder="Password">
+        <input type="text" id="regName" placeholder="Full Name">
+        <input type="email" id="regEmail" placeholder="Email">
+        <input type="password" id="regPassword" placeholder="Password">
         <button id="registerBtn">Create Account</button>
-        <button class="secondary" id="toLogin">Back to Login</button>
+        <button id="toLogin" class="btn-ghost">Back to Login</button>
       </div>
-      <p class="muted" style="text-align:center;margin-top:6px;">Android-size responsive UI</p>
+
+      <p class="muted" style="text-align:center;margin-top:8px">Computer Training & Exam System</p>
     </div>
   </div>
 
   <!-- USER PANEL -->
   <div id="page-user" class="page">
-    <!-- Chat tab -->
+    <!-- Chat -->
     <div id="user-tab-chat" class="tab-content">
-      <h3>Chat</h3>
-      <div id="userChatState" class="muted" style="margin-bottom:8px;"></div>
-      <div id="userChatBox" class="chat" style="display:none;">
-        <div id="userChatMessages" class="chat-messages"></div>
+      <div class="chat">
+        <div class="chat-top">
+          <div class="chat-title">
+            <div class="mini-avatar" id="userChatIcon">A</div>
+            <div>
+              <div id="userChatName">Admin Group</div>
+              <div class="muted small">Group chat</div>
+            </div>
+          </div>
+          <div class="chat-actions">
+            <i class="fas fa-phone"></i>
+            <i class="fas fa-video"></i>
+          </div>
+        </div>
+        <div class="chat-messages" id="userChatMessages"></div>
         <div class="chat-input">
           <input id="userChatInput" type="text" placeholder="Type a message...">
-          <button id="userSendBtn">Send</button>
+          <button id="userSendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>
+      <div id="userChatState" class="muted" style="margin:10px 4px 0;"></div>
     </div>
 
-    <!-- Friend tab -->
+    <!-- Friend -->
     <div id="user-tab-friend" class="tab-content" style="display:none;">
-      <h3>Friend (Admin)</h3>
-      <div id="adminCard"></div>
+      <h3>Friend Request</h3>
+      <div class="row">
+        <div class="left">
+          <i class="fa fa-user-shield"></i>
+          <div>
+            <div><b>Connect with Admin</b></div>
+            <div class="muted">Send request to join Admin Group Chat.</div>
+          </div>
+        </div>
+        <button id="sendRequestBtn">Add Friend</button>
+      </div>
       <div id="requestStatus" class="muted"></div>
     </div>
 
-    <!-- Exam -->
+    <!-- Exam (USER) -->
     <div id="user-tab-exam" class="tab-content" style="display:none;">
       <h3>Exam</h3>
-      <div class="row"><div class="left"><i class="fa fa-file-lines"></i><b>Exam Notices</b></div><span class="muted">Coming soon</span></div>
+
+      <div class="card" id="userExamChooser">
+        <div class="flex">
+          <select id="uCourse"></select>
+          <select id="uSubject"></select>
+        </div>
+        <button id="uLoadExamBtn">Load Exam</button>
+        <div id="uExamMeta" class="muted small"></div>
+      </div>
+
+      <div class="card" id="userInfoCard" style="display:none;">
+        <h4>Student Information</h4>
+        <input id="stName" placeholder="Student Name">
+        <input id="stFather" placeholder="Father's Name">
+        <input id="stDob" type="date" placeholder="Date of Birth">
+        <input id="stSymbol" placeholder="Symbol Number">
+        <div class="flex">
+          <input id="stPhoto" type="file" accept="image/*">
+          <img id="stPreview" class="passport" alt="photo preview">
+        </div>
+        <button id="uStartExamBtn" class="btn-ok">Start Exam</button>
+      </div>
+
+      <div class="card" id="userExamCard" style="display:none;">
+        <div class="flex" style="justify-content:space-between">
+          <div><b id="uexTitle"></b> • <span id="uexCount" class="muted small"></span></div>
+          <div class="timer">⏳ <span id="uTimer">00:00</span></div>
+        </div>
+        <div id="uQList"></div>
+        <div class="flex" style="justify-content:space-between">
+          <button id="uSubmitBtn" class="btn-ok">Submit</button>
+          <button id="uCancelBtn" class="btn-ghost">Cancel</button>
+        </div>
+      </div>
+
+      <div id="uResultWrap"></div>
     </div>
 
     <!-- Book -->
@@ -112,17 +235,17 @@
       <div class="row"><div class="left"><i class="fa fa-book"></i><b>Book Section</b></div><span class="muted">Coming soon</span></div>
     </div>
 
-    <!-- Notice -->
+    <!-- Notice (USER) -->
     <div id="user-tab-notice" class="tab-content" style="display:none;">
       <h3>Notice</h3>
-      <div class="row"><div class="left"><i class="fa fa-bullhorn"></i><b>Latest Notices</b></div><span class="muted">Coming soon</span></div>
+      <div id="userNoticeList"></div>
     </div>
 
     <!-- Profile -->
     <div id="user-tab-profile" class="tab-content" style="display:none;">
       <h3>Profile</h3>
-      <div class="row">
-        <div class="left">
+      <div class="profile-card">
+        <div style="display:flex;align-items:center;gap:12px;">
           <div id="userAvatar" class="avatar">U</div>
           <div>
             <div id="userNameText" style="font-weight:700"></div>
@@ -131,15 +254,16 @@
         </div>
       </div>
       <div class="grid">
-        <div class="opt">Exam Results</div>
+        <div id="openUserResults" class="opt">Exam Results</div>
         <div class="opt">Edit Profile</div>
         <div class="opt">Settings</div>
         <div class="opt">Help</div>
         <div id="logoutUser" class="opt">Logout</div>
       </div>
+      <div id="userResultsList"></div>
     </div>
 
-    <!-- Bottom nav (user) -->
+    <!-- Bottom nav (USER) -->
     <div id="nav-user" class="nav">
       <div class="tab active" data-tab="chat"><i class="fa fa-comments"></i>Chat</div>
       <div class="tab" data-tab="friend"><i class="fa fa-user-plus"></i>Friend</div>
@@ -154,26 +278,90 @@
   <div id="page-admin" class="page">
     <!-- Chat -->
     <div id="admin-tab-chat" class="tab-content">
-      <h3>Group Chat (Accepted users)</h3>
       <div class="chat">
-        <div id="adminChatMessages" class="chat-messages"></div>
+        <div class="chat-top">
+          <div class="chat-title">
+            <div class="mini-avatar" id="adminChatIcon">G</div>
+            <div>
+              <div id="adminChatName">Admin Group</div>
+              <div class="muted small">All accepted users</div>
+            </div>
+          </div>
+          <div class="chat-actions">
+            <i class="fas fa-phone"></i>
+            <i class="fas fa-video"></i>
+          </div>
+        </div>
+        <div class="chat-messages" id="adminChatMessages"></div>
         <div class="chat-input">
           <input id="adminChatInput" type="text" placeholder="Type a message...">
-          <button id="adminSendBtn">Send</button>
+          <button id="adminSendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>
     </div>
 
-    <!-- Exam -->
-    <div id="admin-tab-exam" class="tab-content" style="display:none;">
-      <h3>Exam</h3>
-      <div class="row"><div class="left"><i class="fa fa-file-lines"></i><b>Manage Exams</b></div><span class="muted">Coming soon</span></div>
+    <!-- Requests -->
+    <div id="admin-tab-requests" class="tab-content" style="display:none;">
+      <h3>Friend Requests</h3>
+      <div id="adminRequests"></div>
     </div>
 
-    <!-- Notice -->
+    <!-- Exam (ADMIN) -->
+    <div id="admin-tab-exam" class="tab-content" style="display:none;">
+      <h3>Create/Manage Exam</h3>
+      <div class="card">
+        <div class="flex">
+          <select id="aCourse"></select>
+          <select id="aSubject"></select>
+          <input id="aDuration" type="number" min="1" max="240" placeholder="Duration (min)">
+        </div>
+        <div class="row" style="display:block">
+          <textarea id="aQ" rows="2" placeholder="Question text"></textarea>
+          <div class="flex" style="flex-wrap:wrap">
+            <input id="aO1" placeholder="Option A">
+            <input id="aO2" placeholder="Option B">
+            <input id="aO3" placeholder="Option C">
+            <input id="aO4" placeholder="Option D">
+          </div>
+          <select id="aCorrect">
+            <option value="0">Correct: A</option>
+            <option value="1">Correct: B</option>
+            <option value="2">Correct: C</option>
+            <option value="3">Correct: D</option>
+          </select>
+          <div class="flex">
+            <button id="addQBtn">Add Question</button>
+            <button id="saveExamBtn" class="btn-ok">Save Exam</button>
+            <button id="clearQBtn" class="btn-ghost">Clear</button>
+          </div>
+          <div class="muted small">Tip: You can add up to 200+ questions (one by one).</div>
+        </div>
+      </div>
+      <div class="card">
+        <b>Questions (<span id="aCount">0</span>)</b>
+        <div id="aQList"></div>
+      </div>
+    </div>
+
+    <!-- Notice (ADMIN) -->
     <div id="admin-tab-notice" class="tab-content" style="display:none;">
-      <h3>Notice</h3>
-      <div class="row"><div class="left"><i class="fa fa-bullhorn"></i><b>Post Notices</b></div><span class="muted">Coming soon</span></div>
+      <h3>Post Notice</h3>
+      <div class="card">
+        <textarea id="noticeText" rows="3" placeholder="Type notice message..."></textarea>
+        <div class="flex">
+          <input id="noticeImage" type="file" accept="image/*">
+          <img id="noticePreview" class="passport" alt="preview">
+        </div>
+        <div class="flex" style="justify-content:space-between">
+          <button id="sendNoticeBtn" class="btn-ok">Send Notice</button>
+          <button id="clearNoticeBtn" class="btn-ghost">Clear</button>
+        </div>
+        <div class="muted small">Photo optional. Notice will appear for all users.</div>
+      </div>
+      <div class="card">
+        <b>All Notices</b>
+        <div id="adminNoticeList"></div>
+      </div>
     </div>
 
     <!-- Book -->
@@ -185,8 +373,8 @@
     <!-- Profile -->
     <div id="admin-tab-profile" class="tab-content" style="display:none;">
       <h3>Admin Profile</h3>
-      <div class="row">
-        <div class="left">
+      <div class="profile-card">
+        <div style="display:flex;align-items:center;gap:12px;">
           <div id="adminAvatar" class="avatar">A</div>
           <div>
             <div id="adminNameText" style="font-weight:700"></div>
@@ -195,38 +383,41 @@
         </div>
       </div>
       <div class="grid">
-        <div class="opt">Student Results</div>
+        <div id="loadAllResults" class="opt">Student Results</div>
         <div class="opt">Edit Profile</div>
         <div class="opt">Settings</div>
         <div class="opt">Help</div>
         <div id="logoutAdmin" class="opt">Logout</div>
       </div>
+      <div id="adminResultsWrap"></div>
     </div>
 
-    <!-- Bottom nav (admin) -->
+    <!-- Bottom nav (ADMIN) -->
     <div id="nav-admin" class="nav">
       <div class="tab active" data-tab="chat"><i class="fa fa-comments"></i>Chat</div>
+      <div class="tab" data-tab="requests"><i class="fa fa-bell"></i>Requests</div>
       <div class="tab" data-tab="exam"><i class="fa fa-file-lines"></i>Exam</div>
       <div class="tab" data-tab="notice"><i class="fa fa-bullhorn"></i>Notice</div>
       <div class="tab" data-tab="book"><i class="fa fa-book"></i>Book</div>
       <div class="tab" data-tab="profile"><i class="fa fa-user"></i>Profile</div>
     </div>
   </div>
+
 </div>
 
+<!-- Firebase (v11 modules) -->
 <script type="module">
-  /* Firebase v11 (modular) */
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import { getDatabase, ref, get, set, update, onValue, push, remove, child, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+  import { getDatabase, ref, get, set, onValue, push, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-  /* ====== CONFIG (use yours) ====== */
+  /* ===== CONFIG ===== */
   const firebaseConfig = {
     apiKey: "AIzaSyBVPv24bcX6aLD3colMIP_tPkomhW1hotE",
     authDomain: "darpanbook.firebaseapp.com",
     databaseURL: "https://darpanbook-default-rtdb.firebaseio.com",
     projectId: "darpanbook",
-    storageBucket: "darpanbook.appspot.com", // <- correct
+    storageBucket: "darpanbook.appspot.com",
     messagingSenderId: "791059696742",
     appId: "1:791059696742:web:0bf51e375feaa0545a31a7"
   };
@@ -235,239 +426,552 @@
   const auth = getAuth(app);
   const db   = getDatabase(app);
 
-  /* ====== Shortcuts ====== */
-  const $ = (id)=>document.getElementById(id);
-  const showPage = (id)=>{ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); $(id).classList.add('active'); };
-  const setTab = (scope,tab)=>{
-    document.querySelectorAll(`#page-${scope} .tab-content`).forEach(e=>e.style.display='none');
-    document.querySelectorAll(`#nav-${scope} .tab`).forEach(e=>e.classList.remove('active'));
+  /* ===== UTIL ===== */
+  const $ = id => document.getElementById(id);
+  const showPage = id => { document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); $(id).classList.add('active'); }
+  function setActiveTab(scope, tab){
+    document.querySelectorAll(`#page-${scope} .tab-content`).forEach(t=>t.style.display='none');
+    document.querySelectorAll(`#nav-${scope} .tab`).forEach(t=>t.classList.remove('active'));
     $(`${scope}-tab-${tab}`).style.display='block';
     document.querySelector(`#nav-${scope} .tab[data-tab="${tab}"]`).classList.add('active');
+  }
+  const GROUP_ID = "adminGroup";
+  const COURSES = {
+    "Basic": ["Basics","WinWord","Excel","PowerPoint"],
+    "Diploma": ["Photoshop","PageMaker","Access","Tally","HTML"],
+    "All": ["Basics","WinWord","Excel","PowerPoint","Photoshop","PageMaker","Access","Tally","HTML"]
   };
+  const gradeFromPct = p => p>=90?'A+':p>=80?'A':p>=70?'B+':p>=60?'B':p>=50?'C':p>=40?'D':'F';
+  const gpaFromPct = p => p>=90?4.0:p>=80?3.6:p>=70?3.2:p>=60?2.8:p>=50?2.4:p>=40?2.0:0.0;
+  const initialFrom = n => (n||'?').trim().charAt(0).toUpperCase();
+  const timeMini = ts => new Date(ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  let currentUser=null, role="user", name="", email="", adminUid=null;
 
-  /* ====== Auth UI ====== */
-  $('toRegister').onclick = ()=>{ $('loginCard').style.display='none'; $('registerCard').style.display='block'; };
-  $('toLogin').onclick    = ()=>{ $('loginCard').style.display='block'; $('registerCard').style.display='none';  };
-
+  /* ===== LOGIN / REGISTER ===== */
+  $('toRegister').onclick = ()=>{ $('loginCard').style.display='none'; $('registerCard').style.display='block'; $('error').style.display='none'; }
+  $('toLogin').onclick    = ()=>{ $('registerCard').style.display='none'; $('loginCard').style.display='block'; $('error').style.display='none'; }
   $('loginBtn').onclick = async ()=>{
-    const email = $('loginEmail').value.trim();
-    const pass  = $('loginPass').value.trim();
-    if(!email || !pass) return alert('Fill all fields');
-    try{ await signInWithEmailAndPassword(auth,email,pass); }catch(e){ alert(e.message); }
+    const em=$('loginEmail').value.trim(), pw=$('loginPassword').value.trim();
+    if(!em||!pw){ showErr("Please enter email & password."); return; }
+    try{ await signInWithEmailAndPassword(auth, em, pw); }catch(e){ showErr(cleanFirebaseError(e.message)); }
   };
-
   $('registerBtn').onclick = async ()=>{
-    const name = $('regName').value.trim();
-    const email= $('regEmail').value.trim();
-    const pass = $('regPass').value.trim();
-    if(!name||!email||!pass) return alert('Fill all fields');
+    const nm=$('regName').value.trim(), em=$('regEmail').value.trim(), pw=$('regPassword').value.trim();
+    if(!nm||!em||!pw){ alert("Please fill all fields"); return; }
     try{
-      const cred = await createUserWithEmailAndPassword(auth,email,pass);
-      await set(ref(db,'users/'+cred.user.uid),{name,email,role:'user'});
-      alert('Account created! Please login.');
-      $('toLogin').click();
-    }catch(e){ alert(e.message); }
+      const cred = await createUserWithEmailAndPassword(auth, em, pw);
+      await set(ref(db, `users/${cred.user.uid}`), { name:nm, email:em, role:"user" });
+      alert("Account created! Please log in."); $('toLogin').click();
+    }catch(e){ alert(cleanFirebaseError(e.message)); }
   };
-
-  $('logoutUser').onclick  = ()=>signOut(auth);
+  $('logoutUser').onclick = ()=>signOut(auth);
   $('logoutAdmin').onclick = ()=>signOut(auth);
-
-  /* ====== Globals ====== */
-  const GROUP_ID = 'adminGroup';
-  let CUR=null, ROLE='user', NAME='', EMAIL='', ADMIN_UID=null;
-  let userChatBound=false, adminChatBound=false;
 
   onAuthStateChanged(auth, async (u)=>{
     if(!u){ showPage('page-login'); return; }
-    CUR=u;
-    const snap = await get(ref(db,'users/'+u.uid));
-    if(!snap.exists()) return;
-    const data = snap.val();
-    ROLE = (data.role||'user').toString().trim().toLowerCase();
-    NAME = data.name||'';
-    EMAIL = data.email||u.email||'';
-
-    // find admin uid (first user with role=admin)
-    const q = query(ref(db,'users'), orderByChild('role'), equalTo('admin'));
-    const as = await get(q);
-    ADMIN_UID=null;
-    as.forEach(cs=>{ if(!ADMIN_UID) ADMIN_UID = cs.key; });
-    if(ROLE==='admin') ADMIN_UID = u.uid;
-
-    if(ROLE==='admin'){
-      loadAdmin();
-      showPage('page-admin'); setTab('admin','chat');
-    }else{
-      loadUser();
-      showPage('page-user'); setTab('user','chat');
+    currentUser = u;
+    const usRef = ref(db, `users/${u.uid}`);
+    let snap = await get(usRef);
+    if(!snap.exists()){
+      await set(usRef, { name: u.email?.split('@')[0]||'User', email: u.email||'', role:'user' });
+      snap = await get(usRef);
     }
+    const data = snap.val();
+    role = (data.role||'user').toString().trim().toLowerCase();
+    name = data.name || '';
+    email = data.email || u.email || '';
+
+    // find admin uid (first found)
+    adminUid = null;
+    const allUsers = await get(ref(db,'users'));
+    if (allUsers.exists()){
+      allUsers.forEach(ch=>{
+        const r = (ch.val().role||'').toString().trim().toLowerCase();
+        if(r==='admin' && !adminUid) adminUid = ch.key;
+      });
+    }
+    if(role==='admin') adminUid = u.uid;
+
+    if(role==='admin'){ loadAdmin(); showPage('page-admin'); setActiveTab('admin','chat'); }
+    else { loadUser();  showPage('page-user');  setActiveTab('user','chat'); }
   });
 
-  /* ====== USER PANEL ====== */
+  function showErr(msg){ const el=$('error'); el.innerText=msg; el.style.display='block'; }
+  function cleanFirebaseError(m){ return m.replace('Firebase: ','').replace('(auth/','('); }
+
+  /* ======== USER PANEL ======== */
+  let userChatBound=false, adminChatBound=false;
+
   function loadUser(){
-    $('userNameText').innerText = NAME;
-    $('userEmailText').innerText = EMAIL;
-    $('userAvatar').innerText = (NAME||'U').charAt(0).toUpperCase();
+    // profile
+    $('userNameText').innerText = name;
+    $('userEmailText').innerText = email;
+    $('userAvatar').innerText = initialFrom(name);
+
     // bottom nav
-    document.querySelectorAll('#nav-user .tab').forEach(t=>t.onclick=()=>setTab('user',t.dataset.tab));
+    document.querySelectorAll('#nav-user .tab').forEach(t=> t.onclick = ()=> setActiveTab('user', t.dataset.tab));
 
-    // Admin card (Friend tab)
-    renderAdminCardForUser();
+    // friend request
+    $('sendRequestBtn').onclick = sendFriendRequestToAdmin;
 
-    // Observe membership → chat access
-    const memberRef = ref(db,`groups/${GROUP_ID}/members/${CUR.uid}`);
+    // group membership watch
+    const memberRef = ref(db, `groups/${GROUP_ID}/members/${auth.currentUser.uid}`);
     onValue(memberRef, (s)=>{
       if(s.exists()){
-        $('userChatState').innerText='You are in Admin Group. Start chatting!';
-        $('userChatBox').style.display='block';
-        if(!userChatBound){ bindChat('user'); userChatBound=true; }
+        $('userChatState').innerText = 'You are in Admin Group. Start chatting!';
+        bindGroupChat('user');
       }else{
-        $('userChatState').innerText='Not in group. Send request from Friend tab.';
-        $('userChatBox').style.display='none';
+        $('userChatState').innerText = 'Not in group. Use Friend tab to send request.';
+        $('userChatMessages').innerHTML = '';
       }
     });
+    $('userSendBtn').onclick = ()=> sendGroupMessage(name);
 
-    $('userSendBtn').onclick = ()=> sendMessage(NAME);
-  }
-
-  async function renderAdminCardForUser(){
-    const wrap = $('adminCard');
-    wrap.innerHTML='';
-    if(!ADMIN_UID){ wrap.innerHTML='<div class="muted">Admin not found. Create an admin account.</div>'; return; }
-    const asnap = await get(ref(db,'users/'+ADMIN_UID));
-    const adm = asnap.val()||{name:'Admin',email:''};
-
-    const card = document.createElement('div');
-    card.className='row';
-    card.innerHTML = `
-      <div class="left">
-        <div class="avatar">${(adm.name||'A').charAt(0).toUpperCase()}</div>
-        <div>
-          <div><b>${adm.name||'Admin'}</b></div>
-          <div class="muted">${adm.email||''}</div>
-        </div>
-      </div>
-      <div>
-        <button id="addFriendBtn" class="secondary" style="padding:8px 10px;border:1px solid #ddd">Add Friend</button>
-      </div>
-    `;
-    wrap.appendChild(card);
-
-    // status show
-    const statusEl = $('requestStatus');
-    // current status
-    const reqRef = ref(db,`friendRequests/${ADMIN_UID}/${CUR.uid}`);
-    onValue(reqRef,(ss)=>{
-      if(!ss.exists()){ statusEl.textContent = ''; return; }
-      const st = ss.val().status||'pending';
-      statusEl.textContent = (st==='pending')?'Request sent. Waiting for admin approval.':'';
+    // EXAM chooser fill
+    fillCourseSubject('uCourse','uSubject');
+    $('uLoadExamBtn').onclick = loadExamForUser;
+    $('stPhoto').addEventListener('change', e=>{
+      const f=e.target.files?.[0]; if(!f) return;
+      const url = URL.createObjectURL(f); $('stPreview').src=url;
     });
-
-    $('addFriendBtn').onclick = async ()=>{
-      if(!ADMIN_UID) return alert('Admin not found');
-      const payload = {from:CUR.uid,name:NAME,email:EMAIL,status:'pending',ts:Date.now()};
-      await set(ref(db,`friendRequests/${ADMIN_UID}/${CUR.uid}`), payload);
-      alert('Request sent to admin');
+    $('openUserResults').onclick = async ()=>{
+      const s = await get(ref(db, `results/${auth.currentUser.uid}`));
+      renderResultsList('userResultsList', s, true);
     };
+
+    // Notices (user view)
+    onValue(ref(db,'notices'), (snap)=>{
+      renderNotices('userNoticeList', snap);
+    });
   }
 
-  /* ====== ADMIN PANEL ====== */
+  async function sendFriendRequestToAdmin(){
+    if(!adminUid){ alert("Admin not found. Set one user role to 'admin' in DB."); return; }
+    const reqRef = ref(db, `friendRequests/${adminUid}/${auth.currentUser.uid}`);
+    const ss = await get(reqRef);
+    if(ss.exists()){ $('requestStatus').innerText='Request already sent.'; return; }
+    await set(reqRef, { from: auth.currentUser.uid, name, email, status:'pending', ts: Date.now() });
+    $('requestStatus').innerText='Request sent. Wait for admin approval.';
+    alert('Request sent to Admin.');
+  }
+
+  /* ======== ADMIN PANEL ======== */
   function loadAdmin(){
-    $('adminNameText').innerText = NAME;
-    $('adminEmailText').innerText = EMAIL;
-    $('adminAvatar').innerText = (NAME||'A').charAt(0).toUpperCase();
+    $('adminNameText').innerText = name;
+    $('adminEmailText').innerText = email;
+    $('adminAvatar').innerText = initialFrom(name);
 
-    // ensure admin is member of group
-    set(ref(db,`groups/${GROUP_ID}/members/${CUR.uid}`), true);
+    // Ensure admin is in the group
+    set(ref(db, `groups/${GROUP_ID}/members/${auth.currentUser.uid}`), true);
+    document.querySelectorAll('#nav-admin .tab').forEach(t=> t.onclick = ()=> setActiveTab('admin', t.dataset.tab));
+    $('bell').onclick = ()=> setActiveTab('admin','requests');
 
-    document.querySelectorAll('#nav-admin .tab').forEach(t=>t.onclick=()=>setTab('admin',t.dataset.tab));
-
-    // Bind requests to notification badge + list (when notif clicked)
-    const rref = ref(db,`friendRequests/${CUR.uid}`);
-    onValue(rref, (snap)=>{
-      let count=0;
-      const list=[];
-      snap.forEach(c=>{ const v=c.val(); if(v.status==='pending'){count++; list.push({uid:c.key,...v});} });
-      // badge
-      if(count>0){ $('notifBadge').style.display='inline-block'; $('notifBadge').innerText=count; }
-      else { $('notifBadge').style.display='none'; }
-      // store on window for quick open
-      window._pendingReqs = list;
+    // Requests
+    const myReqs = ref(db, `friendRequests/${auth.currentUser.uid}`);
+    onValue(myReqs, (snap)=>{
+      const list = $('adminRequests'); list.innerHTML='';
+      let count = 0;
+      snap.forEach(ch=>{
+        const r = ch.val();
+        if((r.status||'pending')==='pending'){ count++;
+          const item = document.createElement('div');
+          item.className='row';
+          item.innerHTML = `
+            <div class="left">
+              <div class="avatar">${initialFrom(r.name||'U')}</div>
+              <div><div><b>${r.name||ch.key}</b></div><div class="muted">${r.email||''}</div></div>
+            </div>
+            <div>
+              <button class="acceptBtn" data-uid="${ch.key}">Accept</button>
+            </div>`;
+          list.appendChild(item);
+        }
+      });
+      const badge=$('bellBadge');
+      if(count>0){ badge.style.display='inline-block'; badge.innerText=count; } else { badge.style.display='none'; }
+      document.querySelectorAll('.acceptBtn').forEach(btn=>{
+        btn.onclick = async ()=>{
+          const uid = btn.getAttribute('data-uid');
+          await set(ref(db, `groups/${GROUP_ID}/members/${uid}`), true);
+          await remove(ref(db, `friendRequests/${auth.currentUser.uid}/${uid}`));
+          alert('Accepted. User added to group.');
+        };
+      });
     });
 
-    // Notification click → show accept cards in a modal-like list (here, top of admin page)
-    $('notifBtn').onclick = ()=>{
-      if(ROLE!=='admin') return; // user मा friend request notification use हुँदैन
-      renderAdminRequests();
-      // switch to profile? keep on current page; requests will render above chat.
-      setTab('admin','chat'); // keep chat visible; list appears on top
+    // Group chat
+    bindGroupChat('admin');
+    $('adminSendBtn').onclick = ()=> sendGroupMessage(name);
+
+    // Exam builder
+    fillCourseSubject('aCourse','aSubject');
+    $('addQBtn').onclick = addQuestionAdmin;
+    $('saveExamBtn').onclick = saveExamAdmin;
+    $('clearQBtn').onclick = ()=>{
+      aQuestions.length=0; renderAdminQList();
     };
 
-    if(!adminChatBound){ bindChat('admin'); adminChatBound=true; }
-    $('adminSendBtn').onclick = ()=> sendMessage(NAME);
-  }
+    $('loadAllResults').onclick = async ()=>{
+      // load every user's results
+      const all = await get(ref(db,'results'));
+      renderAllResultsForAdmin(all);
+      setActiveTab('admin','profile');
+    };
 
-  function renderAdminRequests(){
-    const cont = document.createElement('div');
-    cont.innerHTML = '<h3>Pending Requests</h3>';
-    (window._pendingReqs||[]).forEach(r=>{
-      const row=document.createElement('div');
-      row.className='row';
-      row.innerHTML = `
-        <div class="left">
-          <div class="avatar">${(r.name||'U').charAt(0).toUpperCase()}</div>
-          <div>
-            <div><b>${r.name||r.uid}</b></div>
-            <div class="muted">${r.email||''}</div>
-          </div>
-        </div>
-        <div>
-          <button class="secondary" style="padding:8px 10px;border:1px solid #ddd" data-uid="${r.uid}">Accept</button>
-        </div>`;
-      cont.appendChild(row);
+    // Notice composer
+    $('noticeImage').addEventListener('change', e=>{
+      const f=e.target.files?.[0]; if(!f){ $('noticePreview').src=''; return; }
+      const url = URL.createObjectURL(f); $('noticePreview').src=url;
     });
-    // place at top of admin content (chat tab)
-    const target = $('admin-tab-chat');
-    // remove old list
-    const olds = target.querySelectorAll('.pending-wrap'); olds.forEach(n=>n.remove());
-    const wrap = document.createElement('div'); wrap.className='pending-wrap'; wrap.appendChild(cont);
-    target.prepend(wrap);
+    $('clearNoticeBtn').onclick = ()=>{
+      $('noticeText').value=''; $('noticeImage').value=''; $('noticePreview').src='';
+    };
+    $('sendNoticeBtn').onclick = sendNotice;
 
-    // bind accept
-    wrap.querySelectorAll('button[data-uid]').forEach(btn=>{
-      btn.onclick = async ()=>{
-        const uid = btn.getAttribute('data-uid');
-        await set(ref(db,`groups/${GROUP_ID}/members/${uid}`), true);
-        await remove(ref(db,`friendRequests/${CUR.uid}/${uid}`));
-        alert('Accepted. User added to group chat.');
-      };
+    // Admin notices list
+    onValue(ref(db,'notices'), (snap)=>{
+      renderNotices('adminNoticeList', snap, true);
     });
   }
 
-  /* ====== CHAT (shared) ====== */
-  function bindChat(scope){
-    const msgList = (scope==='admin')? $('adminChatMessages') : $('userChatMessages');
-    msgList.innerHTML='';
-    onValue(ref(db,`groups/${GROUP_ID}/messages`),(snap)=>{
-      msgList.innerHTML='';
-      snap.forEach(c=>{
-        const m=c.val();
-        const div=document.createElement('div');
-        div.className='msg';
-        div.innerHTML = `<span class="from">${m.name||'User'}:</span><span>${m.text||''}</span>`;
-        msgList.appendChild(div);
+  /* ======== GROUP CHAT ======== */
+  function bindGroupChat(scope){
+    if(scope==='user' && userChatBound) return;
+    if(scope==='admin' && adminChatBound) return;
+
+    const listEl = (scope==='admin') ? $('adminChatMessages') : $('userChatMessages');
+    listEl.innerHTML = '';
+    onValue(ref(db, `groups/${GROUP_ID}/messages`), (snap)=>{
+      listEl.innerHTML='';
+      snap.forEach(ch=>{
+        const m = ch.val();
+        const isMine = (m.uid === auth.currentUser.uid);
+        const row = document.createElement('div');
+        row.className = `msg-row ${isMine?'mine':'theirs'}`;
+        const avatar = document.createElement('div');
+        avatar.className = 'mini-avatar'; avatar.innerText = initialFrom(m.name||'U');
+        const bubble = document.createElement('div');
+        bubble.className = 'msg-bubble';
+        bubble.innerHTML = `<div>${m.text || ''}</div><div class="msg-meta">${m.name||'User'} · ${timeMini(m.ts)}</div>`;
+        if(isMine){ row.appendChild(bubble); }else{ row.appendChild(avatar); row.appendChild(bubble); }
+        listEl.appendChild(row);
       });
-      msgList.scrollTop = msgList.scrollHeight;
+      listEl.scrollTop = listEl.scrollHeight;
     });
+
+    if(scope==='user') userChatBound=true; else adminChatBound=true;
   }
 
-  async function sendMessage(senderName){
-    const input = (ROLE==='admin')? $('adminChatInput') : $('userChatInput');
+  async function sendGroupMessage(senderName){
+    const isAdmin = (role==='admin');
+    const input = isAdmin ? $('adminChatInput') : $('userChatInput');
     const text = input.value.trim();
     if(!text) return;
-    await push(ref(db,`groups/${GROUP_ID}/messages`), {uid:CUR.uid,name:senderName||'User',text,ts:Date.now()});
+    await push(ref(db, `groups/${GROUP_ID}/messages`), {
+      uid: auth.currentUser.uid, name: senderName||'User', text, ts: Date.now()
+    });
     input.value='';
   }
+
+  /* ======== EXAM BUILDER (ADMIN) ======== */
+  const aQuestions = []; // {q, opts:[a,b,c,d], ans:idx}
+  function fillCourseSubject(courseId, subjectId){
+    const cSel=$(courseId), sSel=$(subjectId);
+    cSel.innerHTML = Object.keys(COURSES).map(c=>`<option>${c}</option>`).join('');
+    const setSubs=()=>{
+      const c=cSel.value; const subs=COURSES[c]||[];
+      sSel.innerHTML = subs.map(s=>`<option>${s}</option>`).join('');
+    };
+    cSel.onchange = setSubs; setSubs();
+  }
+
+  function addQuestionAdmin(){
+    const q = $('aQ').value.trim();
+    const o1=$('aO1').value.trim(), o2=$('aO2').value.trim(), o3=$('aO3').value.trim(), o4=$('aO4').value.trim();
+    const ans = parseInt($('aCorrect').value,10);
+    if(!q||!o1||!o2||!o3||!o4){ alert('Fill question and all 4 options.'); return; }
+    if(aQuestions.length>=400){ alert('Limit reached.'); return; } // generous
+    aQuestions.push({q,opts:[o1,o2,o3,o4],ans});
+    $('aQ').value=''; $('aO1').value=''; $('aO2').value=''; $('aO3').value=''; $('aO4').value='';
+    renderAdminQList();
+  }
+  function renderAdminQList(){
+    $('aCount').innerText = aQuestions.length;
+    const box=$('aQList'); box.innerHTML='';
+    aQuestions.forEach((it,idx)=>{
+      const div=document.createElement('div');
+      div.className='q-item';
+      div.innerHTML = `<div><b>Q${idx+1}.</b> ${it.q}</div>
+        <div class="small">A) ${it.opts[0]} &nbsp; B) ${it.opts[1]} &nbsp; C) ${it.opts[2]} &nbsp; D) ${it.opts[3]}</div>
+        <div class="q-meta">Correct: ${['A','B','C','D'][it.ans]}</div>`;
+      box.appendChild(div);
+    });
+  }
+  async function saveExamAdmin(){
+    const course=$('aCourse').value, subject=$('aSubject').value;
+    const duration=parseInt($('aDuration').value,10)||0;
+    if(!course||!subject||!duration){ alert('Select course/subject and duration.'); return; }
+    if(aQuestions.length===0){ alert('Add at least 1 question.'); return; }
+    await set(ref(db, `exams/${course}/${subject}`), {
+      duration, createdBy: auth.currentUser.uid, ts: Date.now(),
+      questions: aQuestions
+    });
+    alert('Exam saved!');
+  }
+
+  /* ======== USER EXAM PLAYER ======== */
+  let loadedExam=null, uTimerInt=null, remainingSec=0, userAnswers={}, lockSet={};
+  async function loadExamForUser(){
+    const course=$('uCourse').value, subject=$('uSubject').value;
+    // MODIFIED: Removed the exam retake check to allow multiple attempts
+    const snap = await get(ref(db, `exams/${course}/${subject}`));
+    if(!snap.exists()){ $('uExamMeta').innerText='No exam found for selection.'; $('userInfoCard').style.display='none'; return; }
+    loadedExam = snap.val();
+    $('uExamMeta').innerText = `Duration: ${loadedExam.duration} min • Questions: ${loadedExam.questions?.length||0}`;
+    $('userInfoCard').style.display='block';
+    $('userExamCard').style.display='none';
+    $('uResultWrap').innerHTML='';
+    userAnswers={}; lockSet={};
+    // preview title
+    $('uexTitle').innerText = `${course} • ${subject}`;
+    $('uexCount').innerText = `${loadedExam.questions.length} questions`;
+    $('uStartExamBtn').onclick = ()=> startExam(course,subject);
+  }
+
+  function startExam(course,subject){
+    // validate student info
+    const st = {
+      name: $('stName').value.trim(),
+      father: $('stFather').value.trim(),
+      dob: $('stDob').value,
+      symbol: $('stSymbol').value.trim(),
+      photoDataUrl: ''
+    };
+    if(!st.name||!st.father||!st.dob||!st.symbol){ alert('Fill all student info.'); return; }
+    const f = $('stPhoto').files?.[0];
+    if(f){
+      const reader = new FileReader();
+      reader.onload = ()=>{ st.photoDataUrl = reader.result; beginExam(course,subject,st); };
+      reader.readAsDataURL(f);
+    }else{
+      beginExam(course,subject,st);
+    }
+  }
+
+  function beginExam(course,subject,student){
+    $('userInfoCard').style.display='none';
+    $('userExamCard').style.display='block';
+
+    // timer
+    remainingSec = (parseInt(loadedExam.duration,10)||0)*60;
+    updateTimer();
+    if(uTimerInt) clearInterval(uTimerInt);
+    uTimerInt = setInterval(()=>{
+      remainingSec--; updateTimer();
+      if(remainingSec<=0){ clearInterval(uTimerInt); autoSubmitExam(course,subject,student); }
+    },1000);
+
+    // render questions
+    const box=$('uQList'); box.innerHTML='';
+    loadedExam.questions.forEach((q,idx)=>{
+      const div=document.createElement('div'); div.className='q-item';
+      const name=`q_${idx}`;
+      div.innerHTML = `<div><b>Q${idx+1}.</b> ${q.q}</div>
+        ${q.opts.map((op,i)=>`
+          <label class="flex" style="justify-content:flex-start">
+            <input type="radio" name="${name}" value="${i}">
+            <span>${String.fromCharCode(65+i)}) ${op}</span>
+          </label>`).join('')}
+        <div class="q-meta">Once selected, it locks (cannot change).</div>`;
+      box.appendChild(div);
+      // one-tick lock
+      div.querySelectorAll(`input[name="${name}"]`).forEach(r=>{
+        r.addEventListener('change', (e)=>{
+          if(lockSet[name]) return;
+          userAnswers[name]=parseInt(e.target.value,10);
+          // lock radios
+          div.querySelectorAll(`input[name="${name}"]`).forEach(rr=>{
+            if(rr!==e.target) rr.disabled=true;
+          });
+          lockSet[name]=true;
+        });
+      });
+    });
+
+    $('uSubmitBtn').onclick = ()=> finalizeExam(course,subject,student);
+    $('uCancelBtn').onclick = ()=>{
+      if(confirm('Cancel exam? Your answers will be lost.')){
+        clearInterval(uTimerInt);
+        $('userExamCard').style.display='none';
+      }
+    };
+  }
+  function updateTimer(){
+    const m = Math.max(0,Math.floor(remainingSec/60)).toString().padStart(2,'0');
+    const s = Math.max(0,remainingSec%60).toString().padStart(2,'0');
+    $('uTimer').innerText = `${m}:${s}`;
+  }
+  function autoSubmitExam(course,subject,student){
+    alert('Time up! Auto-submitting.');
+    finalizeExam(course,subject,student,true);
+  }
+
+  async function finalizeExam(course,subject,student,isAuto=false){
+    clearInterval(uTimerInt);
+    const qs = loadedExam.questions||[];
+    let correct=0;
+    qs.forEach((q,idx)=>{
+      const key=`q_${idx}`;
+      const ans=userAnswers[key];
+      if(ans===q.ans) correct++;
+    });
+    const total=qs.length;
+    const percent = total? Math.round((correct/total)*100):0;
+    const grade = gradeFromPct(percent);
+    const gpa = gpaFromPct(percent);
+
+    // save result
+    const res = {
+      uid: auth.currentUser.uid, student, course, subject,
+      total, correct, percent, grade, gpa, ts: Date.now(), auto:isAuto||false
+    };
+    const resRef = push(ref(db, `results/${auth.currentUser.uid}`), res);
+    await set(ref(db, `resultsByExam/${course}/${subject}/${auth.currentUser.uid}/${resRef.key}`), true);
+
+    // show A4 result (temporary view inside Exam tab)
+    $('userExamCard').style.display='none';
+    $('uResultWrap').innerHTML = renderA4(res, name, email);
+
+    // also show in Profile → Results (this is the permanent place to view)
+    const s = await get(ref(db, `results/${auth.currentUser.uid}`));
+    renderResultsList('userResultsList', s, true);
+  }
+
+  /* ===== RESULTS RENDER ===== */
+  function renderA4(res, dispName, dispEmail){
+    const stu = res.student||{};
+    const now = new Date(res.ts||Date.now()).toLocaleString();
+    const rows = `
+      <tr><th>Course</th><td>${res.course}</td><th>Subject</th><td>${res.subject}</td></tr>
+      <tr><th>Total Questions</th><td>${res.total}</td><th>Correct</th><td>${res.correct}</td></tr>
+      <tr><th>Percentage</th><td>${res.percent}%</td><th>Grade</th><td>${res.grade}</td></tr>
+      <tr><th>GPA</th><td>${res.gpa}</td><th>Date/Time</th><td>${now}</td></tr>`;
+    return `
+      <div class="a4">
+        <div class="a4-head">
+          <div>
+            <div class="logo-title">IMS Darpan Computer Business Solutions PTV. LTD</div>
+            <div class="small">Kohalpur-11, Banke</div>
+          </div>
+          <div>
+            <img class="passport" src="${stu.photoDataUrl||''}" alt="photo">
+          </div>
+        </div>
+        <div class="row" style="display:block">
+          <div><b>Student Information</b></div>
+          <div class="small">Name: ${stu.name||''}</div>
+          <div class="small">Father's Name: ${stu.father||''}</div>
+          <div class="small">DOB: ${stu.dob||''}</div>
+          <div class="small">Symbol No.: ${stu.symbol||''}</div>
+          <div class="small">Account: ${dispName||''} • ${dispEmail||''}</div>
+        </div>
+        <div style="margin:8px 0">
+          <table>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <div class="muted small">Signature ____________________</div>
+        <div style="margin-top:8px">
+          <button onclick="window.print()">Print / Save PDF</button>
+        </div>
+      </div>`;
+  }
+
+  function renderResultsList(containerId, snap, mine=false){
+    const wrap=$(containerId); wrap.innerHTML='';
+    if(!snap.exists()){ wrap.innerHTML='<div class="muted">No results yet.</div>'; return; }
+    snap.forEach(ch=>{
+      const r=ch.val();
+      const card=document.createElement('div');
+      card.innerHTML = renderA4(r, mine?name:'', mine?email:'');
+      wrap.appendChild(card);
+    });
+  }
+
+  async function renderAllResultsForAdmin(allSnap){
+    const wrap=$('adminResultsWrap'); wrap.innerHTML='';
+    if(!allSnap.exists()){ wrap.innerHTML='<div class="muted">No student results.</div>'; return; }
+    allSnap.forEach(userNode=>{
+      userNode.forEach(resNode=>{
+        const r = resNode.val();
+        const card=document.createElement('div');
+        card.innerHTML = renderA4(r, '', '');
+        wrap.appendChild(card);
+      });
+    });
+  }
+
+  /* ===== NOTICES ===== */
+  async function sendNotice(){
+    const text = $('noticeText').value.trim();
+    if(!text){ alert('Type a notice message.'); return; }
+    let photoDataUrl = '';
+    const f = $('noticeImage').files?.[0];
+    if(f){
+      const reader = new FileReader();
+      reader.onload = async ()=>{
+        photoDataUrl = reader.result;
+        await push(ref(db,'notices'), { uid: auth.currentUser.uid, name, text, photoDataUrl, ts: Date.now() });
+        $('noticeText').value=''; $('noticeImage').value=''; $('noticePreview').src='';
+        alert('Notice sent!');
+      };
+      reader.readAsDataURL(f);
+    }else{
+      await push(ref(db,'notices'), { uid: auth.currentUser.uid, name, text, photoDataUrl, ts: Date.now() });
+      $('noticeText').value=''; $('noticeImage').value=''; $('noticePreview').src='';
+      alert('Notice sent!');
+    }
+  }
+
+  function renderNotices(containerId, snap, canDelete=false){
+    const wrap=$(containerId); wrap.innerHTML='';
+    if(!snap.exists()){ wrap.innerHTML='<div class="muted">No notices yet.</div>'; return; }
+    // Show newest first
+    const items=[];
+    snap.forEach(ch=>{ items.push({key:ch.key, ...ch.val()}); });
+    items.sort((a,b)=> (b.ts||0)-(a.ts||0));
+    items.forEach(n=>{
+      const card=document.createElement('div');
+      card.className='notice-card';
+      card.innerHTML = `
+        <div class="left" style="justify-content:space-between">
+          <div class="left">
+            <div class="avatar">${initialFrom(n.name||'A')}</div>
+            <div>
+              <div><b>${n.name||'Admin'}</b></div>
+              <div class="small muted">${new Date(n.ts||Date.now()).toLocaleString()}</div>
+            </div>
+          </div>
+          ${canDelete?`<button class="btn-ghost small" data-del="${n.key}"><i class="fa fa-trash"></i></button>`:''}
+        </div>
+        <div style="margin-top:6px">${n.text||''}</div>
+        ${n.photoDataUrl?`<img class="notice-img" src="${n.photoDataUrl}" alt="notice image">`:''}
+      `;
+      wrap.appendChild(card);
+    });
+    if(canDelete){
+      wrap.querySelectorAll('[data-del]').forEach(btn=>{
+        btn.onclick = async ()=>{
+          const k = btn.getAttribute('data-del');
+          if(confirm('Delete this notice?')) await remove(ref(db, `notices/${k}`));
+        };
+      });
+    }
+  }
+
+  /* ===== helpers at end ===== */
+  document.querySelectorAll('#nav-user .tab').forEach(t=> t.onclick = ()=> setActiveTab('user', t.dataset.tab));
+  document.querySelectorAll('#nav-admin .tab').forEach(t=> t.onclick = ()=> setActiveTab('admin', t.dataset.tab));
 </script>
 </body>
 </html>
