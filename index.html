@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -13,6 +13,1946 @@
   *{box-sizing:border-box}
   html,body{height:100%}
   body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);}
+  .app{position:relative;max-width:420px;height:100vh;margin:0 auto;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.15);display:flex;flex-direction:column}
+
+  /* Global header */
+  .header{height:56px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 14px;position:fixed;top:0;left:0;right:0;max-width:420px;margin:0 auto;z-index:100}
+  .title{font-weight:800;font-size:18px}
+  .hdr-actions i{font-size:18px;margin-left:14px;cursor:pointer;position:relative}
+  .badge{position:absolute;top:-6px;right:-8px;background:#ff3b30;color:#fff;font-size:10px;border-radius:10px;padding:1px 5px;display:none}
+
+  /* Pages */
+  .page{display:none;flex:1;overflow:auto;background:#fafafa;padding:12px 12px 84px;} /* keep bottom padding so content not hidden behind nav */
+  .page.active{display:block}
+  .page-content{padding-top:56px;padding-bottom:68px;height:100%;overflow:auto}
+
+  /* Login */
+  .login{padding:24px}
+  .brand{color:var(--brand);font-weight:800;font-size:36px;text-align:center;margin:8px 0 16px}
+  .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,.08);margin-bottom:10px}
+  input,button,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #ddd;margin:8px 0;font-size:15px}
+  textarea{resize:vertical}
+  button{background:var(--brand);color:#fff;border:none;font-weight:700;cursor:pointer}
+  .btn-ghost{background:#eee;color:#333}
+  .btn-danger{background:var(--danger)}
+  .btn-ok{background:var(--ok)}
+  .link{color:var(--brand);text-align:center;cursor:pointer;margin-top:6px}
+
+  /* Bottom Nav (fixed, flush to bottom) */
+  .nav{
+    height:68px;background:#fff;border-top:1px solid #e9e9e9;
+    display:flex;justify-content:space-around;align-items:center;
+    position:fixed;left:0;right:0;bottom:0;max-width:420px;margin:0 auto;z-index:50;
+  }
+  .nav .tab{text-align:center;font-size:12px;color:#555;cursor:pointer;line-height:1}
+  .nav .tab i{display:block;font-size:20px;margin-bottom:4px}
+  .nav .tab.active{color:var(--brand)}
+
+  /* Generic */
+  .row{background:#fff;border:1px solid #eee;border-radius:12px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+  .left{display:flex;align-items:center;gap:10px}
+  .avatar{width:36px;height:36px;border-radius:50%;background:#e3e3e3;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .muted{color:var(--muted);font-size:13px}
+  .small{font-size:12px}
+
+  /* Chat */
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+    position: relative;
+    background: #f7fbff;
+  }
+  .chat-header {
+    height: 60px;
+    background: #1877f2;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+  .chat-header-info {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+  .chat-header-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    background: #e3e3e3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #333;
+  }
+  .chat-header-name {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .chat-header-status {
+    font-size: 12px;
+  }
+  .chat-header-actions {
+    display: flex;
+    gap: 5px;
+  }
+  .chat-header-actions i {
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background: #f7fbff;
+  }
+  .msg-row{display:flex;align-items:flex-end;margin:8px 0;gap:8px}
+  .msg-row.mine{justify-content:flex-end}
+  .msg-bubble{max-width:70%;padding:10px 12px;border-radius:14px;line-height:1.25;font-size:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  .msg-row.mine .msg-bubble{background:var(--mine); border-top-right-radius:6px}
+  .msg-row.theirs .msg-bubble{background:var(--theirs); border-top-left-radius:6px}
+  .msg-meta{font-size:11px;color:#8a8a8a;margin-top:3px}
+  .mini-avatar{width:26px;height:26px;border-radius:50%;background:#e3e3e3;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+  .msg-row.mine .mini-avatar{display:none}
+  .chat-input-container {
+    padding: 10px;
+    background: white;
+    border-top: 1px solid #eee;
+    position: sticky;
+    bottom: 0;
+  }
+  .chat-input {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .chat-input input {
+    flex: 1;
+    border-radius: 999px;
+    padding: 10px 14px;
+    height: 40px;
+    font-size: 14px;
+  }
+  .send-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--brand);
+    color: white;
+    border: none;
+  }
+
+  /* Profile + grid */
+  .profile-card{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:12px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opt{background:#fff;border:1px solid #eee;border-radius:12px;padding:12px;text-align:center;cursor:pointer}
+  #error{color:#ff3b30;font-size:13px;text-align:center;margin-top:6px;display:none}
+
+  /* Exam builder / player */
+  .flex{display:flex;gap:8px;align-items:center}
+  .pill{display:inline-block;padding:6px 10px;border:1px solid #ddd;border-radius:999px;font-size:12px;margin-right:6px}
+  .q-item{background:#fff;border:1px solid #eee;border-radius:10px;padding:10px;margin:8px 0}
+  .q-meta{font-size:12px;color:#666}
+  .timer{font-weight:800}
+
+  /* A4-like result card */
+  .a4{background:#fff;border:1px solid #ddd;border-radius:6px;padding:12px;margin:10px 0}
+  .a4-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed #ccc;padding-bottom:8px;margin-bottom:8px}
+  .logo-title{font-weight:800}
+  .passport{width:64px;height:80px;border:1px solid #aaa;background:#f3f3f3;object-fit:cover}
+  table{width:100%;border-collapse:collapse}
+  th,td{border:1px solid #ddd;padding:6px;text-align:left}
+  .right{text-align:right}
+
+  /* Notice cards */
+  .notice-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:10px;margin:8px 0}
+  .notice-img{width:100%;max-height:220px;object-fit:cover;border-radius:8px;border:1px solid #eee;margin-top:6px}
+
+  /* Profile Edit */
+  .profile-edit{display:none}
+  .profile-edit.active{display:block}
+  .profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;margin:0 auto;display:block;border:3px solid var(--brand)}
+  .profile-center{text-align:center;margin:16px 0}
+  .back-btn{background:none;border:none;font-size:20px;cursor:pointer;position:absolute;left:16px;top:16px}
+  
+  /* Profile Sidebar */
+  .profile-sidebar{width:100%;background:#fff;border-right:1px solid #eee}
+  .profile-menu{padding:0;margin:0;list-style:none}
+  .profile-menu li{padding:12px 16px;border-bottom:1px solid #eee;cursor:pointer;display:flex;align-items:center;gap:10px}
+  .profile-menu li i{width:24px;text-align:center}
+  .profile-menu li.active{background:#f5f5f5;color:var(--brand)}
+  .profile-content{padding:16px;flex:1}
+
+  /* Results Page */
+  .results-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .results-header h3{margin:0}
+  .results-container{max-height:calc(100vh - 180px);overflow:auto}
+
+  /* Photo Selector */
+  .photo-selector{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:1000;align-items:center;justify-content:center}
+  .photo-selector.active{display:flex}
+  .photo-selector-content{background:#fff;border-radius:12px;padding:16px;width:90%;max-width:400px;max-height:90vh;overflow:auto}
+  .photo-selector-title{font-weight:bold;margin-bottom:12px}
+  .photo-selector-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .photo-selector-option{width:100%;height:100px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent}
+  .photo-selector-option.selected{border-color:var(--brand)}
+  .photo-selector-actions{margin-top:12px;display:flex;justify-content:flex-end;gap:8px}
+
+  /* Exam status toggle */
+  .toggle-container{display:flex;align-items:center;gap:8px}
+  .toggle-switch{position:relative;display:inline-block;width:50px;height:24px}
+  .toggle-switch input{opacity:0;width:0;height:0}
+  .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;transition:.4s;border-radius:24px}
+  .slider:before{position:absolute;content:"";height:16px;width:16px;left:4px;bottom:4px;background-color:white;transition:.4s;border-radius:50%}
+  input:checked + .slider{background-color:var(--ok)}
+  input:checked + .slider:before{transform:translateX(26px)}
+  .toggle-label{font-size:14px}
+
+  /* Exam quick access */
+  .exam-quick-access{margin-top:12px}
+  .exam-quick-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #eee}
+  .exam-quick-item:last-child{border-bottom:none}
+  .exam-quick-info{flex:1}
+  .exam-quick-status{padding:4px 8px;border-radius:4px;font-size:12px}
+  .exam-quick-status.active{background-color:#e6f7ee;color:var(--ok)}
+  .exam-quick-status.inactive{background-color:#ffebee;color:var(--danger)}
+  .exam-quick-action{width:80px;text-align:right}
+
+  /* Full screen styles */
+  .full-screen {position: fixed;top: 0;left: 0;right: 0;bottom: 0;background: white;z-index: 1000;overflow: auto;}
+  .full-screen .header, .full-screen .nav {display: none !important;}
+  .full-screen .page-content {padding-top: 20px; padding-bottom: 20px;}
+  .full-screen-back {position: fixed;top: 10px;left: 10px;z-index: 1001;background: var(--brand);color: white;width: 40px;height: 40px;border-radius: 50%;display: flex;align-items: center;justify-content: center;font-size: 20px;cursor: pointer;}
+
+  /* Chat full screen styles - Modified for fixed full screen */
+  .chat-full-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f7fbff;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+  }
+  .chat-full-screen .chat-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .chat-full-screen .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 60px; /* Space for input */
+  }
+  .chat-full-screen .chat-input-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 10px;
+    border-top: 1px solid #eee;
+    z-index: 20;
+  }
+  .chat-full-screen .chat-input input {
+    border-radius: 20px;
+    padding: 10px 14px;
+    height: 40px;
+  }
+
+  /* Settings Page */
+  .settings-page {
+    padding: 16px;
+  }
+  .settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+  }
+  .settings-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* Help Page */
+  .help-page {
+    padding: 16px;
+  }
+  .help-section {
+    margin-bottom: 20px;
+  }
+  .help-section h3 {
+    margin-bottom: 8px;
+  }
+  
+  /* User List Page */
+  .user-list-page {
+    padding: 16px;
+  }
+  .user-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+  }
+  .user-item:last-child {
+    border-bottom: none;
+  }
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    background: #e3e3e3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+  .user-info {
+    flex: 1;
+  }
+  .user-name {
+    font-weight: bold;
+  }
+  .user-email {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Keyboard handling */
+  @media (max-height: 600px) {
+    .chat-full-screen .chat-messages {
+      padding-bottom: 120px; /* Extra space when keyboard is open */
+    }
+  }
+
+  @media print{
+    body{background:#fff}
+    .nav,.header{display:none!important}
+    .page{padding:0}
+    .a4{width:210mm;min-height:297mm;margin:0 auto;border:none}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="title">Darpan Book</div>
+    <div class="hdr-actions">
+      <i class="fas fa-magnifying-glass" title="Search"></i>
+      <i id="bell" class="fas fa-bell" title="Notifications">
+        <span id="bellBadge" class="badge">0</span>
+      </i>
+    </div>
+  </div>
+
+  <!-- LOGIN PAGE -->
+  <div id="page-login" class="page active">
+    <div class="login">
+      <div class="brand">Darpan Book</div>
+
+      <div class="card" id="loginCard">
+        <input type="email" id="loginEmail" placeholder="Email">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button id="loginBtn">Log In</button>
+        <div id="error"></div>
+        <div class="link" id="toRegister">Create new account</div>
+      </div>
+
+      <div class="card" id="registerCard" style="display:none;">
+        <input type="text" id="regName" placeholder="Full Name">
+        <input type="email" id="regEmail" placeholder="Email">
+        <input type="password" id="regPassword" placeholder="Password">
+        <button id="registerBtn">Create Account</button>
+        <button id="toLogin" class="btn-ghost">Back to Login</button>
+      </div>
+
+      <p class="muted" style="text-align:center;margin-top:8px">Computer Training & Exam System</p>
+    </div>
+  </div>
+
+  <!-- USER PANEL -->
+  <div id="page-user" class="page">
+    <!-- Chat - Now always full screen -->
+    <div id="user-tab-chat" class="tab-content">
+      <div class="chat-full-screen">
+        <div class="chat-header">
+          <div class="chat-header-actions">
+            <i class="fas fa-arrow-left" id="backFromChat" title="Back to Notices"></i>
+          </div>
+          <div class="chat-header-info">
+            <div class="chat-header-avatar" id="userChatIcon">A</div>
+            <div>
+              <div class="chat-header-name" id="userChatName">Admin Group</div>
+              <div class="chat-header-status">Group chat</div>
+            </div>
+          </div>
+          <div class="chat-header-actions">
+            <i class="fas fa-phone" title="Voice Call"></i>
+            <i class="fas fa-video" title="Video Call"></i>
+          </div>
+        </div>
+        <div class="chat-messages" id="userChatMessages"></div>
+        <div class="chat-input-container">
+          <div class="chat-input">
+            <input id="userChatInput" type="text" placeholder="Type a message..." autocomplete="off">
+            <button id="userSendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+      <div id="userChatState" class="muted" style="margin:10px 4px 0;"></div>
+    </div>
+
+    <!-- Friend -->
+    <div id="user-tab-friend" class="tab-content" style="display:none;">
+      <div class="page-content">
+        <h3>Friend Request</h3>
+        <div class="row">
+          <div class="left">
+            <i class="fa fa-user-shield"></i>
+            <div>
+              <div><b>Connect with Admin</b></div>
+              <div class="muted">Send request to join Admin Group Chat.</div>
+            </div>
+          </div>
+          <button id="sendRequestBtn">Add Friend</button>
+        </div>
+        <div id="requestStatus" class="muted"></div>
+      </div>
+    </div>
+
+    <!-- Exam (USER) -->
+    <div id="user-tab-exam" class="tab-content" style="display:none;">
+      <div class="page-content">
+        <h3>Exam</h3>
+
+        <div class="card" id="userExamChooser">
+          <div class="flex">
+            <select id="uCourse"></select>
+            <select id="uSubject"></select>
+          </div>
+          <button id="uLoadExamBtn">Load Exam</button>
+          <div id="uExamMeta" class="muted small"></div>
+        </div>
+
+        <div class="card" id="userInfoCard" style="display:none;">
+          <h4>Student Information</h4>
+          <input id="stName" placeholder="Student Name">
+          <input id="stFather" placeholder="Father's Name">
+          <input id="stDob" type="date" placeholder="Date of Birth">
+          <input id="stSymbol" placeholder="Symbol Number">
+          <div class="flex">
+            <input id="stPhoto" type="file" accept="image/*">
+            <img id="stPreview" class="passport" alt="photo preview">
+          </div>
+          <button id="uStartExamBtn" class="btn-ok">Start Exam</button>
+        </div>
+
+        <div class="card" id="userExamCard" style="display:none;">
+          <div class="flex" style="justify-content:space-between">
+            <div><b id="uexTitle"></b> • <span id="uexCount" class="muted small"></span></div>
+            <div class="timer">⏳ <span id="uTimer">00:00</span></div>
+          </div>
+          <div id="uQList"></div>
+          <div class="flex" style="justify-content:space-between">
+            <button id="uSubmitBtn" class="btn-ok">Submit</button>
+            <button id="uCancelBtn" class="btn-ghost">Cancel</button>
+          </div>
+        </div>
+
+        <div id="uResultWrap"></div>
+      </div>
+    </div>
+
+    <!-- Book -->
+    <div id="user-tab-book" class="tab-content" style="display:none;">
+      <div class="page-content">
+        <h3>Book</h3>
+        <div class="row"><div class="left"><i class="fa fa-book"></i><b>Book Section</b></div><span class="muted">Coming soon</span></div>
+      </div>
+    </div>
+
+    <!-- Notice (USER) -->
+    <div id="user-tab-notice" class="tab-content" style="display:none;">
+      <div class="page-content">
+        <h3>Notice</h3>
+        <div id="userNoticeList"></div>
+      </div>
+    </div>
+
+    <!-- Profile -->
+    <div id="user-tab-profile" class="tab-content" style="display:none;">
+      <div class="page-content">
+        <div id="user-profile-view">
+          <div class="profile-card">
+            <div class="profile-center">
+              <img id="userProfilePic" class="profile-pic" src="" alt="Profile Picture">
+              <div id="userNameText" style="font-weight:700;font-size:18px;margin-top:8px"></div>
+              <div id="userEmailText" class="muted"></div>
+            </div>
+          </div>
+          
+          <div class="flex" style="flex-direction:column;gap:12px">
+            <div class="profile-sidebar">
+              <ul class="profile-menu">
+                <li id="openUserResults"><i class="fas fa-poll"></i> Exam Results</li>
+                <li id="editUserProfile"><i class="fas fa-user-edit"></i> Edit Profile</li>
+                <li id="openUserSettings"><i class="fas fa-cog"></i> Settings</li>
+                <li id="openUserHelp"><i class="fas fa-question-circle"></i> Help</li>
+                <li id="logoutUser"><i class="fas fa-sign-out-alt"></i> Logout</li>
+              </ul>
+            </div>
+            
+            <!-- Results Page -->
+            <div id="userResultsContainer" style="display:none">
+              <div class="results-header">
+                <button class="back-btn" id="backFromUserResults"><i class="fas fa-arrow-left"></i></button>
+                <h3>Your Exam Results</h3>
+              </div>
+              <div class="results-container" id="userResultsList"></div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="userSettingsContainer" style="display:none">
+              <div class="results-header">
+                <button class="back-btn" id="backFromUserSettings"><i class="fas fa-arrow-left"></i></button>
+                <h3>Settings</h3>
+              </div>
+              <div class="settings-page">
+                <div class="settings-item">
+                  <div>Dark Mode</div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <div class="settings-item">
+                  <div>Notification</div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="notificationToggle" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <div class="settings-item">
+                  <div>Language</div>
+                  <select id="languageSelect">
+                    <option>English</option>
+                    <option>Nepali</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Help Page -->
+            <div id="userHelpContainer" style="display:none">
+              <div class="results-header">
+                <button class="back-btn" id="backFromUserHelp"><i class="fas fa-arrow-left"></i></button>
+                <h3>Help & Support</h3>
+              </div>
+              <div class="help-page">
+                <div class="help-section">
+                  <h3>About Darpan Book</h3>
+                  <p>Darpan Book is a social messenger and exam system for computer training centers.</p>
+                </div>
+                <div class="help-section">
+                  <h3>Contact Support</h3>
+                  <p>Email: sundarrawal132@gmail.com</p>
+                  <p>Phone: +977 9800000000</p>
+                </div>
+                <div class="help-section">
+                  <h3>Available Exams</h3>
+                  <div id="userHelpExamList"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Exam Access in Profile -->
+            <div class="exam-quick-access" id="userExamQuickAccess">
+              <h4>Available Exams</h4>
+              <div id="userExamQuickList"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Edit Profile Section -->
+        <div id="user-profile-edit" class="profile-edit">
+          <button class="back-btn" id="backFromEditProfile"><i class="fas fa-arrow-left"></i></button>
+          <div class="profile-card">
+            <div class="profile-center">
+              <img id="userProfilePicEdit" class="profile-pic" src="" alt="Profile Picture">
+              <button class="btn-ghost" style="margin-top:8px" id="changePhotoBtn">Change Photo</button>
+            </div>
+            <div style="margin-top:16px">
+              <input type="text" id="editUserName" placeholder="Full Name">
+              <input type="email" id="editUserEmail" placeholder="Email">
+              <button id="saveUserProfile" class="btn-ok">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom nav (USER) -->
+    <div id="nav-user" class="nav">
+      <div class="tab active" data-tab="chat"><i class="fa fa-comments"></i>Chat</div>
+      <div class="tab" data-tab="friend"><i class="fa fa-user-plus"></i>Friend</div>
+      <div class="tab" data-tab="exam"><i class="fa fa-file-lines"></i>Exam</div>
+      <div class="tab" data-tab="book"><i class="fa fa-book"></i>Book</div>
+      <div class="tab" data-tab="notice"><i class="fa fa-bullhorn"></i>Notice</div>
+      <div class="tab" data-tab="profile"><i class="fa fa-user"></i>Profile</div>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div id="page-admin" class="page">
+    <!-- Chat - Now always full screen -->
+    <div id="admin-tab-chat" class="tab-content">
+      <div class="chat-full-screen">
+        <div class="chat-header">
+          <div class="chat-header-actions">
+            <i class="fas fa-arrow-left" id="backFromAdminChat" title="Back to Notices"></i>
+          </div>
+          <div class="chat-header-info">
+            <div class="chat-header-avatar" id="adminChatIcon">A</div>
+            <div>
+              <div class="chat-header-name" id="adminChatName">Admin Group</div>
+              <div class="chat-header-status">All accepted users</div>
+            </div>
+          </div>
+          <div class="chat-header-actions">
+            <i class="fas fa-phone" title="Voice Call"></i>
+            <i class="fas fa-video" title="Video Call"></i>
+          </div>
+        </div>
+        <div class="chat-messages" id="adminChatMessages"></div>
+        <div class="chat-input-container">
+          <div class="chat-input">
+            <input id="adminChatInput" type="text" placeholder="Type a message..." autocomplete="off">
+            <button id="adminSendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Requests -->
+    <div id="admin-tab-requests" class="tab-content" style="display:none;">
+      <div class="page-content">
+        <h3>Friend Requests</h3>
+        <div id="adminRequests"></div>
+      </div>
+    </div>
+
+    <!-- Exam (ADMIN) -->
+    <div id="admin-tab-exam" class="tab-content" style="display:none;">
+      <div class="page-content">
+        <h3>Create/Manage Exam</h3>
+        <div class="card">
+          <div class="flex">
+            <select id="aCourse"></select>
+            <select id="aSubject"></select>
+            <input id="aDuration" type="number" min="1" max="240" placeholder="Duration (min)">
+          </div>
+          <div class="toggle-container">
+            <label class="toggle-switch">
+              <input type="checkbox" id="examActiveToggle">
+              <span class="slider"></span>
+            </label>
+            <span class="toggle-label" id="examStatusLabel">Exam Status: Inactive</span>
+          </div>
+          <div class="row" style="display:block">
+            <textarea id="aQ" rows="2" placeholder="Question text"></textarea>
+            <div class="flex" style="flex-wrap:wrap">
+              <input id="aO1" placeholder="Option A">
+              <input id="aO2" placeholder="Option B">
+              <input id="aO3" placeholder="Option C">
+              <input id="aO4" placeholder="Option D">
+            </div>
+            <select id="aCorrect">
+              <option value="0">Correct: A</option>
+              <option value="1">Correct: B</option>
+              <option value="2">Correct: C</option>
+              <option value="3">Correct: D</option>
+            </select>
+            <div class="flex">
+              <button id="addQBtn">Add Question</button>
+              <button id="saveExamBtn" class="btn-ok">Save Exam</button>
+              <button id="clearQBtn" class="btn-ghost">Clear</button>
+              <button id="deleteExamBtn" class="btn-danger">Delete</button>
+            </div>
+            <div class="muted small">Tip: You can add up to 200+ questions (one by one).</div>
+          </div>
+        </div>
+        <div class="card">
+          <b>Questions (<span id="aCount">0</span>)</b>
+          <div id="aQList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notice (ADMIN) -->
+    <div id="admin-tab-notice" class="tab-content" style="display:none;">
+      <div class="page-content">
+        <h3>Post Notice</h3>
+        <div class="card">
+          <textarea id="noticeText" rows="3" placeholder="Type notice message..."></textarea>
+          <div class="flex">
+            <input id="noticeImage" type="file" accept="image/*">
+            <img id="noticePreview" class="passport" alt="preview">
+          </div>
+          <div class="flex" style="justify-content:space-between">
+            <button id="sendNoticeBtn" class="btn-ok">Send Notice</button>
+            <button id="clearNoticeBtn" class="btn-ghost">Clear</button>
+          </div>
+          <div class="muted small">Photo optional. Notice will appear for all users.</div>
+        </div>
+        <div class="card">
+          <b>All Notices</b>
+          <div id="adminNoticeList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Book -->
+    <div id="admin-tab-book" class="tab-content" style="display:none;">
+      <div class="page-content">
+        <h3>Book</h3>
+        <div class="row"><div class="left"><i class="fa fa-book"></i><b>Manage Books</b></div><span class="muted">Coming soon</span></div>
+      </div>
+    </div>
+
+    <!-- Profile -->
+    <div id="admin-tab-profile" class="tab-content" style="display:none;">
+      <div class="page-content">
+        <div id="admin-profile-view">
+          <div class="profile-card">
+            <div class="profile-center">
+              <img id="adminProfilePic" class="profile-pic" src="" alt="Profile Picture">
+              <div id="adminNameText" style="font-weight:700;font-size:18px;margin-top:8px"></div>
+              <div id="adminEmailText" class="muted"></div>
+            </div>
+          </div>
+          
+          <div class="flex" style="flex-direction:column;gap:12px">
+            <div class="profile-sidebar">
+              <ul class="profile-menu">
+                <li id="loadAllResults"><i class="fas fa-poll"></i> Student Results</li>
+                <li id="editAdminProfile"><i class="fas fa-user-edit"></i> Edit Profile</li>
+                <li id="openAdminSettings"><i class="fas fa-cog"></i> Settings</li>
+                <li id="openAdminHelp"><i class="fas fa-question-circle"></i> Help</li>
+                <li id="logoutAdmin"><i class="fas fa-sign-out-alt"></i> Logout</li>
+              </ul>
+            </div>
+            
+            <!-- Results Page -->
+            <div id="adminResultsContainer" style="display:none">
+              <div class="results-header">
+                <button class="back-btn" id="backFromAdminResults"><i class="fas fa-arrow-left"></i></button>
+                <h3>All Student Results</h3>
+              </div>
+              <div class="results-container" id="adminResultsList"></div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="adminSettingsContainer" style="display:none">
+              <div class="results-header">
+                <button class="back-btn" id="backFromAdminSettings"><i class="fas fa-arrow-left"></i></button>
+                <h3>Settings</h3>
+              </div>
+              <div class="settings-page">
+                <div class="settings-item">
+                  <div>Dark Mode</div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="adminDarkModeToggle">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <div class="settings-item">
+                  <div>Notification</div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="adminNotificationToggle" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <div class="settings-item">
+                  <div>Language</div>
+                  <select id="adminLanguageSelect">
+                    <option>English</option>
+                    <option>Nepali</option>
+                  </select>
+                </div>
+                <div class="settings-item">
+                  <div>User Management</div>
+                  <button class="btn-ghost small" id="openUserManagement">Manage Users</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Help Page -->
+            <div id="adminHelpContainer" style="display:none">
+              <div class="results-header">
+                <button class="back-btn" id="backFromAdminHelp"><i class="fas fa-arrow-left"></i></button>
+                <h3>Help & Support</h3>
+              </div>
+              <div class="help-page">
+                <div class="help-section">
+                  <h3>About Darpan Book</h3>
+                  <p>Darpan Book is a social messenger and exam system for computer training centers.</p>
+                </div>
+                <div class="help-section">
+                  <h3>Contact Support</h3>
+                  <p>Email: sundarrawal132@gmail.com</p>
+                  <p>Phone: +977 9800000000</p>
+                </div>
+                <div class="help-section">
+                  <h3>Exam Management</h3>
+                  <div id="adminHelpExamList"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- User Management Page -->
+            <div id="adminUserManagement" style="display:none">
+              <div class="results-header">
+                <button class="back-btn" id="backFromUserManagement"><i class="fas fa-arrow-left"></i></button>
+                <h3>User Management</h3>
+              </div>
+              <div class="user-list-page" id="adminUserList"></div>
+            </div>
+
+            <!-- Exam Management in Admin Profile -->
+            <div id="adminExamManagement" style="display:none">
+              <div class="results-header">
+                <button class="back-btn" id="backFromExamManagement"><i class="fas fa-arrow-left"></i></button>
+                <h3>Exam Management</h3>
+              </div>
+              <div class="page-content">
+                <div id="adminExamList"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Edit Profile Section -->
+        <div id="admin-profile-edit" class="profile-edit">
+          <button class="back-btn" id="backFromEditAdminProfile"><i class="fas fa-arrow-left"></i></button>
+          <div class="profile-card">
+            <div class="profile-center">
+              <img id="adminProfilePicEdit" class="profile-pic" src="" alt="Profile Picture">
+              <button class="btn-ghost" style="margin-top:8px" id="changeAdminPhotoBtn">Change Photo</button>
+            </div>
+            <div style="margin-top:16px">
+              <input type="text" id="editAdminName" placeholder="Full Name">
+              <input type="email" id="editAdminEmail" placeholder="Email">
+              <button id="saveAdminProfile" class="btn-ok">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom nav (ADMIN) -->
+    <div id="nav-admin" class="nav">
+      <div class="tab active" data-tab="chat"><i class="fa fa-comments"></i>Chat</div>
+      <div class="tab" data-tab="requests"><i class="fa fa-bell"></i>Requests</div>
+      <div class="tab" data-tab="exam"><i class="fa fa-file-lines"></i>Exam</div>
+      <div class="tab" data-tab="notice"><i class="fa fa-bullhorn"></i>Notice</div>
+      <div class="tab" data-tab="book"><i class="fa fa-book"></i>Book</div>
+      <div class="tab" data-tab="profile"><i class="fa fa-user"></i>Profile</div>
+    </div>
+  </div>
+
+  <!-- Photo Selector Modal -->
+  <div id="photoSelector" class="photo-selector">
+    <div class="photo-selector-content">
+      <div class="photo-selector-title">Select Profile Photo</div>
+      <div class="photo-selector-options" id="photoOptions">
+        <!-- Options will be added dynamically -->
+      </div>
+      <div class="photo-selector-actions">
+        <button id="cancelPhotoSelect" class="btn-ghost">Cancel</button>
+        <button id="confirmPhotoSelect" class="btn-ok">Select</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full screen container (for exam, results, etc.) -->
+  <div id="fullScreenContainer" class="full-screen" style="display:none">
+    <div class="full-screen-back" id="exitFullScreen"><i class="fas fa-times"></i></div>
+    <div class="page-content" id="fullScreenContent"></div>
+  </div>
+
+</div>
+
+<!-- Firebase (v11 modules) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import { getDatabase, ref, get, set, onValue, push, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+  /* ===== CONFIG ===== */
+  const firebaseConfig = {
+    apiKey: "AIzaSyBVPv24bcX6aLD3colMIP_tPkomhW1hotE",
+    authDomain: "darpanbook.firebaseapp.com",
+    databaseURL: "https://darpanbook-default-rtdb.firebaseio.com",
+    projectId: "darpanbook",
+    storageBucket: "darpanbook.appspot.com",
+    messagingSenderId: "791059696742",
+    appId: "1:791059696742:web:0bf51e375feaa0545a31a7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getDatabase(app);
+
+  /* ===== UTIL ===== */
+  const $ = id => document.getElementById(id);
+  const showPage = id => { document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); $(id).classList.add('active'); }
+  function setActiveTab(scope, tab){
+    document.querySelectorAll(`#page-${scope} .tab-content`).forEach(t=>t.style.display='none');
+    document.querySelectorAll(`#nav-${scope} .tab`).forEach(t=>t.classList.remove('active'));
+    $(`${scope}-tab-${tab}`).style.display='block';
+    document.querySelector(`#nav-${scope} .tab[data-tab="${tab}"]`).classList.add('active');
+  }
+  const GROUP_ID = "adminGroup";
+  const COURSES = {
+    "Basic": ["Basics","WinWord","Excel","PowerPoint"],
+    "Diploma": ["Photoshop","PageMaker","Access","Tally","HTML"],
+    "All": ["Basics","WinWord","Excel","PowerPoint","Photoshop","PageMaker","Access","Tally","HTML"]
+  };
+  const gradeFromPct = p => p>=90?'A+':p>=80?'A':p>=70?'B+':p>=60?'B':p>=50?'C':p>=40?'D':'F';
+  const gpaFromPct = p => p>=90?4.0:p>=80?3.6:p>=70?3.2:p>=60?2.8:p>=50?2.4:p>=40?2.0:0.0;
+  const initialFrom = n => (n||'?').trim().charAt(0).toUpperCase();
+  const timeMini = ts => new Date(ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  let currentUser=null, role="user", name="", email="", adminUid=null, lastPhotoChange=0;
+
+  /* ===== LOGIN / REGISTER ===== */
+  $('toRegister').onclick = ()=>{ $('loginCard').style.display='none'; $('registerCard').style.display='block'; $('error').style.display='none'; }
+  $('toLogin').onclick    = ()=>{ $('registerCard').style.display='none'; $('loginCard').style.display='block'; $('error').style.display='none'; }
+  $('loginBtn').onclick = async ()=>{
+    const em=$('loginEmail').value.trim(), pw=$('loginPassword').value.trim();
+    if(!em||!pw){ showErr("Please enter email & password."); return; }
+    try{ await signInWithEmailAndPassword(auth, em, pw); }catch(e){ showErr(cleanFirebaseError(e.message)); }
+  };
+  $('registerBtn').onclick = async ()=>{
+    const nm=$('regName').value.trim(), em=$('regEmail').value.trim(), pw=$('regPassword').value.trim();
+    if(!nm||!em||!pw){ alert("Please fill all fields"); return; }
+    try{
+      const cred = await createUserWithEmailAndPassword(auth, em, pw);
+      await set(ref(db, `users/${cred.user.uid}`), { 
+        name:nm, 
+        email:em, 
+        role:"user",
+        photoUrl: `https://ui-avatars.com/api/?name=${initialFrom(nm)}&background=random&color=fff&size=120`,
+        lastPhotoChange: 0
+      });
+      alert("Account created! Please log in."); $('toLogin').click();
+    }catch(e){ alert(cleanFirebaseError(e.message)); }
+  };
+  $('logoutUser').onclick = ()=>signOut(auth);
+  $('logoutAdmin').onclick = ()=>signOut(auth);
+
+  onAuthStateChanged(auth, async (u)=>{
+    if(!u){ showPage('page-login'); return; }
+    currentUser = u;
+    const usRef = ref(db, `users/${u.uid}`);
+    let snap = await get(usRef);
+    if(!snap.exists()){
+      await set(usRef, { 
+        name: u.email?.split('@')[0]||'User', 
+        email: u.email||'', 
+        role:'user',
+        photoUrl: `https://ui-avatars.com/api/?name=${initialFrom(u.email?.split('@')[0]||'U')}&background=random&color=fff&size=120`,
+        lastPhotoChange: 0
+      });
+      snap = await get(usRef);
+    }
+    const data = snap.val();
+    role = (data.role||'user').toString().trim().toLowerCase();
+    name = data.name || '';
+    email = data.email || u.email || '';
+    lastPhotoChange = data.lastPhotoChange || 0;
+
+    // find admin uid (first found)
+    adminUid = null;
+    const allUsers = await get(ref(db,'users'));
+    if (allUsers.exists()){
+      allUsers.forEach(ch=>{
+        const r = (ch.val().role||'').toString().trim().toLowerCase();
+        if(r==='admin' && !adminUid) adminUid = ch.key;
+      });
+    }
+    if(role==='admin') adminUid = u.uid;
+
+    if(role==='admin'){ loadAdmin(data.photoUrl); showPage('page-admin'); setActiveTab('admin','chat'); }
+    else { loadUser(data.photoUrl);  showPage('page-user');  setActiveTab('user','chat'); }
+  });
+
+  function showErr(msg){ const el=$('error'); el.innerText=msg; el.style.display='block'; }
+  function cleanFirebaseError(m){ return m.replace('Firebase: ','').replace('(auth/','('); }
+
+  /* ======== USER PANEL ======== */
+  let userChatBound=false, adminChatBound=false;
+
+  function loadUser(photoUrl){
+    // profile
+    $('userNameText').innerText = name;
+    $('userEmailText').innerText = email;
+    $('userProfilePic').src = photoUrl;
+    $('userProfilePicEdit').src = photoUrl;
+    $('userChatIcon').innerText = initialFrom(name);
+    $('userChatName').innerText = name;
+    
+    // edit profile
+    $('editUserProfile').onclick = ()=>{
+      $('user-profile-view').style.display='none';
+      $('user-profile-edit').classList.add('active');
+      $('editUserName').value = name;
+      $('editUserEmail').value = email;
+    };
+    $('backFromEditProfile').onclick = ()=>{
+      $('user-profile-edit').classList.remove('active');
+      $('user-profile-view').style.display='block';
+    };
+    
+    // photo selector with gallery access
+    $('changePhotoBtn').onclick = showPhotoSelectorWithGallery;
+    $('cancelPhotoSelect').onclick = ()=> $('photoSelector').classList.remove('active');
+    $('confirmPhotoSelect').onclick = confirmPhotoSelection;
+    
+    // results
+    $('openUserResults').onclick = async ()=>{
+      $('userResultsContainer').style.display = 'block';
+      $('user-profile-view').style.display = 'none';
+      const s = await get(ref(db, `results/${auth.currentUser.uid}`));
+      renderResultsList('userResultsList', s, true);
+    };
+    $('backFromUserResults').onclick = ()=> {
+      $('userResultsContainer').style.display = 'none';
+      $('user-profile-view').style.display = 'block';
+    };
+    
+    // settings
+    $('openUserSettings').onclick = ()=> {
+      $('userSettingsContainer').style.display = 'block';
+      $('user-profile-view').style.display = 'none';
+    };
+    $('backFromUserSettings').onclick = ()=> {
+      $('userSettingsContainer').style.display = 'none';
+      $('user-profile-view').style.display = 'block';
+    };
+    
+    // help
+    $('openUserHelp').onclick = ()=> {
+      $('userHelpContainer').style.display = 'block';
+      $('user-profile-view').style.display = 'none';
+      loadHelpExamList('userHelpExamList');
+    };
+    $('backFromUserHelp').onclick = ()=> {
+      $('userHelpContainer').style.display = 'none';
+      $('user-profile-view').style.display = 'block';
+    };
+
+    // bottom nav
+    document.querySelectorAll('#nav-user .tab').forEach(t=> t.onclick = ()=> setActiveTab('user', t.dataset.tab));
+
+    // friend request
+    $('sendRequestBtn').onclick = sendFriendRequestToAdmin;
+
+    // group membership watch
+    const memberRef = ref(db, `groups/${GROUP_ID}/members/${auth.currentUser.uid}`);
+    onValue(memberRef, (s)=>{
+      if(s.exists()){
+        $('userChatState').innerText = 'You are in Admin Group. Start chatting!';
+        bindGroupChat('user');
+      }else{
+        $('userChatState').innerText = 'Not in group. Use Friend tab to send request.';
+        $('userChatMessages').innerHTML = '';
+      }
+    });
+    $('userSendBtn').onclick = ()=> sendGroupMessage(name);
+
+    // Back from chat button
+    $('backFromChat').onclick = () => {
+      setActiveTab('user', 'notice');
+    };
+
+    // Handle keyboard for chat input
+    $('userChatInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        $('userSendBtn').click();
+      }
+    });
+
+    // EXAM chooser fill
+    fillCourseSubject('uCourse','uSubject');
+    $('uLoadExamBtn').onclick = loadExamForUser;
+    $('stPhoto').addEventListener('change', e=>{
+      const f=e.target.files?.[0]; if(!f) return;
+      const url = URL.createObjectURL(f); $('stPreview').src=url;
+    });
+
+    // Notices (user view)
+    onValue(ref(db,'notices'), (snap)=>{
+      renderNotices('userNoticeList', snap);
+    });
+
+    // Load available exams in profile
+    loadAvailableExamsForUser();
+  }
+
+  function showPhotoSelectorWithGallery() {
+    const now = Date.now();
+    const sixMonths = 6 * 30 * 24 * 60 * 60 * 1000; // 6 months in milliseconds
+    
+    if (now - lastPhotoChange < sixMonths) {
+      const nextChange = new Date(lastPhotoChange + sixMonths);
+      alert(`You can only change your profile photo once every 6 months. Next change available on ${nextChange.toLocaleDateString()}`);
+      return;
+    }
+    
+    $('photoOptions').innerHTML = '';
+    
+    // Add device gallery option
+    const galleryOption = document.createElement('div');
+    galleryOption.className = 'photo-selector-option';
+    galleryOption.innerHTML = '<i class="fas fa-images" style="font-size:40px;margin:20px 0"></i><div>Choose from Gallery</div>';
+    galleryOption.onclick = function() {
+      $('photoSelector').classList.remove('active');
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = e => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            $('userProfilePicEdit').src = event.target.result;
+            confirmPhotoSelection(event.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+      input.click();
+    };
+    $('photoOptions').appendChild(galleryOption);
+    
+    // Sample photos
+    const samplePhotos = [
+      'https://randomuser.me/api/portraits/men/1.jpg',
+      'https://randomuser.me/api/portraits/women/1.jpg',
+      'https://randomuser.me/api/portraits/men/2.jpg',
+      'https://randomuser.me/api/portraits/women/2.jpg',
+      'https://randomuser.me/api/portraits/men/3.jpg',
+      'https://randomuser.me/api/portraits/women/3.jpg'
+    ];
+    
+    samplePhotos.forEach((photo, index) => {
+      const img = document.createElement('img');
+      img.src = photo;
+      img.className = 'photo-selector-option';
+      img.dataset.url = photo;
+      img.onclick = function() {
+        document.querySelectorAll('.photo-selector-option').forEach(opt => 
+          opt.classList.remove('selected'));
+        this.classList.add('selected');
+      };
+      $('photoOptions').appendChild(img);
+    });
+    
+    $('photoSelector').classList.add('active');
+  }
+  
+  async function confirmPhotoSelection(photoUrl) {
+    if (!photoUrl) {
+      const selected = document.querySelector('.photo-selector-option.selected');
+      if (!selected) {
+        alert('Please select a photo');
+        return;
+      }
+      photoUrl = selected.dataset.url;
+    }
+    
+    $('userProfilePicEdit').src = photoUrl;
+    $('photoSelector').classList.remove('active');
+    
+    // Save to database
+    await set(ref(db, `users/${currentUser.uid}/photoUrl`), photoUrl);
+    await set(ref(db, `users/${currentUser.uid}/lastPhotoChange`), Date.now());
+    
+    // Update in UI
+    $('userProfilePic').src = photoUrl;
+    $('userChatIcon').innerText = initialFrom(name);
+    lastPhotoChange = Date.now();
+  }
+
+  async function sendFriendRequestToAdmin(){
+    if(!adminUid){ alert("Admin not found. Set one user role to 'admin' in DB."); return; }
+    const reqRef = ref(db, `friendRequests/${adminUid}/${auth.currentUser.uid}`);
+    const ss = await get(reqRef);
+    if(ss.exists()){ $('requestStatus').innerText='Request already sent.'; return; }
+    await set(reqRef, { from: auth.currentUser.uid, name, email, status:'pending', ts: Date.now() });
+    $('requestStatus').innerText='Request sent. Wait for admin approval.';
+    alert('Request sent to Admin.');
+  }
+
+  /* ======== ADMIN PANEL ======== */
+  function loadAdmin(photoUrl){
+    // profile
+    $('adminNameText').innerText = name;
+    $('adminEmailText').innerText = email;
+    $('adminProfilePic').src = photoUrl;
+    $('adminProfilePicEdit').src = photoUrl;
+    $('adminChatIcon').innerText = initialFrom(name);
+    $('adminChatName').innerText = name;
+    
+    // edit profile
+    $('editAdminProfile').onclick = ()=>{
+      $('admin-profile-view').style.display='none';
+      $('admin-profile-edit').classList.add('active');
+      $('editAdminName').value = name;
+      $('editAdminEmail').value = email;
+    };
+    $('backFromEditAdminProfile').onclick = ()=>{
+      $('admin-profile-edit').classList.remove('active');
+      $('admin-profile-view').style.display='block';
+    };
+    
+    // photo selector with gallery access
+    $('changeAdminPhotoBtn').onclick = showPhotoSelectorWithGallery;
+    
+    // results
+    $('loadAllResults').onclick = async ()=>{
+      $('adminResultsContainer').style.display = 'block';
+      $('admin-profile-view').style.display = 'none';
+      const all = await get(ref(db,'results'));
+      renderAllResultsForAdmin(all);
+    };
+    $('backFromAdminResults').onclick = ()=> {
+      $('adminResultsContainer').style.display = 'none';
+      $('admin-profile-view').style.display = 'block';
+    };
+    
+    // settings
+    $('openAdminSettings').onclick = ()=> {
+      $('adminSettingsContainer').style.display = 'block';
+      $('admin-profile-view').style.display = 'none';
+    };
+    $('backFromAdminSettings').onclick = ()=> {
+      $('adminSettingsContainer').style.display = 'none';
+      $('admin-profile-view').style.display = 'block';
+    };
+    
+    // help
+    $('openAdminHelp').onclick = ()=> {
+      $('adminHelpContainer').style.display = 'block';
+      $('admin-profile-view').style.display = 'none';
+      loadHelpExamList('adminHelpExamList');
+    };
+    $('backFromAdminHelp').onclick = ()=> {
+      $('adminHelpContainer').style.display = 'none';
+      $('admin-profile-view').style.display = 'block';
+    };
+    
+    // user management
+    $('openUserManagement').onclick = async ()=> {
+      $('adminUserManagement').style.display = 'block';
+      $('admin-profile-view').style.display = 'none';
+      const users = await get(ref(db, 'users'));
+      renderUserList(users);
+    };
+    $('backFromUserManagement').onclick = ()=> {
+      $('adminUserManagement').style.display = 'none';
+      $('admin-profile-view').style.display = 'block';
+    };
+    
+    // exam management
+    $('backFromExamManagement').onclick = ()=> {
+      $('adminExamManagement').style.display = 'none';
+      $('admin-profile-view').style.display = 'block';
+    };
+
+    // Ensure admin is in the group
+    set(ref(db, `groups/${GROUP_ID}/members/${auth.currentUser.uid}`), true);
+    document.querySelectorAll('#nav-admin .tab').forEach(t=> t.onclick = ()=> setActiveTab('admin', t.dataset.tab));
+    $('bell').onclick = ()=> setActiveTab('admin','requests');
+
+    // Back from chat button
+    $('backFromAdminChat').onclick = () => {
+      setActiveTab('admin', 'notice');
+    };
+
+    // Handle keyboard for chat input
+    $('adminChatInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        $('adminSendBtn').click();
+      }
+    });
+
+    // Requests
+    const myReqs = ref(db, `friendRequests/${auth.currentUser.uid}`);
+    onValue(myReqs, (snap)=>{
+      const list = $('adminRequests'); list.innerHTML='';
+      let count = 0;
+      snap.forEach(ch=>{
+        const r = ch.val();
+        if((r.status||'pending')==='pending'){ count++;
+          const item = document.createElement('div');
+          item.className='row';
+          item.innerHTML = `
+            <div class="left">
+              <div class="avatar">${initialFrom(r.name||'U')}</div>
+              <div>
+                <div><b>${r.name||ch.key}</b></div>
+                <div class="small muted">${r.email||''}</div>
+              </div>
+            </div>
+            <div>
+              <button class="acceptBtn" data-uid="${ch.key}">Accept</button>
+            </div>`;
+          list.appendChild(item);
+        }
+      });
+      const badge=$('bellBadge');
+      if(count>0){ badge.style.display='inline-block'; badge.innerText=count; } else { badge.style.display='none'; }
+      document.querySelectorAll('.acceptBtn').forEach(btn=>{
+        btn.onclick = async ()=>{
+          const uid = btn.getAttribute('data-uid');
+          await set(ref(db, `groups/${GROUP_ID}/members/${uid}`), true);
+          await remove(ref(db, `friendRequests/${auth.currentUser.uid}/${uid}`));
+          alert('Accepted. User added to group.');
+        };
+      });
+    });
+
+    // Group chat
+    bindGroupChat('admin');
+    $('adminSendBtn').onclick = ()=> sendGroupMessage(name);
+
+    // Exam builder
+    fillCourseSubject('aCourse','aSubject');
+    $('addQBtn').onclick = addQuestionAdmin;
+    $('saveExamBtn').onclick = saveExamAdmin;
+    $('clearQBtn').onclick = ()=>{
+      aQuestions.length=0; renderAdminQList();
+    };
+    $('deleteExamBtn').onclick = deleteExamAdmin;
+    $('examActiveToggle').onchange = toggleExamStatus;
+
+    // Load exam management in profile
+    loadExamManagementForAdmin();
+
+    // Notice composer
+    $('noticeImage').addEventListener('change', e=>{
+      const f=e.target.files?.[0]; if(!f){ $('noticePreview').src=''; return; }
+      const url = URL.createObjectURL(f); $('noticePreview').src=url;
+    });
+    $('clearNoticeBtn').onclick = ()=>{
+      $('noticeText').value=''; $('noticeImage').value=''; $('noticePreview').src='';
+    };
+    $('sendNoticeBtn').onclick = sendNotice;
+
+    // Admin notices list
+    onValue(ref(db,'notices'), (snap)=>{
+      renderNotices('adminNoticeList', snap, true);
+    });
+  }
+
+  /* ======== GROUP CHAT ======== */
+  function bindGroupChat(scope){
+    if(scope==='user' && userChatBound) return;
+    if(scope==='admin' && adminChatBound) return;
+
+    const listEl = (scope==='admin') ? $('adminChatMessages') : $('userChatMessages');
+    listEl.innerHTML = '';
+    onValue(ref(db, `groups/${GROUP_ID}/messages`), (snap)=>{
+      listEl.innerHTML='';
+      snap.forEach(ch=>{
+        const m = ch.val();
+        const isMine = (m.uid === auth.currentUser.uid);
+        const row = document.createElement('div');
+        row.className = `msg-row ${isMine?'mine':'theirs'}`;
+        const avatar = document.createElement('div');
+        avatar.className = 'mini-avatar'; avatar.innerText = initialFrom(m.name||'U');
+        const bubble = document.createElement('div');
+        bubble.className = 'msg-bubble';
+        bubble.innerHTML = `<div>${m.text || ''}</div><div class="msg-meta">${m.name||'User'} · ${timeMini(m.ts)}</div>`;
+        if(isMine){ row.appendChild(bubble); }else{ row.appendChild(avatar); row.appendChild(bubble); }
+        listEl.appendChild(row);
+      });
+      listEl.scrollTop = listEl.scrollHeight;
+    });
+
+    if(scope==='user') userChatBound=true; else adminChatBound=true;
+  }
+
+  async function sendGroupMessage(senderName){
+    const isAdmin = (role==='admin');
+    const input = isAdmin ? $('adminChatInput') : $('userChatInput');
+    const text = input.value.trim();
+    if(!text) return;
+    await push(ref(db, `groups/${GROUP_ID}/messages`), {
+      uid: auth.currentUser.uid, name: senderName||'User', text, ts: Date.now()
+    });
+    input.value='';
+  }
+
+  /* ======== EXAM BUILDER (ADMIN) ======== */
+  const aQuestions = []; // {q, opts:[a,b,c,d], ans:idx}
+  let currentExamStatus = false;
+  
+  function fillCourseSubject(courseId, subjectId){
+    const cSel=$(courseId), sSel=$(subjectId);
+    cSel.innerHTML = Object.keys(COURSES).map(c=>`<option>${c}</option>`).join('');
+    const setSubs=()=>{
+      const c=cSel.value; const subs=COURSES[c]||[];
+      sSel.innerHTML = subs.map(s=>`<option>${s}</option>`).join('');
+    };
+    cSel.onchange = setSubs; setSubs();
+  }
+
+  function addQuestionAdmin(){
+    const q = $('aQ').value.trim();
+    const o1=$('aO1').value.trim(), o2=$('aO2').value.trim(), o3=$('aO3').value.trim(), o4=$('aO4').value.trim();
+    const ans = parseInt($('aCorrect').value,10);
+    if(!q||!o1||!o2||!o3||!o4){ alert('Fill question and all 4 options.'); return; }
+    if(aQuestions.length>=400){ alert('Limit reached.'); return; } // generous
+    aQuestions.push({q,opts:[o1,o2,o3,o4],ans});
+    $('aQ').value=''; $('aO1').value=''; $('aO2').value=''; $('aO3').value=''; $('aO4').value='';
+    renderAdminQList();
+  }
+  
+  function renderAdminQList(){
+    $('aCount').innerText = aQuestions.length;
+    const box=$('aQList'); box.innerHTML='';
+    aQuestions.forEach((it,idx)=>{
+      const div=document.createElement('div');
+      div.className='q-item';
+      div.innerHTML = `<div><b>Q${idx+1}.</b> ${it.q}</div>
+        <div class="small">A) ${it.opts[0]} &nbsp; B) ${it.opts[1]} &nbsp; C) ${it.opts[2]} &nbsp; D) ${it.opts[3]}</div>
+        <div class="q-meta">Correct: ${['A','B','C','D'][it.ans]}</div>`;
+      box.appendChild(div);
+    });
+  }
+  
+  async function saveExamAdmin(){
+    const course=$('aCourse').value, subject=$('aSubject').value;
+    const duration=parseInt($('aDuration').value,10)||0;
+    if(!course||!subject||!duration){ alert('Select course/subject and duration.'); return; }
+    if(aQuestions.length===0){ alert('Add at least 1 question.'); return; }
+    
+    await set(ref(db, `exams/${course}/${subject}`), {
+      duration, 
+      createdBy: auth.currentUser.uid, 
+      ts: Date.now(),
+      active: currentExamStatus,
+      questions: aQuestions
+    });
+    
+    alert('Exam saved!');
+    updateExamStatusUI();
+    loadExamManagementForAdmin();
+  }
+  
+  async function deleteExamAdmin(){
+    const course=$('aCourse').value, subject=$('aSubject').value;
+    if(!course||!subject){ alert('Select course/subject to delete.'); return; }
+    
+    if(confirm(`Delete ${course} - ${subject} exam? This cannot be undone.`)){
+      await remove(ref(db, `exams/${course}/${subject}`));
+      aQuestions.length = 0;
+      renderAdminQList();
+      alert('Exam deleted!');
+      loadExamManagementForAdmin();
+    }
+  }
+  
+  async function toggleExamStatus(){
+    const course=$('aCourse').value, subject=$('aSubject').value;
+    if(!course||!subject){ alert('Select course/subject first.'); return; }
+    
+    currentExamStatus = $('examActiveToggle').checked;
+    await set(ref(db, `exams/${course}/${subject}/active`), currentExamStatus);
+    updateExamStatusUI();
+    loadExamManagementForAdmin();
+  }
+  
+  function updateExamStatusUI(){
+    const status = currentExamStatus ? 'Active' : 'Inactive';
+    const color = currentExamStatus ? 'var(--ok)' : 'var(--danger)';
+    $('examStatusLabel').innerText = `Exam Status: ${status}`;
+    $('examStatusLabel').style.color = color;
+  }
+
+  async function loadExamManagementForAdmin() {
+    const examsRef = ref(db, 'exams');
+    const snapshot = await get(examsRef);
+    const examList = $('adminExamList');
+    examList.innerHTML = '';
+    
+    if (!snapshot.exists()) {
+      examList.innerHTML = '<div class="muted">No exams created yet</div>';
+      return;
+    }
+    
+    snapshot.forEach(courseNode => {
+      const course = courseNode.key;
+      courseNode.forEach(subjectNode => {
+        const subject = subjectNode.key;
+        const exam = subjectNode.val();
+        
+        const item = document.createElement('div');
+        item.className = 'exam-quick-item';
+        item.innerHTML = `
+          <div class="exam-quick-info">
+            <div><strong>${course} - ${subject}</strong></div>
+            <div class="small muted">${exam.questions?.length || 0} questions • ${exam.duration} mins</div>
+          </div>
+          <div class="exam-quick-status ${exam.active ? 'active' : 'inactive'}">
+            ${exam.active ? 'Active' : 'Inactive'}
+          </div>
+          <div class="exam-quick-action">
+            <button class="btn-ghost small" data-course="${course}" data-subject="${subject}">Manage</button>
+          </div>
+        `;
+        examList.appendChild(item);
+      });
+    });
+    
+    // Add event listeners to manage buttons
+    examList.querySelectorAll('button').forEach(btn => {
+      btn.onclick = function() {
+        const course = this.getAttribute('data-course');
+        const subject = this.getAttribute('data-subject');
+        $('aCourse').value = course;
+        $('aSubject').value = subject;
+        // Open in full screen mode
+        openFullScreen('admin-tab-exam');
+      };
+    });
+  }
+  
+  async function loadHelpExamList(containerId) {
+    const examsRef = ref(db, 'exams');
+    const snapshot = await get(examsRef);
+    const examList = $(containerId);
+    examList.innerHTML = '';
+    
+    if (!snapshot.exists()) {
+      examList.innerHTML = '<div class="muted">No exams available</div>';
+      return;
+    }
+    
+    snapshot.forEach(courseNode => {
+      const course = courseNode.key;
+      courseNode.forEach(subjectNode => {
+        const subject = subjectNode.key;
+        const exam = subjectNode.val();
+        
+        const item = document.createElement('div');
+        item.className = 'exam-quick-item';
+        item.innerHTML = `
+          <div class="exam-quick-info">
+            <div><strong>${course} - ${subject}</strong></div>
+            <div class="small muted">${exam.questions?.length || 0} questions • ${exam.duration} mins</div>
+          </div>
+          <div class="exam-quick-status ${exam.active ? 'active' : 'inactive'}">
+            ${exam.active ? 'Active' : 'Inactive'}
+          </div>
+        `;
+        examList.appendChild(item);
+      });
+    });
+  }
+  
+  async function renderUserList(snap) {
+    const list = $('adminUserList');
+    list.innerHTML = '';
+    
+    if (!snap.exists()) {
+      list.innerHTML = '<div class="muted">No users found</div>';
+      return;
+    }
+    
+    snap.forEach(userNode => {
+      const user = userNode.val();
+      const item = document.createElement('div');
+      item.className = 'user-item';
+      item.innerHTML = `
+        <div class="user-avatar">${initialFrom(user.name)}</div>
+        <div class="user-info">
+          <div class="user-name">${user.name}</div>
+          <div class="user-email">${user.email}</div>
+        </div>
+        <div class="small ${user.role === 'admin' ? 'text-success' : ''}">
+          ${user.role === 'admin' ? 'Admin' : 'User'}
+        </div>
+      `;
+      list.appendChild(item);
+    });
+  }
+
+  /* ======== USER EXAM PLAYER ======== */
+  let loadedExam=null, uTimerInt=null, remainingSec=0, userAnswers={}, lockSet={};
+  
+  async function loadExamForUser(){
+    const course=$('uCourse').value, subject=$('uSubject').value;
+    const snap = await get(ref(db, `exams/${course}/${subject}`));
+    if(!snap.exists()){ $('uExamMeta').innerText='No exam found for selection.'; $('userInfoCard').style.display='none'; return; }
+    
+    loadedExam = snap.val();
+    if(!loadedExam.active){
+      $('uExamMeta').innerText = 'This exam is currently inactive.';
+      $('userInfoCard').style.display='none';
+      return;
+    }
+    
+    $('uExamMeta').innerText = `Duration: ${loadedExam.duration} min • Questions: ${loadedExam.questions?.length||0}`;
+    $('userInfoCard').style.display='block';
+    $('userExamCard').style.display='none';
+    $('uResultWrap').innerHTML='';
+    userAnswers={}; lockSet={};
+    // preview title
+    $('uexTitle').innerText = `${course} • ${subject}`;
+    $('uexCount').innerText = `${loadedExam.questions.length} questions`;
+    $('uStartExamBtn').onclick = ()=> startExam(course,subject);
+  }
+  
+  async function loadAvailableExamsForUser() {
+    const examsRef = ref(db, 'exams');
+    const snapshot = await get(examsRef);
+    const quickList = $('userExamQuickList');
+    quickList.innerHTML = '';
+    
+    if (!snapshot.exists()) {
+      quickList.innerHTML = '<div class="muted">No exams available</div>';
+      return;
+    }
+    
+    let hasExams = false;
+    
+    snapshot.forEach(courseNode => {
+      const course = courseNode.key;
+      courseNode.forEach(subjectNode => {
+        const subject = subjectNode.key;
+        const exam = subjectNode.val();
+        
+        if (exam.active) {
+          hasExams = true;
+          const item = document.createElement('div');
+          item.className = 'exam-quick-item';
+          item.innerHTML = `
+            <div class="exam-quick-info">
+              <div><strong>${course} - ${subject}</strong></div>
+              <div class="small muted">${exam.questions?.length || 0} questions • ${exam.duration} mins</div>
+            </div>
+            <div class="exam-quick-action">
+              <button class="btn-ghost small" data-course="${course}" data-subject="${subject}">Start</button>
+            </div>
+          `;
+          quickList.appendChild(item);
+        }
+      });
+    });
+    
+    if (!hasExams) {
+      quickList.innerHTML = '<div class="muted">No active exams available</div>';
+    }
+    
+    // Add event listeners to quick start buttons
+    quickList.querySelectorAll('button').forEach(btn => {
+      btn.onclick = function() {
+        const course = this.getAttribute('data-course');
+        const subject = this.getAttribute('data-subject');
+        $('uCourse').value = course;
+        $('uSubject').value = subject;
+        openFullScreen('user-tab-exam');
+      };
+    });
+  }
+
+  function startExam(course,subject){
+    // validate student info
+    const st = {
+      name: $('stName').value.trim(),
+      father: $('stFather').value.trim(),
+      dob: $('stDob').value,
+      symbol: $('stSymbol').value.trim(),
+      photoDataUrl: ''
+    };
+    if(!st.name||!st.father||!st.dob||!st.symbol){ alert('Fill all student info.'); return; }
+    const f = $('stPhoto').files?.[0];
+    if(f){
+      const reader = new FileReader();
+      reader.onload = ()=>{ st.photoDataUrl = reader.result; beginExam(course,subject,st); };
+      reader.readAsDataURL(f);
+    }else{
+      beginExam(course,subject,st);
+    }
+  }
+
+  function beginExam(course,subject,student){
+    $('userInfoCard').style.display='none';
+    $('userExamCard').style.display='block';
+
+    // timer
+    remainingSec = (parseInt(loadedExam.duration,10)||0)*60;
+    updateTimer();
+    if(uTimerInt) clearInterval(uTimerInt);
+    uTimerInt = setInterval(()=>{
+      remainingSec--; updateTimer();
+      if(remainingSec<=0){ clearInterval(uTimerInt); autoSubmitExam(course,subject,student); }
+    },1000);
+
+    // render questions
+    const box=$('uQList'); box.innerHTML='';
+    loadedExam.questions.forEach((q,idx)=>{
+      const div=document.createElement('div'); div.className='q-item';
+      const name=`q_${idx}`;
+      div.innerHTML = `<div><b>Q${idx+1}.</b> ${q.q}</div>
+        ${q.opts.map((op,i)=>`
+          <label class="flex" style="justify-content:flex-start">
+            <input type="radio" name="${name}" value="${i}">
+            <span>${String.fromCharCode(65+i)}) ${op}</span>
+          </label>`).join('')}
+        <div class="q-meta">Once selected, it locks (cannot change).</div>`;
+      box.appendChild(div);
+      // one-tick lock
+      div.querySelectorAll(`input[name="${name}"]`).forEach(r=>{
+        r.addEventListener('change', (e)=>{
+          if(lockSet[name]) return;
+          userAnswers[name]=parseInt(e.target.value,10);
+          // lock radios
+          div.querySelectorAll(`input[name="${name}"]`).forEach(rr=>{
+            if(rr!==e.target) rr.disabled=true;
+          });
+          lockSet[name]=true;
+        });
+      });
+    });
+
+    $('uSubmitBtn').onclick = ()=> finalizeExam(course,subject,student);
+    $('uCancelBtn').onclick = ()=>{
+      if(confirm('Cancel exam? Your answers will be lost.')){
+        clearInterval(uTimerInt);
+        $('userExamCard').style.display='none';
+      }
+    };
+  }
+  
+  function updateTimer(){
+    const m = Math.max(0,Math.floor(remainingSec/60)).toString().padStart(2,'0');
+    const s = Math.max(0,remainingSec%60).toString().padStart(2,'0');
+    $('uTimer').innerText = `${m}:${s}`;
+  }
+  
+  function autoSubmitExam(course,subject,student,isAuto=false){
+    alert('Time up! Auto-submitting.');
+    finalizeExam(course,subject,student,true);
+  }
+
+  async function finalizeExam(course,subject,student,isAuto=false){
+    clearInterval(uTimerInt);
+    const qs = loadedExam.questions||[];
+    let correct=0;
+    qs.forEach((q,idx)=>{
+      const key=`q_${idx}`;
+      const ans=userAnswers[key];
+      if(ans===q.ans) correct++;
+    });
+    const total=qs.length;
+    const percent = total? Math.round((correct/total)*100):0;
+    const grade = gradeFromPct(percent);
+    const gpa = gpaFromPct(percent);
+
+    // save result
+    const res = {
+      uid: auth.currentUser.uid, student, course, subject,
+      total, correct, percent, grade, gpa, ts: Date.now(), auto:isAuto||false
+    };
+    const resRef = push(ref(db, `results/${auth.currentUser.uid}`), res);
+    await set(ref(db, `resultsByExam/${course}/${subject}/${auth.currentUser.uid}/${resRef.key}`), true);
+
+    // show A4 result (temporary view inside Exam tab)
+    $('userExamCard').style.display='none';
+    $('uResultWrap').innerHTML = renderA4(res, name, email);
+
+    // also show in Profile → Results (this is the permanent place to view)
+    const s = await get(ref(db, `results/${auth.currentUser.uid}`));
+    renderResultsList('userResultsList', s, true);
+    
+    // Reload available exams
+    loadAvailableExamsForUser();
+  }
+
+  /* ===== RESULTS RENDER ===== */
+  function renderA4(res, dispName, dispEmail){
+    const stu = res.student||{};
+    const now = new Date(res.ts||Date.now()).toLocaleString();
+    const rows = `
+      <tr><th>Course</th><td>${res.course}</td><th>Subject</th><td>${res.subject}</td></tr>
+      <tr><th>Total Questions</th><td>${res.total}</td><th>Correct</th><td>${res.correct}</td></tr>
+      <tr><th>Percentage</th><td>${res.percent}%</td><th>Grade</th><td>${res.grade}</td></tr>
+      <tr><th>GPA</th><td>${res.gpa}</td><th>Date/Time</th><td>${now}</td></tr>`;
+    return `
+      <div class="a4">
+        <div class="a4-head">
+          <div>
+            <div class="logo-title">IMS Darpan Computer Business Solutions PTV. LTD</div>
+            <div class="small">Kohalpur-11, Banke</div>
+          </div>
+          <div>
+            <img class="passport" src="${stu.photoDataUrl||''}" alt="photo">
+          </div>
+        </div>
+        <div class="row" style="display:block">
+          <div><b>Student Information</b></div>
+          <div class="small">Name: ${stu.name||''}</div>
+          <div class="small">Father's Name: ${stu.father||''}</div>
+          <div class="small">DOB: ${stu.dob||''}</div>
+          <div class="small">Symbol No.: ${stu.symbol||''}</div>
+          <div class="small">Account: ${dispName||''} • ${dispEmail||''}</div>
+        </div>
+        <div style="margin:8px 0">
+          <table>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <div class="muted small">Signature ____________________</div>
+        <div style="margin-top:8px">
+          <button onclick="window.print()">Print / Save PDF</button>
+        </div>
+      </div>`;
+  }
+
+  function renderResultsList(containerId, snap, mine=false){
+    const wrap=$(containerId); wrap.innerHTML='';
+    if(!snap.exists()){ wrap.innerHTML='<div class="muted">No results yet.</div>'; return; }
+    snap.forEach(ch=>{
+      const r=ch.val();
+      const card=document.createElement('div');
+      card.innerHTML = renderA4(r, mine?name:'', mine?email:'');
+      wrap.appendChild(card);
+    });
+  }
+
+  async function renderAllResultsForAdmin(allSnap){
+    const wrap=$('adminResultsList'); wrap.innerHTML='';
+    if(!allSnap.exists()){ wrap.innerHTML='<div class="muted">No student results.</div>'; return; }
+    allSnap.forEach(userNode=>{
+      userNode.forEach(resNode=>{
+        const r = resNode.val();
+        const card=document.createElement('div');
+        card.innerHTML = renderA4(r, '', '');
+        wrap.appendChild(card);
+      });
+    });
+  }
+
+  /* ===== NOTICES ===== */
+  async function sendNotice(){
+    const text = $('noticeText').value.trim();
+    if(!text){ alert('Type a notice message.'); return; }
+    let photoDataUrl = '';
+    const f = $('noticeImage').files?.[0];
+    if(f){
+      const reader = new FileReader();
+      reader.onload = async ()=>{
+        photoDataUrl = reader.result;
+        await push(ref(db,'notices'), { uid: auth.currentUser.uid, name, text, photoDataUrl, ts: Date.now() });
+        $('noticeText').value=''; $('noticeImage').value=''; $('noticePreview').src='';
+        alert('Notice sent!');
+      };
+      reader.readAsDataURL(f);
+    }else{
+      await push(ref(db,'notices'), { uid: auth.currentUser.uid, name, text, photoDataUrl, ts: Date.now() });
+      $('noticeText').value=''; $('noticeImage').value=''; $('noticePreview').src='';
+      alert('Notice sent!');
+    }
+  }
+
+  function renderNotices(containerId, snap, canDelete=false){
+    const wrap=$(containerId); wrap.innerHTML='';
+    if(!snap.exists()){ wrap.innerHTML='<div class="muted">No notices yet.</div>'; return; }
+    // Show newest first
+    const items=[];
+    snap.forEach(ch=>{ items.push({key:ch.key, ...ch.val()}); });
+    items.sort((a,b)=> (b.ts||0)-(a.ts||0));
+    items.forEach(n=>{
+      const card=document.createElement('div');
+      card.className='notice-card';
+      card.innerHTML = `
+        <div class="left" style="justify-content:space-between">
+          <div class="left">
+            <div class="avatar">${initialFrom(n.name||'A')}</div>
+            <div>
+              <div><b>${n.name||'Admin'}</b></div>
+              <div class="small muted">${new Date(n.ts||Date.now()).toLocaleString()}</div>
+            </div>
+          </div>
+          ${canDelete?`<button class="btn-ghost small" data-del="${n.key}"><i class="fa fa-trash"></i></button>`:''}
+        </div>
+        <div style="margin-top:6px">${n.text||''}</div>
+        ${n.photoDataUrl?`<img class="notice-img" src="${n.photoDataUrl}" alt="notice image">`:''}
+      `;
+      wrap.appendChild(card);
+    });
+    if(canDelete){
+      wrap.querySelectorAll('[data-del]').forEach(btn=>{
+        btn.onclick = async ()=>{
+          const k = btn.getAttribute('data-del');
+          if(confirm('Delete this notice?')) await remove(ref(db, `notices/${k}`));
+        };
+      });
+    }
+  }
+
+  /* ===== FULL SCREEN MODE ===== */
+  function openFullScreen(tabId) {
+    const tabContent = $(tabId).cloneNode(true);
+    tabContent.style.display = 'block';
+    tabContent.style.height = '100%';
+    
+    $('fullScreenContent').innerHTML = '';
+    $('fullScreenContent').appendChild(tabContent);
+    $('fullScreenContainer').style.display = 'block';
+    
+    // Hide the main app container
+    document.querySelector('.app').style.display = 'none';
+  }
+  
+  $('exitFullScreen').onclick = function() {
+    $('fullScreenContainer').style.display = 'none';
+    document.querySelector('.app').style.display = 'flex';
+    
+    // If we were in exam, reload the exam state
+    if ($('fullScreenContent').querySelector('#userExamCard')) {
+      const course = $('uCourse').value;
+      const subject = $('uSubject').value;
+      loadExamForUser();
+    }
+  };
+
+  /* ===== helpers at end ===== */
+  document.querySelectorAll('#nav-user .tab').forEach(t=> t.onclick = ()=> setActiveTab('user', t.dataset.tab));
+  document.querySelectorAll('#nav-admin .tab').forEach(t=> t.onclick = ()=> setActiveTab('admin', t.dataset.tab));
+</script>
+</body>
+</html>
   .app{position:relative;max-width:420px;height:100vh;margin:0 auto;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.15);display:flex;flex-direction:column}
 
   /* Global header */
@@ -1624,4 +3564,4 @@
   document.querySelectorAll('#nav-admin .tab').forEach(t=> t.onclick = ()=> setActiveTab('admin', t.dataset.tab));
 </script>
 </body>
-</html>
+</html> user admin chating page ko  sms type a massage box ley halka purai dekhiney gari rakhadinu  chatting pages ko back boton left side profile ko gadi rakhadinu ra admin panel ko profile icon ko list haru ko page creat gardinu student results ma click garda page khullxa full screen ma tasama sabai users ko results aauxa realtime database ma to hederma back boton rakhadinu left sidema back aauney back auda profile list page ma aauxa satting click garda page khulxa tasma all user list and dark mode light model hos back jhada profile listma pugos help ma click garda page khulosh app deployment sundar rawal gmail sundarrawal132@gmail.com rakhadinu bank auuda help ko tala exam management option add gardinu tala ko mathi yo option ma ayosh exam management click garda page khulosh ra tasma bata management list tas pagema rakhadinu user panel ko exam results click garda page khulxa full screen ma tasma afno a4 size page ma  results herna milxa ra top heder ma left side back boton rakhanu tasa gare satting dark mode light mode radinu help ma apple deployment sundar rawal gmail sundarrawal132@gmail.com rakhadinu ra help kotala available exam options rakhadinu tasma click garda page khulosh page khulxa tasma tasma dekhauxa
