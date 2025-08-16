@@ -56,11 +56,62 @@
   .small{font-size:12px}
 
   /* Chat */
-  .chat{background:#fff;border:1px solid #eee;border-radius:14px;display:flex;flex-direction:column;overflow:hidden;height:100%}
-  .chat-top{height:52px;background:#f0f6ff;border-bottom:1px solid #e5eefc;display:flex;align-items:center;justify-content:space-between;padding:0 12px}
-  .chat-title{display:flex;align-items:center;gap:10px;font-weight:700}
-  .chat-actions i{font-size:18px;margin-left:12px;cursor:pointer}
-  .chat-messages{flex:1;overflow:auto;padding:12px;background:#f7fbff}
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+    position: relative;
+    background: #f7fbff;
+  }
+  .chat-header {
+    height: 60px;
+    background: #1877f2;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+  .chat-header-info {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+  .chat-header-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    background: #e3e3e3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #333;
+  }
+  .chat-header-name {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .chat-header-status {
+    font-size: 12px;
+  }
+  .chat-header-actions {
+    display: flex;
+    gap: 5px;
+  }
+  .chat-header-actions i {
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background: #f7fbff;
+  }
   .msg-row{display:flex;align-items:flex-end;margin:8px 0;gap:8px}
   .msg-row.mine{justify-content:flex-end}
   .msg-bubble{max-width:70%;padding:10px 12px;border-radius:14px;line-height:1.25;font-size:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
@@ -69,9 +120,30 @@
   .msg-meta{font-size:11px;color:#8a8a8a;margin-top:3px}
   .mini-avatar{width:26px;height:26px;border-radius:50%;background:#e3e3e3;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
   .msg-row.mine .mini-avatar{display:none}
-  .chat-input{display:flex;gap:8px;padding:10px;border-top:1px solid #eee;background:#fff}
-  .chat-input input{flex:1;border-radius:999px;padding:12px 14px}
-  .send-btn{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .chat-input-container {
+    padding: 10px;
+    background: white;
+    border-top: 1px solid #eee;
+    position: sticky;
+    bottom: 0;
+  }
+  .chat-input {
+    display: flex;
+    gap: 8px;
+  }
+  .chat-input input {
+    flex: 1;
+    border-radius: 999px;
+    padding: 12px 14px;
+  }
+  .send-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   /* Profile + grid */
   .profile-card{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:12px}
@@ -149,6 +221,56 @@
   .exam-quick-status.inactive{background-color:#ffebee;color:var(--danger)}
   .exam-quick-action{width:80px;text-align:right}
 
+  /* Full screen styles */
+  .full-screen {position: fixed;top: 0;left: 0;right: 0;bottom: 0;background: white;z-index: 1000;overflow: auto;}
+  .full-screen .header, .full-screen .nav {display: none !important;}
+  .full-screen .page-content {padding-top: 20px; padding-bottom: 20px;}
+  .full-screen-back {position: fixed;top: 10px;left: 10px;z-index: 1001;background: var(--brand);color: white;width: 40px;height: 40px;border-radius: 50%;display: flex;align-items: center;justify-content: center;font-size: 20px;cursor: pointer;}
+
+  /* Chat full screen styles - Modified for fixed full screen */
+  .chat-full-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f7fbff;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+  }
+  .chat-full-screen .chat-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .chat-full-screen .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 60px; /* Space for input */
+  }
+  .chat-full-screen .chat-input-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 10px;
+    border-top: 1px solid #eee;
+    z-index: 20;
+  }
+  .chat-full-screen .chat-input input {
+    border-radius: 20px;
+    padding: 12px 16px;
+  }
+
+  /* Keyboard handling */
+  @media (max-height: 600px) {
+    .chat-full-screen .chat-messages {
+      padding-bottom: 120px; /* Extra space when keyboard is open */
+    }
+  }
+
   @media print{
     body{background:#fff}
     .nav,.header{display:none!important}
@@ -198,31 +320,32 @@
 
   <!-- USER PANEL -->
   <div id="page-user" class="page">
-    <!-- Chat -->
+    <!-- Chat - Now always full screen -->
     <div id="user-tab-chat" class="tab-content">
-      <div class="page-content">
-        <div class="chat">
-          <div class="chat-top">
-            <div class="chat-title">
-              <div class="mini-avatar" id="userChatIcon">A</div>
-              <div>
-                <div id="userChatName">Admin Group</div>
-                <div class="muted small">Group chat</div>
-              </div>
-            </div>
-            <div class="chat-actions">
-              <i class="fas fa-phone"></i>
-              <i class="fas fa-video"></i>
+      <div class="chat-full-screen">
+        <div class="chat-header">
+          <div class="chat-header-info">
+            <div class="chat-header-avatar" id="userChatIcon">A</div>
+            <div>
+              <div class="chat-header-name" id="userChatName">Admin Group</div>
+              <div class="chat-header-status">Group chat</div>
             </div>
           </div>
-          <div class="chat-messages" id="userChatMessages"></div>
+          <div class="chat-header-actions">
+            <i class="fas fa-phone" title="Voice Call"></i>
+            <i class="fas fa-video" title="Video Call"></i>
+            <i class="fas fa-arrow-left" id="backFromChat" title="Back to Notices"></i>
+          </div>
+        </div>
+        <div class="chat-messages" id="userChatMessages"></div>
+        <div class="chat-input-container">
           <div class="chat-input">
-            <input id="userChatInput" type="text" placeholder="Type a message...">
+            <input id="userChatInput" type="text" placeholder="Type a message..." autocomplete="off">
             <button id="userSendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
           </div>
         </div>
-        <div id="userChatState" class="muted" style="margin:10px 4px 0;"></div>
       </div>
+      <div id="userChatState" class="muted" style="margin:10px 4px 0;"></div>
     </div>
 
     <!-- Friend -->
@@ -372,26 +495,27 @@
 
   <!-- ADMIN PANEL -->
   <div id="page-admin" class="page">
-    <!-- Chat -->
+    <!-- Chat - Now always full screen -->
     <div id="admin-tab-chat" class="tab-content">
-      <div class="page-content">
-        <div class="chat">
-          <div class="chat-top">
-            <div class="chat-title">
-              <div class="mini-avatar" id="adminChatIcon">G</div>
-              <div>
-                <div id="adminChatName">Admin Group</div>
-                <div class="muted small">All accepted users</div>
-              </div>
-            </div>
-            <div class="chat-actions">
-              <i class="fas fa-phone"></i>
-              <i class="fas fa-video"></i>
+      <div class="chat-full-screen">
+        <div class="chat-header">
+          <div class="chat-header-info">
+            <div class="chat-header-avatar" id="adminChatIcon">A</div>
+            <div>
+              <div class="chat-header-name" id="adminChatName">Admin Group</div>
+              <div class="chat-header-status">All accepted users</div>
             </div>
           </div>
-          <div class="chat-messages" id="adminChatMessages"></div>
+          <div class="chat-header-actions">
+            <i class="fas fa-phone" title="Voice Call"></i>
+            <i class="fas fa-video" title="Video Call"></i>
+            <i class="fas fa-arrow-left" id="backFromAdminChat" title="Back to Notices"></i>
+          </div>
+        </div>
+        <div class="chat-messages" id="adminChatMessages"></div>
+        <div class="chat-input-container">
           <div class="chat-input">
-            <input id="adminChatInput" type="text" placeholder="Type a message...">
+            <input id="adminChatInput" type="text" placeholder="Type a message..." autocomplete="off">
             <button id="adminSendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
           </div>
         </div>
@@ -514,6 +638,12 @@
               </div>
               <div class="results-container" id="adminResultsList"></div>
             </div>
+
+            <!-- Exam Management in Admin Profile -->
+            <div class="exam-quick-access" id="adminExamManagement">
+              <h4>Exam Management</h4>
+              <div id="adminExamList"></div>
+            </div>
           </div>
         </div>
         
@@ -558,6 +688,12 @@
         <button id="confirmPhotoSelect" class="btn-ok">Select</button>
       </div>
     </div>
+  </div>
+
+  <!-- Full screen container (for exam, results, etc.) -->
+  <div id="fullScreenContainer" class="full-screen" style="display:none">
+    <div class="full-screen-back" id="exitFullScreen"><i class="fas fa-times"></i></div>
+    <div class="page-content" id="fullScreenContent"></div>
   </div>
 
 </div>
@@ -678,6 +814,8 @@
     $('userEmailText').innerText = email;
     $('userProfilePic').src = photoUrl;
     $('userProfilePicEdit').src = photoUrl;
+    $('userChatIcon').innerText = initialFrom(name);
+    $('userChatName').innerText = name;
     
     // edit profile
     $('editUserProfile').onclick = ()=>{
@@ -722,6 +860,18 @@
       }
     });
     $('userSendBtn').onclick = ()=> sendGroupMessage(name);
+
+    // Back from chat button
+    $('backFromChat').onclick = () => {
+      setActiveTab('user', 'notice');
+    };
+
+    // Handle keyboard for chat input
+    $('userChatInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        $('userSendBtn').click();
+      }
+    });
 
     // EXAM chooser fill
     fillCourseSubject('uCourse','uSubject');
@@ -821,6 +971,7 @@
     
     // Update in UI
     $('userProfilePic').src = photoUrl;
+    $('userChatIcon').innerText = initialFrom(name);
     lastPhotoChange = Date.now();
   }
 
@@ -836,10 +987,13 @@
 
   /* ======== ADMIN PANEL ======== */
   function loadAdmin(photoUrl){
+    // profile
     $('adminNameText').innerText = name;
     $('adminEmailText').innerText = email;
     $('adminProfilePic').src = photoUrl;
     $('adminProfilePicEdit').src = photoUrl;
+    $('adminChatIcon').innerText = initialFrom(name);
+    $('adminChatName').innerText = name;
     
     // edit profile
     $('editAdminProfile').onclick = ()=>{
@@ -869,6 +1023,18 @@
     document.querySelectorAll('#nav-admin .tab').forEach(t=> t.onclick = ()=> setActiveTab('admin', t.dataset.tab));
     $('bell').onclick = ()=> setActiveTab('admin','requests');
 
+    // Back from chat button
+    $('backFromAdminChat').onclick = () => {
+      setActiveTab('admin', 'notice');
+    };
+
+    // Handle keyboard for chat input
+    $('adminChatInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        $('adminSendBtn').click();
+      }
+    });
+
     // Requests
     const myReqs = ref(db, `friendRequests/${auth.currentUser.uid}`);
     onValue(myReqs, (snap)=>{
@@ -882,7 +1048,10 @@
           item.innerHTML = `
             <div class="left">
               <div class="avatar">${initialFrom(r.name||'U')}</div>
-              <div><div><b>${r.name||ch.key}</b></div><div class="muted">${r.email||''}</div></div>
+              <div>
+                <div><b>${r.name||ch.key}</b></div>
+                <div class="small muted">${r.email||''}</div>
+              </div>
             </div>
             <div>
               <button class="acceptBtn" data-uid="${ch.key}">Accept</button>
@@ -915,6 +1084,9 @@
     };
     $('deleteExamBtn').onclick = deleteExamAdmin;
     $('examActiveToggle').onchange = toggleExamStatus;
+
+    // Load exam management in profile
+    loadExamManagementForAdmin();
 
     // Notice composer
     $('noticeImage').addEventListener('change', e=>{
@@ -1025,6 +1197,7 @@
     
     alert('Exam saved!');
     updateExamStatusUI();
+    loadExamManagementForAdmin();
   }
   
   async function deleteExamAdmin(){
@@ -1036,6 +1209,7 @@
       aQuestions.length = 0;
       renderAdminQList();
       alert('Exam deleted!');
+      loadExamManagementForAdmin();
     }
   }
   
@@ -1046,6 +1220,7 @@
     currentExamStatus = $('examActiveToggle').checked;
     await set(ref(db, `exams/${course}/${subject}/active`), currentExamStatus);
     updateExamStatusUI();
+    loadExamManagementForAdmin();
   }
   
   function updateExamStatusUI(){
@@ -1053,6 +1228,54 @@
     const color = currentExamStatus ? 'var(--ok)' : 'var(--danger)';
     $('examStatusLabel').innerText = `Exam Status: ${status}`;
     $('examStatusLabel').style.color = color;
+  }
+
+  async function loadExamManagementForAdmin() {
+    const examsRef = ref(db, 'exams');
+    const snapshot = await get(examsRef);
+    const examList = $('adminExamList');
+    examList.innerHTML = '';
+    
+    if (!snapshot.exists()) {
+      examList.innerHTML = '<div class="muted">No exams created yet</div>';
+      return;
+    }
+    
+    snapshot.forEach(courseNode => {
+      const course = courseNode.key;
+      courseNode.forEach(subjectNode => {
+        const subject = subjectNode.key;
+        const exam = subjectNode.val();
+        
+        const item = document.createElement('div');
+        item.className = 'exam-quick-item';
+        item.innerHTML = `
+          <div class="exam-quick-info">
+            <div><strong>${course} - ${subject}</strong></div>
+            <div class="small muted">${exam.questions?.length || 0} questions • ${exam.duration} mins</div>
+          </div>
+          <div class="exam-quick-status ${exam.active ? 'active' : 'inactive'}">
+            ${exam.active ? 'Active' : 'Inactive'}
+          </div>
+          <div class="exam-quick-action">
+            <button class="btn-ghost small" data-course="${course}" data-subject="${subject}">Manage</button>
+          </div>
+        `;
+        examList.appendChild(item);
+      });
+    });
+    
+    // Add event listeners to manage buttons
+    examList.querySelectorAll('button').forEach(btn => {
+      btn.onclick = function() {
+        const course = this.getAttribute('data-course');
+        const subject = this.getAttribute('data-subject');
+        $('aCourse').value = course;
+        $('aSubject').value = subject;
+        // Open in full screen mode
+        openFullScreen('admin-tab-exam');
+      };
+    });
   }
 
   /* ======== USER EXAM PLAYER ======== */
@@ -1129,8 +1352,7 @@
         const subject = this.getAttribute('data-subject');
         $('uCourse').value = course;
         $('uSubject').value = subject;
-        setActiveTab('user', 'exam');
-        loadExamForUser();
+        openFullScreen('user-tab-exam');
       };
     });
   }
@@ -1244,6 +1466,9 @@
     // also show in Profile → Results (this is the permanent place to view)
     const s = await get(ref(db, `results/${auth.currentUser.uid}`));
     renderResultsList('userResultsList', s, true);
+    
+    // Reload available exams
+    loadAvailableExamsForUser();
   }
 
   /* ===== RESULTS RENDER ===== */
@@ -1367,6 +1592,32 @@
       });
     }
   }
+
+  /* ===== FULL SCREEN MODE ===== */
+  function openFullScreen(tabId) {
+    const tabContent = $(tabId).cloneNode(true);
+    tabContent.style.display = 'block';
+    tabContent.style.height = '100%';
+    
+    $('fullScreenContent').innerHTML = '';
+    $('fullScreenContent').appendChild(tabContent);
+    $('fullScreenContainer').style.display = 'block';
+    
+    // Hide the main app container
+    document.querySelector('.app').style.display = 'none';
+  }
+  
+  $('exitFullScreen').onclick = function() {
+    $('fullScreenContainer').style.display = 'none';
+    document.querySelector('.app').style.display = 'flex';
+    
+    // If we were in exam, reload the exam state
+    if ($('fullScreenContent').querySelector('#userExamCard')) {
+      const course = $('uCourse').value;
+      const subject = $('uSubject').value;
+      loadExamForUser();
+    }
+  };
 
   /* ===== helpers at end ===== */
   document.querySelectorAll('#nav-user .tab').forEach(t=> t.onclick = ()=> setActiveTab('user', t.dataset.tab));
