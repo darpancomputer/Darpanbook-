@@ -61,7 +61,6 @@
     flex-direction: column;
     height: 100vh; /* Full viewport height */
     position: relative;
-    background: #f7fbff;
   }
   .chat-header {
     height: 60px;
@@ -72,7 +71,7 @@
     padding: 0 12px;
     position: sticky;
     top: 0;
-    z-index: 30;
+    z-index: 10;
   }
   .chat-header-info {
     display: flex;
@@ -83,7 +82,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 12px;
+    margin-right: 10px;
     background: #e3e3e3;
     display: flex;
     align-items: center;
@@ -93,14 +92,13 @@
   }
   .chat-header-name {
     font-weight: bold;
-    font-size: 16px;
   }
   .chat-header-status {
     font-size: 12px;
   }
   .chat-header-actions {
     display: flex;
-    gap: 5px;
+    gap: 15px;
   }
   .chat-header-actions i {
     font-size: 20px;
@@ -111,6 +109,7 @@
     overflow-y: auto;
     padding: 10px;
     background: #f7fbff;
+    margin-bottom: 60px; /* Space for input */
   }
   .msg-row{display:flex;align-items:flex-end;margin:8px 0;gap:8px}
   .msg-row.mine{justify-content:flex-end}
@@ -124,31 +123,46 @@
     padding: 10px;
     background: white;
     border-top: 1px solid #eee;
-    position: sticky;
+    position: fixed;
     bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 420px;
+    margin: 0 auto;
   }
   .chat-input {
     display: flex;
     gap: 8px;
-    align-items: center;
   }
   .chat-input input {
     flex: 1;
     border-radius: 999px;
-    padding: 10px 14px;
-    height: 40px;
-    font-size: 14px;
+    padding: 12px 14px;
   }
   .send-btn {
-    width: 40px;
-    height: 40px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--brand);
-    color: white;
-    border: none;
+  }
+
+  /* Fullscreen chat mode */
+  .chat-fullscreen .header {
+    display: none !important;
+  }
+  .chat-fullscreen .nav {
+    display: none !important;
+  }
+  .chat-fullscreen .page {
+    padding: 0 !important;
+  }
+  .chat-fullscreen .chat-container {
+    height: 100vh !important;
+  }
+  .chat-fullscreen .chat-messages {
+    height: calc(100vh - 120px) !important;
   }
 
   /* Profile + grid */
@@ -227,118 +241,6 @@
   .exam-quick-status.inactive{background-color:#ffebee;color:var(--danger)}
   .exam-quick-action{width:80px;text-align:right}
 
-  /* Full screen styles */
-  .full-screen {position: fixed;top: 0;left: 0;right: 0;bottom: 0;background: white;z-index: 1000;overflow: auto;}
-  .full-screen .header, .full-screen .nav {display: none !important;}
-  .full-screen .page-content {padding-top: 20px; padding-bottom: 20px;}
-  .full-screen-back {position: fixed;top: 10px;left: 10px;z-index: 1001;background: var(--brand);color: white;width: 40px;height: 40px;border-radius: 50%;display: flex;align-items: center;justify-content: center;font-size: 20px;cursor: pointer;}
-
-  /* Chat full screen styles - Modified for fixed full screen */
-  .chat-full-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #f7fbff;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-  }
-  .chat-full-screen .chat-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  .chat-full-screen .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding-bottom: 60px; /* Space for input */
-  }
-  .chat-full-screen .chat-input-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: white;
-    padding: 10px;
-    border-top: 1px solid #eee;
-    z-index: 20;
-  }
-  .chat-full-screen .chat-input input {
-    border-radius: 20px;
-    padding: 10px 14px;
-    height: 40px;
-  }
-
-  /* Settings Page */
-  .settings-page {
-    padding: 16px;
-  }
-  .settings-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #eee;
-  }
-  .settings-item:last-child {
-    border-bottom: none;
-  }
-  
-  /* Help Page */
-  .help-page {
-    padding: 16px;
-  }
-  .help-section {
-    margin-bottom: 20px;
-  }
-  .help-section h3 {
-    margin-bottom: 8px;
-  }
-  
-  /* User List Page */
-  .user-list-page {
-    padding: 16px;
-  }
-  .user-item {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    border-bottom: 1px solid #eee;
-  }
-  .user-item:last-child {
-    border-bottom: none;
-  }
-  .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 12px;
-    background: #e3e3e3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-  }
-  .user-info {
-    flex: 1;
-  }
-  .user-name {
-    font-weight: bold;
-  }
-  .user-email {
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  /* Keyboard handling */
-  @media (max-height: 600px) {
-    .chat-full-screen .chat-messages {
-      padding-bottom: 120px; /* Extra space when keyboard is open */
-    }
-  }
-
   @media print{
     body{background:#fff}
     .nav,.header{display:none!important}
@@ -388,13 +290,11 @@
 
   <!-- USER PANEL -->
   <div id="page-user" class="page">
-    <!-- Chat - Now always full screen -->
+    <!-- Chat -->
     <div id="user-tab-chat" class="tab-content">
-      <div class="chat-full-screen">
+      <div class="chat-container">
         <div class="chat-header">
-          <div class="chat-header-actions">
-            <i class="fas fa-arrow-left" id="backFromChat" title="Back to Notices"></i>
-          </div>
+          <button class="back-btn" id="backFromChat"><i class="fas fa-arrow-left"></i></button>
           <div class="chat-header-info">
             <div class="chat-header-avatar" id="userChatIcon">A</div>
             <div>
@@ -410,7 +310,7 @@
         <div class="chat-messages" id="userChatMessages"></div>
         <div class="chat-input-container">
           <div class="chat-input">
-            <input id="userChatInput" type="text" placeholder="Type a message..." autocomplete="off">
+            <input id="userChatInput" type="text" placeholder="Type a message...">
             <button id="userSendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
           </div>
         </div>
@@ -508,83 +408,28 @@
           </div>
           
           <div class="flex" style="flex-direction:column;gap:12px">
+            <!-- Available Exams Section -->
+            <div class="exam-quick-access" id="userExamQuickAccess">
+              <h4>Available Exams</h4>
+              <div id="userExamQuickList"></div>
+            </div>
+            
             <div class="profile-sidebar">
               <ul class="profile-menu">
                 <li id="openUserResults"><i class="fas fa-poll"></i> Exam Results</li>
                 <li id="editUserProfile"><i class="fas fa-user-edit"></i> Edit Profile</li>
-                <li id="openUserSettings"><i class="fas fa-cog"></i> Settings</li>
-                <li id="openUserHelp"><i class="fas fa-question-circle"></i> Help</li>
+                <li><i class="fas fa-cog"></i> Settings</li>
+                <li><i class="fas fa-question-circle"></i> Help</li>
                 <li id="logoutUser"><i class="fas fa-sign-out-alt"></i> Logout</li>
               </ul>
             </div>
             
-            <!-- Results Page -->
             <div id="userResultsContainer" style="display:none">
               <div class="results-header">
-                <button class="back-btn" id="backFromUserResults"><i class="fas fa-arrow-left"></i></button>
                 <h3>Your Exam Results</h3>
+                <button id="backFromResults" class="btn-ghost"><i class="fas fa-arrow-left"></i> Back</button>
               </div>
               <div class="results-container" id="userResultsList"></div>
-            </div>
-
-            <!-- Settings Page -->
-            <div id="userSettingsContainer" style="display:none">
-              <div class="results-header">
-                <button class="back-btn" id="backFromUserSettings"><i class="fas fa-arrow-left"></i></button>
-                <h3>Settings</h3>
-              </div>
-              <div class="settings-page">
-                <div class="settings-item">
-                  <div>Dark Mode</div>
-                  <label class="toggle-switch">
-                    <input type="checkbox" id="darkModeToggle">
-                    <span class="slider"></span>
-                  </label>
-                </div>
-                <div class="settings-item">
-                  <div>Notification</div>
-                  <label class="toggle-switch">
-                    <input type="checkbox" id="notificationToggle" checked>
-                    <span class="slider"></span>
-                  </label>
-                </div>
-                <div class="settings-item">
-                  <div>Language</div>
-                  <select id="languageSelect">
-                    <option>English</option>
-                    <option>Nepali</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <!-- Help Page -->
-            <div id="userHelpContainer" style="display:none">
-              <div class="results-header">
-                <button class="back-btn" id="backFromUserHelp"><i class="fas fa-arrow-left"></i></button>
-                <h3>Help & Support</h3>
-              </div>
-              <div class="help-page">
-                <div class="help-section">
-                  <h3>About Darpan Book</h3>
-                  <p>Darpan Book is a social messenger and exam system for computer training centers.</p>
-                </div>
-                <div class="help-section">
-                  <h3>Contact Support</h3>
-                  <p>Email: sundarrawal132@gmail.com</p>
-                  <p>Phone: +977 9800000000</p>
-                </div>
-                <div class="help-section">
-                  <h3>Available Exams</h3>
-                  <div id="userHelpExamList"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Quick Exam Access in Profile -->
-            <div class="exam-quick-access" id="userExamQuickAccess">
-              <h4>Available Exams</h4>
-              <div id="userExamQuickList"></div>
             </div>
           </div>
         </div>
@@ -620,15 +465,13 @@
 
   <!-- ADMIN PANEL -->
   <div id="page-admin" class="page">
-    <!-- Chat - Now always full screen -->
+    <!-- Chat -->
     <div id="admin-tab-chat" class="tab-content">
-      <div class="chat-full-screen">
+      <div class="chat-container">
         <div class="chat-header">
-          <div class="chat-header-actions">
-            <i class="fas fa-arrow-left" id="backFromAdminChat" title="Back to Notices"></i>
-          </div>
+          <button class="back-btn" id="backFromAdminChat"><i class="fas fa-arrow-left"></i></button>
           <div class="chat-header-info">
-            <div class="chat-header-avatar" id="adminChatIcon">A</div>
+            <div class="chat-header-avatar" id="adminChatIcon">G</div>
             <div>
               <div class="chat-header-name" id="adminChatName">Admin Group</div>
               <div class="chat-header-status">All accepted users</div>
@@ -642,7 +485,7 @@
         <div class="chat-messages" id="adminChatMessages"></div>
         <div class="chat-input-container">
           <div class="chat-input">
-            <input id="adminChatInput" type="text" placeholder="Type a message..." autocomplete="off">
+            <input id="adminChatInput" type="text" placeholder="Type a message...">
             <button id="adminSendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
           </div>
         </div>
@@ -748,101 +591,28 @@
           </div>
           
           <div class="flex" style="flex-direction:column;gap:12px">
+            <!-- Exam Management Section -->
+            <div class="exam-quick-access" id="adminExamManagement">
+              <h4>Exam Management</h4>
+              <div id="adminExamList"></div>
+            </div>
+            
             <div class="profile-sidebar">
               <ul class="profile-menu">
                 <li id="loadAllResults"><i class="fas fa-poll"></i> Student Results</li>
                 <li id="editAdminProfile"><i class="fas fa-user-edit"></i> Edit Profile</li>
-                <li id="openAdminSettings"><i class="fas fa-cog"></i> Settings</li>
-                <li id="openAdminHelp"><i class="fas fa-question-circle"></i> Help</li>
+                <li><i class="fas fa-cog"></i> Settings</li>
+                <li><i class="fas fa-question-circle"></i> Help</li>
                 <li id="logoutAdmin"><i class="fas fa-sign-out-alt"></i> Logout</li>
               </ul>
             </div>
             
-            <!-- Results Page -->
             <div id="adminResultsContainer" style="display:none">
               <div class="results-header">
-                <button class="back-btn" id="backFromAdminResults"><i class="fas fa-arrow-left"></i></button>
                 <h3>All Student Results</h3>
+                <button id="backFromAdminResults" class="btn-ghost"><i class="fas fa-arrow-left"></i> Back</button>
               </div>
               <div class="results-container" id="adminResultsList"></div>
-            </div>
-
-            <!-- Settings Page -->
-            <div id="adminSettingsContainer" style="display:none">
-              <div class="results-header">
-                <button class="back-btn" id="backFromAdminSettings"><i class="fas fa-arrow-left"></i></button>
-                <h3>Settings</h3>
-              </div>
-              <div class="settings-page">
-                <div class="settings-item">
-                  <div>Dark Mode</div>
-                  <label class="toggle-switch">
-                    <input type="checkbox" id="adminDarkModeToggle">
-                    <span class="slider"></span>
-                  </label>
-                </div>
-                <div class="settings-item">
-                  <div>Notification</div>
-                  <label class="toggle-switch">
-                    <input type="checkbox" id="adminNotificationToggle" checked>
-                    <span class="slider"></span>
-                  </label>
-                </div>
-                <div class="settings-item">
-                  <div>Language</div>
-                  <select id="adminLanguageSelect">
-                    <option>English</option>
-                    <option>Nepali</option>
-                  </select>
-                </div>
-                <div class="settings-item">
-                  <div>User Management</div>
-                  <button class="btn-ghost small" id="openUserManagement">Manage Users</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Help Page -->
-            <div id="adminHelpContainer" style="display:none">
-              <div class="results-header">
-                <button class="back-btn" id="backFromAdminHelp"><i class="fas fa-arrow-left"></i></button>
-                <h3>Help & Support</h3>
-              </div>
-              <div class="help-page">
-                <div class="help-section">
-                  <h3>About Darpan Book</h3>
-                  <p>Darpan Book is a social messenger and exam system for computer training centers.</p>
-                </div>
-                <div class="help-section">
-                  <h3>Contact Support</h3>
-                  <p>Email: sundarrawal132@gmail.com</p>
-                  <p>Phone: +977 9800000000</p>
-                </div>
-                <div class="help-section">
-                  <h3>Exam Management</h3>
-                  <div id="adminHelpExamList"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- User Management Page -->
-            <div id="adminUserManagement" style="display:none">
-              <div class="results-header">
-                <button class="back-btn" id="backFromUserManagement"><i class="fas fa-arrow-left"></i></button>
-                <h3>User Management</h3>
-              </div>
-              <div class="user-list-page" id="adminUserList"></div>
-            </div>
-
-            <!-- Exam Management in Admin Profile -->
-            <div id="adminExamManagement" style="display:none">
-              <div class="results-header">
-                <button class="back-btn" id="backFromExamManagement"><i class="fas fa-arrow-left"></i></button>
-                <h3>Exam Management</h3>
-              </div>
-              <div class="page-content">
-                <div id="adminExamList"></div>
-              </div>
             </div>
           </div>
         </div>
@@ -890,12 +660,6 @@
     </div>
   </div>
 
-  <!-- Full screen container (for exam, results, etc.) -->
-  <div id="fullScreenContainer" class="full-screen" style="display:none">
-    <div class="full-screen-back" id="exitFullScreen"><i class="fas fa-times"></i></div>
-    <div class="page-content" id="fullScreenContent"></div>
-  </div>
-
 </div>
 
 <!-- Firebase (v11 modules) -->
@@ -927,6 +691,14 @@
     document.querySelectorAll(`#nav-${scope} .tab`).forEach(t=>t.classList.remove('active'));
     $(`${scope}-tab-${tab}`).style.display='block';
     document.querySelector(`#nav-${scope} .tab[data-tab="${tab}"]`).classList.add('active');
+    
+    // Toggle fullscreen chat mode
+    const app = document.querySelector('.app');
+    if (tab === 'chat') {
+      app.classList.add('chat-fullscreen');
+    } else {
+      app.classList.remove('chat-fullscreen');
+    }
   }
   const GROUP_ID = "adminGroup";
   const COURSES = {
@@ -1037,35 +809,11 @@
     // results
     $('openUserResults').onclick = async ()=>{
       $('userResultsContainer').style.display = 'block';
-      $('user-profile-view').style.display = 'none';
       const s = await get(ref(db, `results/${auth.currentUser.uid}`));
       renderResultsList('userResultsList', s, true);
     };
-    $('backFromUserResults').onclick = ()=> {
-      $('userResultsContainer').style.display = 'none';
-      $('user-profile-view').style.display = 'block';
-    };
-    
-    // settings
-    $('openUserSettings').onclick = ()=> {
-      $('userSettingsContainer').style.display = 'block';
-      $('user-profile-view').style.display = 'none';
-    };
-    $('backFromUserSettings').onclick = ()=> {
-      $('userSettingsContainer').style.display = 'none';
-      $('user-profile-view').style.display = 'block';
-    };
-    
-    // help
-    $('openUserHelp').onclick = ()=> {
-      $('userHelpContainer').style.display = 'block';
-      $('user-profile-view').style.display = 'none';
-      loadHelpExamList('userHelpExamList');
-    };
-    $('backFromUserHelp').onclick = ()=> {
-      $('userHelpContainer').style.display = 'none';
-      $('user-profile-view').style.display = 'block';
-    };
+    $('backFromResults').onclick = ()=> $('userResultsContainer').style.display = 'none';
+    $('backFromChat').onclick = ()=> setActiveTab('user', 'profile');
 
     // bottom nav
     document.querySelectorAll('#nav-user .tab').forEach(t=> t.onclick = ()=> setActiveTab('user', t.dataset.tab));
@@ -1085,18 +833,6 @@
       }
     });
     $('userSendBtn').onclick = ()=> sendGroupMessage(name);
-
-    // Back from chat button
-    $('backFromChat').onclick = () => {
-      setActiveTab('user', 'notice');
-    };
-
-    // Handle keyboard for chat input
-    $('userChatInput').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        $('userSendBtn').click();
-      }
-    });
 
     // EXAM chooser fill
     fillCourseSubject('uCourse','uSubject');
@@ -1212,7 +948,6 @@
 
   /* ======== ADMIN PANEL ======== */
   function loadAdmin(photoUrl){
-    // profile
     $('adminNameText').innerText = name;
     $('adminEmailText').innerText = email;
     $('adminProfilePic').src = photoUrl;
@@ -1231,6 +966,7 @@
       $('admin-profile-edit').classList.remove('active');
       $('admin-profile-view').style.display='block';
     };
+    $('backFromAdminChat').onclick = ()=> setActiveTab('admin', 'profile');
     
     // photo selector with gallery access
     $('changeAdminPhotoBtn').onclick = showPhotoSelectorWithGallery;
@@ -1238,70 +974,15 @@
     // results
     $('loadAllResults').onclick = async ()=>{
       $('adminResultsContainer').style.display = 'block';
-      $('admin-profile-view').style.display = 'none';
       const all = await get(ref(db,'results'));
       renderAllResultsForAdmin(all);
     };
-    $('backFromAdminResults').onclick = ()=> {
-      $('adminResultsContainer').style.display = 'none';
-      $('admin-profile-view').style.display = 'block';
-    };
-    
-    // settings
-    $('openAdminSettings').onclick = ()=> {
-      $('adminSettingsContainer').style.display = 'block';
-      $('admin-profile-view').style.display = 'none';
-    };
-    $('backFromAdminSettings').onclick = ()=> {
-      $('adminSettingsContainer').style.display = 'none';
-      $('admin-profile-view').style.display = 'block';
-    };
-    
-    // help
-    $('openAdminHelp').onclick = ()=> {
-      $('adminHelpContainer').style.display = 'block';
-      $('admin-profile-view').style.display = 'none';
-      loadHelpExamList('adminHelpExamList');
-    };
-    $('backFromAdminHelp').onclick = ()=> {
-      $('adminHelpContainer').style.display = 'none';
-      $('admin-profile-view').style.display = 'block';
-    };
-    
-    // user management
-    $('openUserManagement').onclick = async ()=> {
-      $('adminUserManagement').style.display = 'block';
-      $('admin-profile-view').style.display = 'none';
-      const users = await get(ref(db, 'users'));
-      renderUserList(users);
-    };
-    $('backFromUserManagement').onclick = ()=> {
-      $('adminUserManagement').style.display = 'none';
-      $('admin-profile-view').style.display = 'block';
-    };
-    
-    // exam management
-    $('backFromExamManagement').onclick = ()=> {
-      $('adminExamManagement').style.display = 'none';
-      $('admin-profile-view').style.display = 'block';
-    };
+    $('backFromAdminResults').onclick = ()=> $('adminResultsContainer').style.display = 'none';
 
     // Ensure admin is in the group
     set(ref(db, `groups/${GROUP_ID}/members/${auth.currentUser.uid}`), true);
     document.querySelectorAll('#nav-admin .tab').forEach(t=> t.onclick = ()=> setActiveTab('admin', t.dataset.tab));
     $('bell').onclick = ()=> setActiveTab('admin','requests');
-
-    // Back from chat button
-    $('backFromAdminChat').onclick = () => {
-      setActiveTab('admin', 'notice');
-    };
-
-    // Handle keyboard for chat input
-    $('adminChatInput').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        $('adminSendBtn').click();
-      }
-    });
 
     // Requests
     const myReqs = ref(db, `friendRequests/${auth.currentUser.uid}`);
@@ -1540,70 +1221,28 @@
         const subject = this.getAttribute('data-subject');
         $('aCourse').value = course;
         $('aSubject').value = subject;
-        // Open in full screen mode
-        openFullScreen('admin-tab-exam');
+        setActiveTab('admin', 'exam');
+        loadExamForAdmin(course, subject);
       };
     });
   }
-  
-  async function loadHelpExamList(containerId) {
-    const examsRef = ref(db, 'exams');
-    const snapshot = await get(examsRef);
-    const examList = $(containerId);
-    examList.innerHTML = '';
+
+  async function loadExamForAdmin(course, subject) {
+    const snap = await get(ref(db, `exams/${course}/${subject}`));
+    if (!snap.exists()) return;
     
-    if (!snapshot.exists()) {
-      examList.innerHTML = '<div class="muted">No exams available</div>';
-      return;
+    const exam = snap.val();
+    aQuestions.length = 0;
+    if (exam.questions) {
+      aQuestions.push(...exam.questions);
     }
     
-    snapshot.forEach(courseNode => {
-      const course = courseNode.key;
-      courseNode.forEach(subjectNode => {
-        const subject = subjectNode.key;
-        const exam = subjectNode.val();
-        
-        const item = document.createElement('div');
-        item.className = 'exam-quick-item';
-        item.innerHTML = `
-          <div class="exam-quick-info">
-            <div><strong>${course} - ${subject}</strong></div>
-            <div class="small muted">${exam.questions?.length || 0} questions • ${exam.duration} mins</div>
-          </div>
-          <div class="exam-quick-status ${exam.active ? 'active' : 'inactive'}">
-            ${exam.active ? 'Active' : 'Inactive'}
-          </div>
-        `;
-        examList.appendChild(item);
-      });
-    });
-  }
-  
-  async function renderUserList(snap) {
-    const list = $('adminUserList');
-    list.innerHTML = '';
-    
-    if (!snap.exists()) {
-      list.innerHTML = '<div class="muted">No users found</div>';
-      return;
-    }
-    
-    snap.forEach(userNode => {
-      const user = userNode.val();
-      const item = document.createElement('div');
-      item.className = 'user-item';
-      item.innerHTML = `
-        <div class="user-avatar">${initialFrom(user.name)}</div>
-        <div class="user-info">
-          <div class="user-name">${user.name}</div>
-          <div class="user-email">${user.email}</div>
-        </div>
-        <div class="small ${user.role === 'admin' ? 'text-success' : ''}">
-          ${user.role === 'admin' ? 'Admin' : 'User'}
-        </div>
-      `;
-      list.appendChild(item);
-    });
+    // Update UI
+    $('aDuration').value = exam.duration || '';
+    $('examActiveToggle').checked = exam.active || false;
+    currentExamStatus = exam.active || false;
+    updateExamStatusUI();
+    renderAdminQList();
   }
 
   /* ======== USER EXAM PLAYER ======== */
@@ -1661,7 +1300,7 @@
               <div class="small muted">${exam.questions?.length || 0} questions • ${exam.duration} mins</div>
             </div>
             <div class="exam-quick-action">
-              <button class="btn-ghost small" data-course="${course}" data-subject="${subject}">Start</button>
+              <button class="btn-ok small" data-course="${course}" data-subject="${subject}">Start Exam</button>
             </div>
           `;
           quickList.appendChild(item);
@@ -1680,7 +1319,8 @@
         const subject = this.getAttribute('data-subject');
         $('uCourse').value = course;
         $('uSubject').value = subject;
-        openFullScreen('user-tab-exam');
+        setActiveTab('user', 'exam');
+        loadExamForUser();
       };
     });
   }
@@ -1920,32 +1560,6 @@
       });
     }
   }
-
-  /* ===== FULL SCREEN MODE ===== */
-  function openFullScreen(tabId) {
-    const tabContent = $(tabId).cloneNode(true);
-    tabContent.style.display = 'block';
-    tabContent.style.height = '100%';
-    
-    $('fullScreenContent').innerHTML = '';
-    $('fullScreenContent').appendChild(tabContent);
-    $('fullScreenContainer').style.display = 'block';
-    
-    // Hide the main app container
-    document.querySelector('.app').style.display = 'none';
-  }
-  
-  $('exitFullScreen').onclick = function() {
-    $('fullScreenContainer').style.display = 'none';
-    document.querySelector('.app').style.display = 'flex';
-    
-    // If we were in exam, reload the exam state
-    if ($('fullScreenContent').querySelector('#userExamCard')) {
-      const course = $('uCourse').value;
-      const subject = $('uSubject').value;
-      loadExamForUser();
-    }
-  };
 
   /* ===== helpers at end ===== */
   document.querySelectorAll('#nav-user .tab').forEach(t=> t.onclick = ()=> setActiveTab('user', t.dataset.tab));
