@@ -21,6 +21,12 @@
   .hdr-actions i{font-size:18px;margin-left:14px;cursor:pointer;position:relative}
   .badge{position:absolute;top:-6px;right:-8px;background:#ff3b30;color:#fff;font-size:10px;border-radius:10px;padding:1px 5px;display:none}
 
+  /* Hide header on login and profile pages */
+  #page-login .header,
+  .profile-page .header {
+    display: none !important;
+  }
+
   /* Pages */
   .page{display:none;flex:1;overflow:auto;background:#fafafa;padding:12px 12px 84px;} /* keep bottom padding so content not hidden behind nav */
   .page.active{display:block}
@@ -40,9 +46,9 @@
 
   /* Bottom Nav (fixed, flush to bottom) */
   .nav{
-    height:68px;background:#fff;border-top:1px solid #e9e9e9;
+    height:50px;background:#fff;border-top:1px solid #e9e9e9;
     display:flex;justify-content:space-around;align-items:center;
-    position:fixed;left:0;right:0;bottom:0;max-width:420px;margin:0 auto;z-index:50;
+    position:fixed;left:0;right:0;bottom:0;max-width:450px;margin:0 auto;z-index:50;
   }
   .nav .tab{text-align:center;font-size:12px;color:#555;cursor:pointer;line-height:1}
   .nav .tab i{display:block;font-size:20px;margin-bottom:4px}
@@ -59,7 +65,7 @@
   .chat-container {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Full viewport height */
+    height: 200vh; /* Full viewport height */
     position: relative;
   }
   .chat-header {
@@ -77,12 +83,13 @@
     display: flex;
     align-items: center;
     flex: 1;
+    margin-left: 5px;
   }
   .chat-header-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 00px;
     background: #e3e3e3;
     display: flex;
     align-items: center;
@@ -109,18 +116,18 @@
     overflow-y: auto;
     padding: 10px;
     background: #f7fbff;
-    margin-bottom: 60px; /* Space for input */
+    margin-bottom: 50px; /* Space for input */
   }
   .msg-row{display:flex;align-items:flex-end;margin:8px 0;gap:8px}
   .msg-row.mine{justify-content:flex-end}
-  .msg-bubble{max-width:70%;padding:10px 12px;border-radius:14px;line-height:1.25;font-size:14px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
-  .msg-row.mine .msg-bubble{background:var(--mine); border-top-right-radius:6px}
-  .msg-row.theirs .msg-bubble{background:var(--theirs); border-top-left-radius:6px}
-  .msg-meta{font-size:11px;color:#8a8a8a;margin-top:3px}
+  .msg-bubble{max-width:100%;padding:8px 8px;border-radius:14px;line-height:1.25;font-size:14px;box-shadow:0 2px 2px rgba(0,0,0,.06)}
+  .msg-row.mine .msg-bubble{background:var(--mine); border-top-right-radius:1px}
+  .msg-row.theirs .msg-bubble{background:var(--theirs); border-top-left-radius:1px}
+  .msg-meta{font-size:11px;color:#8a8a8a;margin-top:0.0px}
   .mini-avatar{width:26px;height:26px;border-radius:50%;background:#e3e3e3;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
   .msg-row.mine .mini-avatar{display:none}
   .chat-input-container {
-    padding: 10px;
+    padding: 2px;
     background: white;
     border-top: 1px solid #eee;
     position: fixed;
@@ -142,7 +149,7 @@
   .send-btn {
     width: 46px;
     height: 46px;
-    border-radius: 50%;
+    border-radius: 30%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -156,20 +163,17 @@
     display: none !important;
   }
   .chat-fullscreen .page {
-    padding: 0 !important;
+    padding: 0.0 !important;
   }
   .chat-fullscreen .chat-container {
     height: 100vh !important;
   }
-  .chat-fullscreen .chat-messages {
-    height: calc(100vh - 120px) !important;
-  }
-
-  /* Profile + grid */
-  .profile-card{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:12px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .opt{background:#fff;border:1px solid #eee;border-radius:12px;padding:12px;text-align:center;cursor:pointer}
-  #error{color:#ff3b30;font-size:13px;text-align:center;margin-top:6px;display:none}
+  
+    /* Profile + grid */
+  .profile-card{background:#fff;border:10px solid #eee;border-radius:30px;padding:30px;margin-bottom:12px}
+  .grid{display:grid;grid-template-columns:10fr 1fr;gap:10px}
+  .opt{background:#fff;border:1px solid #eee;border-radius:50px;padding:50px;text-align:center;cursor:pointer}
+  #error{color:#ff3b30;font-size:13px;text-align:center;margin-top:2px;display:none}
 
   /* Exam builder / player */
   .flex{display:flex;gap:8px;align-items:center}
@@ -179,24 +183,24 @@
   .timer{font-weight:800}
 
   /* A4-like result card */
-  .a4{background:#fff;border:1px solid #ddd;border-radius:6px;padding:12px;margin:10px 0}
+  .a4{background:#fff;border:1px solid #ddd;border-radius:10px;padding:4px;margin:20px 0}
   .a4-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed #ccc;padding-bottom:8px;margin-bottom:8px}
   .logo-title{font-weight:800}
-  .passport{width:64px;height:80px;border:1px solid #aaa;background:#f3f3f3;object-fit:cover}
+  .passport{width:70px;height:80px;border:1px solid #aaa;background:#f3f3f3;object-fit:cover}
   table{width:100%;border-collapse:collapse}
-  th,td{border:1px solid #ddd;padding:6px;text-align:left}
+  th,td{border:1px solid #ddd;padding:4px;text-align:left}
   .right{text-align:right}
 
   /* Notice cards */
   .notice-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:10px;margin:8px 0}
-  .notice-img{width:100%;max-height:220px;object-fit:cover;border-radius:8px;border:1px solid #eee;margin-top:6px}
+  .notice-img{width:100%;max-height:600px;object-fit:cover;border-radius:10px;border:2px solid #eee;margin-top:8px}
 
   /* Profile Edit */
   .profile-edit{display:none}
   .profile-edit.active{display:block}
-  .profile-pic{width:120px;height:120px;border-radius:50%;object-fit:cover;margin:0 auto;display:block;border:3px solid var(--brand)}
+  .profile-pic{width:100px;height:100px;border-radius:100%;object-fit:cover;margin:0 auto;display:block;border:3px solid var(--brand)}
   .profile-center{text-align:center;margin:16px 0}
-  .back-btn{background:none;border:none;font-size:20px;cursor:pointer;position:absolute;left:16px;top:16px}
+  .back-btn{background:none;border:none;font-size:20px;cursor:pointer;position:absolute;left:2px;top:2px}
   
   /* Profile Sidebar */
   .profile-sidebar{width:100%;background:#fff;border-right:1px solid #eee}
@@ -241,33 +245,77 @@
   .exam-quick-status.inactive{background-color:#ffebee;color:var(--danger)}
   .exam-quick-action{width:80px;text-align:right}
 
-  @media print{
+  /* Profile Pages */
+  .profile-page {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+  }
+  .profile-page.active {
+    display: flex;
+  }
+  .profile-header {
+    height: 45px;
+    background: ;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .profile-header-title {
+    font-weight: bold;
+    margin-left: 10px;
+    flex: 1;
+  }
+  .profile-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+  }
+
+  /* Help Page */
+  .help-page {
+    padding: 16px;
+  }
+  .help-section {
+    margin-bottom: 20px;
+  }
+  .help-section h3 {
+    color: var(--brand);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 6px;
+  }
+  .help-item {
+    margin-bottom: 12px;
+  }
+  .help-item h4 {
+    margin-bottom: 4px;
+  }
+  .help-item p {
+    margin-top: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+@media print{
     body{background:#fff}
     .nav,.header{display:none!important}
     .page{padding:0}
-    .a4{width:210mm;min-height:297mm;margin:0 auto;border:none}
+    .a4{width:300mm;min-height:297mm;margin:0 auto;border:none}
   }
+  
 </style>
 </head>
 <body>
 <div class="app">
-
-  <!-- Header -->
-  <div class="header">
-    <div class="title">Darpan Book</div>
-    <div class="hdr-actions">
-      <i class="fas fa-magnifying-glass" title="Search"></i>
-      <i id="bell" class="fas fa-bell" title="Notifications">
-        <span id="bellBadge" class="badge">0</span>
-      </i>
-    </div>
-  </div>
-
+   
   <!-- LOGIN PAGE -->
   <div id="page-login" class="page active">
-    <div class="login">
-      <div class="brand">Darpan Book</div>
-
+    <div class="login"><br><br><br><br><br><br>
+      <div class="brand">login page</div>
+<br><br>
       <div class="card" id="loginCard">
         <input type="email" id="loginEmail" placeholder="Email">
         <input type="password" id="loginPassword" placeholder="Password">
@@ -287,14 +335,26 @@
       <p class="muted" style="text-align:center;margin-top:8px">Computer Training & Exam System</p>
     </div>
   </div>
+ 
 
   <!-- USER PANEL -->
+  <!-- Removed header from user profile pages -->
+  <div class="header" style="display:none" id="user-header">
+    <div class="title">दर्पण पाठशाला</div>
+    <div class="hdr-actions">
+      <i class="fas fa-search" title="Search"></i>
+      <i class="fas fa-bell" title="Notifications" id="user-notification-icon">
+        <span class="badge" id="user-notification-badge">0</span>
+      </i>
+    </div>
+  </div>
+
   <div id="page-user" class="page">
     <!-- Chat -->
     <div id="user-tab-chat" class="tab-content">
       <div class="chat-container">
         <div class="chat-header">
-          <button class="back-btn" id="backFromChat"><i class="fas fa-arrow-left"></i></button>
+          <button class="back-btn" id="backFromChat"></button>
           <div class="chat-header-info">
             <div class="chat-header-avatar" id="userChatIcon">A</div>
             <div>
@@ -395,10 +455,66 @@
       </div>
     </div>
 
+    <!-- Help -->
+    <div id="user-tab-help" class="tab-content" style="display:none;">
+      <div class="help-page">
+        <h2>Help Center</h2>
+        <!-- Available Exams Section -->
+        <div class="exam-quick-access" id="userExamQuickAccess">
+          <h4>Available Exams</h4>
+          <div id="userExamQuickList"></div>
+        </div>
+        <div class="help-section">
+          <h3>Getting Started</h3>
+          <div class="help-item">
+            <h4>How to create an account?</h4>
+            <p>Click on "Create new account" on the login page and fill in your details.</p>
+          </div>
+          <div class="help-item">
+            <h4>How to join the group chat?</h4>
+            <p>Go to the Friend tab and send a request to the Admin. Once approved, you can chat.</p>
+          </div>
+        </div>
+        
+        <div class="help-section">
+          <h3>Exams</h3>
+          <div class="help-item">
+            <h4>How to take an exam?</h4>
+            <p>Go to the Exam tab, select course and subject, then click "Load Exam".</p>
+          </div>
+          <div class="help-item">
+            <h4>Can I retake an exam?</h4>
+            <p>Yes, you can retake exams unless the admin has restricted attempts.</p>
+          </div>
+        </div>
+        
+        <div class="help-section">
+          <h3>Profile</h3>
+          <div class="help-item">
+            <h4>How to change my profile picture?</h4>
+            <p>Go to Profile → Edit Profile → Change Photo. Note: You can only change every 6 months.</p>
+          </div>
+          <div class="help-item">
+            <h4>Where can I see my exam results?</h4>
+            <p>Go to Profile → Exam Results to view all your previous exam scores.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </header>
+  
+  
+  
     <!-- Profile -->
     <div id="user-tab-profile" class="tab-content" style="display:none;">
-      <div class="page-content">
-        <div id="user-profile-view">
+      <!-- Main Profile View -->
+      <div id="user-profile-view" class="profile-page active">
+        <div class="profile-header">
+          <button class="back-btn" id="backFromProfile"><i class="fas fa-arrow-left"></i></button>
+          <div class="profile-header-title">My Profile</div>
+        </div>
+        <div class="profile-content">
           <div class="profile-card">
             <div class="profile-center">
               <img id="userProfilePic" class="profile-pic" src="" alt="Profile Picture">
@@ -406,37 +522,37 @@
               <div id="userEmailText" class="muted"></div>
             </div>
           </div>
-          
           <div class="flex" style="flex-direction:column;gap:12px">
-            <!-- Available Exams Section -->
-            <div class="exam-quick-access" id="userExamQuickAccess">
-              <h4>Available Exams</h4>
-              <div id="userExamQuickList"></div>
-            </div>
-            
             <div class="profile-sidebar">
               <ul class="profile-menu">
                 <li id="openUserResults"><i class="fas fa-poll"></i> Exam Results</li>
                 <li id="editUserProfile"><i class="fas fa-user-edit"></i> Edit Profile</li>
-                <li><i class="fas fa-cog"></i> Settings</li>
-                <li><i class="fas fa-question-circle"></i> Help</li>
+                <li id="openUserHelp"><i class="fas fa-question-circle"></i> Help</li>
                 <li id="logoutUser"><i class="fas fa-sign-out-alt"></i> Logout</li>
               </ul>
             </div>
-            
-            <div id="userResultsContainer" style="display:none">
-              <div class="results-header">
-                <h3>Your Exam Results</h3>
-                <button id="backFromResults" class="btn-ghost"><i class="fas fa-arrow-left"></i> Back</button>
-              </div>
-              <div class="results-container" id="userResultsList"></div>
-            </div>
           </div>
         </div>
-        
-        <!-- Edit Profile Section -->
-        <div id="user-profile-edit" class="profile-edit">
+      </div>
+      
+      <!-- Results Page -->
+      <div id="user-results-page" class="profile-page">
+        <div class="profile-header">
+          <button class="back-btn" id="backFromResults"><i class="fas fa-arrow-left"></i></button>
+          <div class="profile-header-title">Exam Results</div>
+        </div>
+        <div class="profile-content">
+          <div class="results-container" id="userResultsList"></div>
+        </div>
+      </div>
+      
+      <!-- Edit Profile Page -->
+      <div id="user-edit-profile-page" class="profile-page">
+        <div class="profile-header">
           <button class="back-btn" id="backFromEditProfile"><i class="fas fa-arrow-left"></i></button>
+          <div class="profile-header-title">Edit Profile</div>
+        </div>
+        <div class="profile-content">
           <div class="profile-card">
             <div class="profile-center">
               <img id="userProfilePicEdit" class="profile-pic" src="" alt="Profile Picture">
@@ -464,6 +580,17 @@
   </div>
 
   <!-- ADMIN PANEL -->
+  <!-- Removed header from admin profile pages -->
+  <div class="header" style="display:none" id="admin-header">
+    <div class="title">दर्पण पाठशाला</div>
+    <div class="hdr-actions">
+      <i class="fas fa-search" title="Search"></i>
+      <i class="fas fa-bell" title="Notifications" id="admin-notification-icon">
+        <span class="badge" id="admin-notification-badge">0</span>
+      </i>
+    </div>
+  </div>
+  </header>
   <div id="page-admin" class="page">
     <!-- Chat -->
     <div id="admin-tab-chat" class="tab-content">
@@ -491,7 +618,7 @@
         </div>
       </div>
     </div>
-
+ 
     <!-- Requests -->
     <div id="admin-tab-requests" class="tab-content" style="display:none;">
       <div class="page-content">
@@ -577,11 +704,63 @@
         <div class="row"><div class="left"><i class="fa fa-book"></i><b>Manage Books</b></div><span class="muted">Coming soon</span></div>
       </div>
     </div>
+    
+    <!-- Help -->
+    <div id="admin-tab-help" class="tab-content" style="display:none;">
+      <div class="help-page">
+        <h2>Admin Help Center</h2>
+        <!-- Exam Management Section -->
+        <div class="exam-quick-access" id="adminExamManagement">
+          <h4>Exam Management</h4>
+          <div id="adminExamList"></div>
+        </div>
+        <div class="help-section">
+          <h3>User Management</h3>
+          <div class="help-item">
+            <h4>How to approve users?</h4>
+            <p>Go to Requests tab to see pending requests. Click "Accept" to add users to the group.</p>
+          </div>
+          <div class="help-item">
+            <h4>How to remove users?</h4>
+            <p>Currently, you need to manually remove them from the Firebase database.</p>
+          </div>
+        </div>
+        
+        <div class="help-section">
+          <h3>Exam Management</h3>
+          <div class="help-item">
+            <h4>How to create an exam?</h4>
+            <p>Go to Exam tab, select course/subject, add questions, and click "Save Exam".</p>
+          </div>
+          <div class="help-item">
+            <h4>How to activate/deactivate exams?</h4>
+            <p>Use the toggle switch in the Exam tab to control exam availability.</p>
+          </div>
+        </div>
+        
+        <div class="help-section">
+          <h3>Notices</h3>
+          <div class="help-item">
+            <h4>How to post a notice?</h4>
+            <p>Go to Notice tab, type your message, optionally add an image, and click "Send Notice".</p>
+          </div>
+          <div class="help-item">
+            <h4>How to delete a notice?</h4>
+            <p>Each notice has a delete button (trash icon) that only admins can see.</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Profile -->
     <div id="admin-tab-profile" class="tab-content" style="display:none;">
-      <div class="page-content">
-        <div id="admin-profile-view">
+      <!-- Main Profile View -->
+      <div id="admin-profile-view" class="profile-page active">
+        <div class="profile-header">
+          <button class="back-btn" id="backFromAdminProfile"><i class="fas fa-arrow-left"></i></button>
+          <div class="profile-header-title">Admin Profile</div>
+        </div>
+        <div class="profile-content">
           <div class="profile-card">
             <div class="profile-center">
               <img id="adminProfilePic" class="profile-pic" src="" alt="Profile Picture">
@@ -591,35 +770,36 @@
           </div>
           
           <div class="flex" style="flex-direction:column;gap:12px">
-            <!-- Exam Management Section -->
-            <div class="exam-quick-access" id="adminExamManagement">
-              <h4>Exam Management</h4>
-              <div id="adminExamList"></div>
-            </div>
-            
             <div class="profile-sidebar">
               <ul class="profile-menu">
                 <li id="loadAllResults"><i class="fas fa-poll"></i> Student Results</li>
                 <li id="editAdminProfile"><i class="fas fa-user-edit"></i> Edit Profile</li>
-                <li><i class="fas fa-cog"></i> Settings</li>
-                <li><i class="fas fa-question-circle"></i> Help</li>
+                <li id="openAdminHelp"><i class="fas fa-question-circle"></i> Help</li>
                 <li id="logoutAdmin"><i class="fas fa-sign-out-alt"></i> Logout</li>
               </ul>
             </div>
-            
-            <div id="adminResultsContainer" style="display:none">
-              <div class="results-header">
-                <h3>All Student Results</h3>
-                <button id="backFromAdminResults" class="btn-ghost"><i class="fas fa-arrow-left"></i> Back</button>
-              </div>
-              <div class="results-container" id="adminResultsList"></div>
-            </div>
           </div>
         </div>
-        
-        <!-- Edit Profile Section -->
-        <div id="admin-profile-edit" class="profile-edit">
+      </div>
+      
+      <!-- Results Page -->
+      <div id="admin-results-page" class="profile-page">
+        <div class="profile-header">
+          <button class="back-btn" id="backFromAdminResults"><i class="fas fa-arrow-left"></i></button>
+          <div class="profile-header-title">Student Results</div>
+        </div>
+        <div class="profile-content">
+          <div class="results-container" id="adminResultsList"></div>
+        </div>
+      </div>
+      
+      <!-- Edit Profile Page -->
+      <div id="admin-edit-profile-page" class="profile-page">
+        <div class="profile-header">
           <button class="back-btn" id="backFromEditAdminProfile"><i class="fas fa-arrow-left"></i></button>
+          <div class="profile-header-title">Edit Profile</div>
+        </div>
+        <div class="profile-content">
           <div class="profile-card">
             <div class="profile-center">
               <img id="adminProfilePicEdit" class="profile-pic" src="" alt="Profile Picture">
@@ -634,11 +814,11 @@
         </div>
       </div>
     </div>
-
+ 
     <!-- Bottom nav (ADMIN) -->
     <div id="nav-admin" class="nav">
       <div class="tab active" data-tab="chat"><i class="fa fa-comments"></i>Chat</div>
-      <div class="tab" data-tab="requests"><i class="fa fa-bell"></i>Requests</div>
+      <div class="tab" data-tab="requests"><i class="fa fa-user-plus"></i>Requests</div>
       <div class="tab" data-tab="exam"><i class="fa fa-file-lines"></i>Exam</div>
       <div class="tab" data-tab="notice"><i class="fa fa-bullhorn"></i>Notice</div>
       <div class="tab" data-tab="book"><i class="fa fa-book"></i>Book</div>
@@ -661,7 +841,7 @@
   </div>
 
 </div>
-
+    
 <!-- Firebase (v11 modules) -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
@@ -770,8 +950,20 @@
     }
     if(role==='admin') adminUid = u.uid;
 
-    if(role==='admin'){ loadAdmin(data.photoUrl); showPage('page-admin'); setActiveTab('admin','chat'); }
-    else { loadUser(data.photoUrl);  showPage('page-user');  setActiveTab('user','chat'); }
+    if(role==='admin'){ 
+      loadAdmin(data.photoUrl); 
+      showPage('page-admin'); 
+      $('admin-header').style.display = 'flex';
+      $('user-header').style.display = 'none';
+      setActiveTab('admin','chat'); 
+    }
+    else { 
+      loadUser(data.photoUrl);  
+      showPage('page-user');  
+      $('user-header').style.display = 'flex';
+      $('admin-header').style.display = 'none';
+      setActiveTab('user','chat'); 
+    }
   });
 
   function showErr(msg){ const el=$('error'); el.innerText=msg; el.style.display='block'; }
@@ -789,31 +981,38 @@
     $('userChatIcon').innerText = initialFrom(name);
     $('userChatName').innerText = name;
     
+    // profile navigation
+    $('backFromProfile').onclick = ()=> setActiveTab('user', 'profile');
+    $('backFromResults').onclick = ()=> {
+      $('user-profile-view').classList.add('active');
+      $('user-results-page').classList.remove('active');
+    };
+    $('backFromEditProfile').onclick = ()=> {
+      $('user-profile-view').classList.add('active');
+      $('user-edit-profile-page').classList.remove('active');
+    };
+    $('backFromChat').onclick = ()=> setActiveTab('user', 'profile');
+    
     // edit profile
     $('editUserProfile').onclick = ()=>{
-      $('user-profile-view').style.display='none';
-      $('user-profile-edit').classList.add('active');
+      $('user-profile-view').classList.remove('active');
+      $('user-edit-profile-page').classList.add('active');
       $('editUserName').value = name;
       $('editUserEmail').value = email;
     };
-    $('backFromEditProfile').onclick = ()=>{
-      $('user-profile-edit').classList.remove('active');
-      $('user-profile-view').style.display='block';
-    };
-    
-    // photo selector with gallery access
-    $('changePhotoBtn').onclick = showPhotoSelectorWithGallery;
-    $('cancelPhotoSelect').onclick = ()=> $('photoSelector').classList.remove('active');
-    $('confirmPhotoSelect').onclick = confirmPhotoSelection;
     
     // results
     $('openUserResults').onclick = async ()=>{
-      $('userResultsContainer').style.display = 'block';
+      $('user-profile-view').classList.remove('active');
+      $('user-results-page').classList.add('active');
       const s = await get(ref(db, `results/${auth.currentUser.uid}`));
       renderResultsList('userResultsList', s, true);
     };
-    $('backFromResults').onclick = ()=> $('userResultsContainer').style.display = 'none';
-    $('backFromChat').onclick = ()=> setActiveTab('user', 'profile');
+    
+    // help
+    $('openUserHelp').onclick = ()=> {
+      setActiveTab('user', 'help');
+    };
 
     // bottom nav
     document.querySelectorAll('#nav-user .tab').forEach(t=> t.onclick = ()=> setActiveTab('user', t.dataset.tab));
@@ -849,6 +1048,11 @@
 
     // Load available exams in profile
     loadAvailableExamsForUser();
+
+    // Photo selector
+    $('changePhotoBtn').onclick = showPhotoSelectorWithGallery;
+    $('cancelPhotoSelect').onclick = ()=> $('photoSelector').classList.remove('active');
+    $('confirmPhotoSelect').onclick = ()=> confirmPhotoSelection();
   }
 
   function showPhotoSelectorWithGallery() {
@@ -955,34 +1159,44 @@
     $('adminChatIcon').innerText = initialFrom(name);
     $('adminChatName').innerText = name;
     
-    // edit profile
-    $('editAdminProfile').onclick = ()=>{
-      $('admin-profile-view').style.display='none';
-      $('admin-profile-edit').classList.add('active');
-      $('editAdminName').value = name;
-      $('editAdminEmail').value = email;
+    // profile navigation
+    $('backFromAdminProfile').onclick = ()=> setActiveTab('admin', 'profile');
+    $('backFromAdminResults').onclick = ()=> {
+      $('admin-profile-view').classList.add('active');
+      $('admin-results-page').classList.remove('active');
     };
-    $('backFromEditAdminProfile').onclick = ()=>{
-      $('admin-profile-edit').classList.remove('active');
-      $('admin-profile-view').style.display='block';
+    $('backFromEditAdminProfile').onclick = ()=> {
+      $('admin-profile-view').classList.add('active');
+      $('admin-edit-profile-page').classList.remove('active');
     };
     $('backFromAdminChat').onclick = ()=> setActiveTab('admin', 'profile');
     
-    // photo selector with gallery access
-    $('changeAdminPhotoBtn').onclick = showPhotoSelectorWithGallery;
+    // edit profile
+    $('editAdminProfile').onclick = ()=>{
+      $('admin-profile-view').classList.remove('active');
+      $('admin-edit-profile-page').classList.add('active');
+      $('editAdminName').value = name;
+      $('editAdminEmail').value = email;
+    };
     
     // results
     $('loadAllResults').onclick = async ()=>{
-      $('adminResultsContainer').style.display = 'block';
+      $('admin-profile-view').classList.remove('active');
+      $('admin-results-page').classList.add('active');
       const all = await get(ref(db,'results'));
       renderAllResultsForAdmin(all);
     };
-    $('backFromAdminResults').onclick = ()=> $('adminResultsContainer').style.display = 'none';
+    
+    // help
+    $('openAdminHelp').onclick = ()=> {
+      setActiveTab('admin', 'help');
+    };
 
     // Ensure admin is in the group
     set(ref(db, `groups/${GROUP_ID}/members/${auth.currentUser.uid}`), true);
     document.querySelectorAll('#nav-admin .tab').forEach(t=> t.onclick = ()=> setActiveTab('admin', t.dataset.tab));
-    $('bell').onclick = ()=> setActiveTab('admin','requests');
+    $('user-notification-icon').onclick = ()=> setActiveTab('user','notice');
+    $('admin-notification-icon').onclick = ()=> setActiveTab('admin','requests');
 
     // Requests
     const myReqs = ref(db, `friendRequests/${auth.currentUser.uid}`);
@@ -1008,7 +1222,7 @@
           list.appendChild(item);
         }
       });
-      const badge=$('bellBadge');
+      const badge=$('admin-notification-badge');
       if(count>0){ badge.style.display='inline-block'; badge.innerText=count; } else { badge.style.display='none'; }
       document.querySelectorAll('.acceptBtn').forEach(btn=>{
         btn.onclick = async ()=>{
@@ -1051,6 +1265,9 @@
     onValue(ref(db,'notices'), (snap)=>{
       renderNotices('adminNoticeList', snap, true);
     });
+
+    // Photo selector
+    $('changeAdminPhotoBtn').onclick = showPhotoSelectorWithGallery;
   }
 
   /* ======== GROUP CHAT ======== */
@@ -1560,10 +1777,6 @@
       });
     }
   }
-
-  /* ===== helpers at end ===== */
-  document.querySelectorAll('#nav-user .tab').forEach(t=> t.onclick = ()=> setActiveTab('user', t.dataset.tab));
-  document.querySelectorAll('#nav-admin .tab').forEach(t=> t.onclick = ()=> setActiveTab('admin', t.dataset.tab));
 </script>
 </body>
 </html>
