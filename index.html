@@ -299,6 +299,137 @@
     color: var(--muted);
     font-size: 14px;
   }
+  
+  /* Book PDF Section */
+  .book-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .book-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .book-icon {
+    font-size: 24px;
+    color: #e74c3c;
+    margin-right: 10px;
+  }
+  .book-info {
+    flex: 1;
+  }
+  .book-meta {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .book-view {
+    color: var(--brand);
+    font-weight: bold;
+  }
+  
+  /* PDF Viewer */
+  .pdf-viewer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 2000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .pdf-viewer.active {
+    display: flex;
+  }
+  .pdf-container {
+    width: 90%;
+    height: 80%;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .pdf-toolbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: #f1f1f1;
+    border-bottom: 1px solid #ddd;
+  }
+  .pdf-close {
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Notification styles */
+  .notification-toast {
+    position: fixed;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    max-width: 90%;
+  }
+  .notification-icon {
+    font-size: 20px;
+  }
+  
+  /* Option selection styling */
+  .option-label {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .option-label:hover {
+    background: #f9f9f9;
+  }
+  .option-label input[type="radio"] {
+    margin-right: 10px;
+  }
+  .option-label.selected {
+    background: #e6f7ff;
+    border-color: var(--brand);
+  }
+  .option-label.locked {
+    background: #f5f5f5;
+    cursor: not-allowed;
+  }
+  
+  /* Separate headers for different pages */
+  .login-header {
+    background: var(--brand);
+    color: white;
+    padding: 16px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 0 0 15px 15px;
+    margin-bottom: 20px;
+  }
+  
 @media print{
     body{background:#fff}
     .nav,.header{display:none!important}
@@ -313,7 +444,8 @@
    
   <!-- LOGIN PAGE -->
   <div id="page-login" class="page active">
-    <div class="login"><br><br><br><br><br><br>
+    <div class="login-header">दर्पण पाठशाला</div>
+    <div class="login"><br><br><br><br>
       <div class="brand">Login Page</div>
 <br><br>
       <div class="card" id="loginCard">
@@ -338,8 +470,7 @@
  
 
   <!-- USER PANEL -->
-  <!-- Removed header from user profile pages -->
-  <div class="header" style="display:none" id="user-header">
+  <div class="header" id="user-header">
     <div class="title">दर्पण पाठशाला</div>
     <div class="hdr-actions">
       <i class="fas fa-search" title="Search"></i>
@@ -354,7 +485,7 @@
     <div id="user-tab-chat" class="tab-content">
       <div class="chat-container">
         <div class="chat-header">
-          <button class="back-btn" id="backFromChat"></button>
+          <button class="back-btn" id="backFromChat"><i class="fas fa-arrow-left"></i></button>
           <div class="chat-header-info">
             <div class="chat-header-avatar" id="userChatIcon">A</div>
             <div>
@@ -443,7 +574,7 @@
     <div id="user-tab-book" class="tab-content" style="display:none;">
       <div class="page-content">
         <h3>Book</h3>
-        <div class="row"><div class="left"><i class="fa fa-book"></i><b>Book Section</b></div><span class="muted">Coming soon</span></div>
+        <div id="userBookList"></div>
       </div>
     </div>
 
@@ -501,10 +632,6 @@
         </div>
       </div>
     </div>
-  
-  </header>
-  
-  
   
     <!-- Profile -->
     <div id="user-tab-profile" class="tab-content" style="display:none;">
@@ -580,8 +707,7 @@
   </div>
 
   <!-- ADMIN PANEL -->
-  <!-- Removed header from admin profile pages -->
-  <div class="header" style="display:none" id="admin-header">
+  <div class="header" id="admin-header">
     <div class="title">दर्पण पाठशाला</div>
     <div class="hdr-actions">
       <i class="fas fa-search" title="Search"></i>
@@ -590,13 +716,13 @@
       </i>
     </div>
   </div>
-  </header>
+
   <div id="page-admin" class="page">
     <!-- Chat -->
     <div id="admin-tab-chat" class="tab-content">
       <div class="chat-container">
         <div class="chat-header">
-          <button class="back-btn" id="backFromAdminChat">
+          <button class="back-btn" id="backFromAdminChat"><i class="fas fa-arrow-left"></i>
           </button>
           <div class="chat-header-info">
             <div class="chat-header-avatar" id="adminChatIcon">G</div>
@@ -701,8 +827,19 @@
     <!-- Book -->
     <div id="admin-tab-book" class="tab-content" style="display:none;">
       <div class="page-content">
-        <h3>Book</h3>
-        <div class="row"><div class="left"><i class="fa fa-book"></i><b>Manage Books</b></div><span class="muted">Coming soon</span></div>
+        <h3>Book Management</h3>
+        <div class="card">
+          <h4>Upload PDF Book</h4>
+          <input type="text" id="bookTitle" placeholder="Book Title">
+          <input type="text" id="bookAuthor" placeholder="Author">
+          <input type="text" id="bookCourse" placeholder="Course (Optional)">
+          <input type="file" id="bookFile" accept=".pdf">
+          <button id="uploadBookBtn" class="btn-ok">Upload Book</button>
+        </div>
+        <div class="card">
+          <h4>All Books</h4>
+          <div id="adminBookList"></div>
+        </div>
       </div>
     </div>
     
@@ -841,6 +978,23 @@
     </div>
   </div>
 
+  <!-- PDF Viewer Modal -->
+  <div id="pdfViewer" class="pdf-viewer">
+    <div class="pdf-container">
+      <div class="pdf-toolbar">
+        <span id="pdfTitle">PDF Viewer</span>
+        <button id="closePdf" class="pdf-close">Close</button>
+      </div>
+      <iframe id="pdfFrame" width="100%" height="100%" style="border:none;"></iframe>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="notificationToast" class="notification-toast" style="display: none;">
+    <i class="fas fa-bell notification-icon"></i>
+    <span id="notificationMessage"></span>
+  </div>
+
 </div>
     
 <!-- Firebase (v11 modules) -->
@@ -848,6 +1002,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
   import { getDatabase, ref, get, set, onValue, push, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+  import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
 
   /* ===== CONFIG ===== */
   const firebaseConfig = {
@@ -863,10 +1018,27 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db   = getDatabase(app);
+  const storage = getStorage(app);
 
   /* ===== UTIL ===== */
   const $ = id => document.getElementById(id);
-  const showPage = id => { document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); $(id).classList.add('active'); }
+  const showPage = id => { 
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); 
+    $(id).classList.add('active'); 
+    
+    // Show/hide appropriate headers
+    if (id === 'page-login') {
+      $('user-header').style.display = 'none';
+      $('admin-header').style.display = 'none';
+    } else if (id === 'page-user') {
+      $('user-header').style.display = 'flex';
+      $('admin-header').style.display = 'none';
+    } else if (id === 'page-admin') {
+      $('user-header').style.display = 'none';
+      $('admin-header').style.display = 'flex';
+    }
+  }
+  
   function setActiveTab(scope, tab){
     document.querySelectorAll(`#page-${scope} .tab-content`).forEach(t=>t.style.display='none');
     document.querySelectorAll(`#nav-${scope} .tab`).forEach(t=>t.classList.remove('active'));
@@ -881,6 +1053,7 @@
       app.classList.remove('chat-fullscreen');
     }
   }
+  
   const GROUP_ID = "adminGroup";
   const COURSES = {
     "Basic": ["Basics","WinWord","Excel","PowerPoint"],
@@ -892,6 +1065,44 @@
   const initialFrom = n => (n||'?').trim().charAt(0).toUpperCase();
   const timeMini = ts => new Date(ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   let currentUser=null, role="user", name="", email="", adminUid=null, lastPhotoChange=0;
+  let notificationSound = new Audio("data:audio/wav;base64,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极");
+  
+  // Play notification sound
+  function playNotificationSound() {
+    try {
+      notificationSound.currentTime = 0;
+      notificationSound.play();
+    } catch (e) {
+      console.log("Could not play notification sound", e);
+    }
+  }
+  
+  // Show notification toast
+  function showNotification(message) {
+    const toast = $('#notificationToast');
+    $('#notificationMessage').text(message);
+    toast.style.display = 'flex';
+    
+    // Play sound
+    playNotificationSound();
+    
+    // Request browser notification if supported
+    if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification('Darpan Book', { body: message, icon: 'https://example.com/icon.png' });
+    }
+    
+    // Auto hide after 3 seconds
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 3000);
+  }
+  
+  // Request notification permission
+  function requestNotificationPermission() {
+    if ('Notification' in window) {
+      Notification.requestPermission();
+    }
+  }
 
   /* ===== LOGIN / REGISTER ===== */
   $('toRegister').onclick = ()=>{ $('loginCard').style.display='none'; $('registerCard').style.display='block'; $('error').style.display='none'; }
@@ -916,11 +1127,22 @@
       alert("Account created! Please log in."); $('toLogin').click();
     }catch(e){ alert(cleanFirebaseError(e.message)); }
   };
-  $('logoutUser').onclick = ()=>signOut(auth);
-  $('logoutAdmin').onclick = ()=>signOut(auth);
+  $('logoutUser').onclick = () => {
+    signOut(auth).then(() => {
+      showPage('page-login');
+    });
+  };
+  $('logoutAdmin').onclick = () => {
+    signOut(auth).then(() => {
+      showPage('page-login');
+    });
+  };
 
   onAuthStateChanged(auth, async (u)=>{
-    if(!u){ showPage('page-login'); return; }
+    if(!u){ 
+      showPage('page-login'); 
+      return; 
+    }
     currentUser = u;
     const usRef = ref(db, `users/${u.uid}`);
     let snap = await get(usRef);
@@ -954,17 +1176,16 @@
     if(role==='admin'){ 
       loadAdmin(data.photoUrl); 
       showPage('page-admin'); 
-      $('admin-header').style.display = 'flex';
-      $('user-header').style.display = 'none';
       setActiveTab('admin','chat'); 
     }
     else { 
       loadUser(data.photoUrl);  
       showPage('page-user');  
-      $('user-header').style.display = 'flex';
-      $('admin-header').style.display = 'none';
       setActiveTab('user','chat'); 
     }
+    
+    // Request notification permission
+    requestNotificationPermission();
   });
 
   function showErr(msg){ const el=$('error'); el.innerText=msg; el.style.display='block'; }
@@ -1046,6 +1267,11 @@
     onValue(ref(db,'notices'), (snap)=>{
       renderNotices('userNoticeList', snap);
     });
+    
+    // Books (user view)
+    onValue(ref(db,'books'), (snap)=>{
+      renderBooks('userBookList', snap);
+    });
 
     // Load available exams in profile
     loadAvailableExamsForUser();
@@ -1054,6 +1280,9 @@
     $('changePhotoBtn').onclick = showPhotoSelectorWithGallery;
     $('cancelPhotoSelect').onclick = ()=> $('photoSelector').classList.remove('active');
     $('confirmPhotoSelect').onclick = ()=> confirmPhotoSelection();
+    
+    // Listen for notifications
+    listenForNotifications();
   }
 
   function showPhotoSelectorWithGallery() {
@@ -1168,7 +1397,7 @@
     };
     $('backFromEditAdminProfile').onclick = ()=> {
       $('admin-profile-view').classList.add('active');
-      $('admin-edit-profile-page').classList.remove('active');
+      $('admin-edit-profile-page').classList.add('active');
     };
     $('backFromAdminChat').onclick = ()=> setActiveTab('admin', 'profile');
     
@@ -1266,9 +1495,18 @@
     onValue(ref(db,'notices'), (snap)=>{
       renderNotices('adminNoticeList', snap, true);
     });
+    
+    // Book upload
+    $('uploadBookBtn').onclick = uploadBook;
+    onValue(ref(db,'books'), (snap)=>{
+      renderBooks('adminBookList', snap, true);
+    });
 
     // Photo selector
     $('changeAdminPhotoBtn').onclick = showPhotoSelectorWithGallery;
+    
+    // Listen for notifications
+    listenForNotifications();
   }
 
   /* ======== GROUP CHAT ======== */
@@ -1583,7 +1821,7 @@
       const name=`q_${idx}`;
       div.innerHTML = `<div><b>Q${idx+1}.</b> ${q.q}</div>
         ${q.opts.map((op,i)=>`
-          <label class="flex" style="justify-content:flex-start">
+          <label class="option-label" id="option-${idx}-${i}">
             <input type="radio" name="${name}" value="${i}">
             <span>${String.fromCharCode(65+i)}) ${op}</span>
           </label>`).join('')}
@@ -1594,9 +1832,22 @@
         r.addEventListener('change', (e)=>{
           if(lockSet[name]) return;
           userAnswers[name]=parseInt(e.target.value,10);
+          
+          // Add visual feedback for selected option
+          const selectedOption = $(`option-${idx}-${e.target.value}`);
+          document.querySelectorAll(`.option-label`).forEach(opt => {
+            if (opt.id.startsWith(`option-${idx}-`)) {
+              opt.classList.remove('selected');
+            }
+          });
+          selectedOption.classList.add('selected');
+          
           // lock radios
           div.querySelectorAll(`input[name="${name}"]`).forEach(rr=>{
-            if(rr!==e.target) rr.disabled=true;
+            if(rr!==e.target) {
+              rr.disabled=true;
+              $(`option-${idx}-${rr.value}`).classList.add('locked');
+            }
           });
           lockSet[name]=true;
         });
@@ -1775,6 +2026,183 @@
           const k = btn.getAttribute('data-del');
           if(confirm('Delete this notice?')) await remove(ref(db, `notices/${k}`));
         };
+      });
+    }
+  }
+  
+  /* ===== BOOKS ===== */
+  async function uploadBook() {
+    const title = $('#bookTitle').value.trim();
+    const author = $('#bookAuthor').value.trim();
+    const course = $('#bookCourse').value.trim();
+    const file = $('#bookFile').files[0];
+    
+    if (!title || !author || !file) {
+      alert('Please fill all required fields and select a PDF file');
+      return;
+    }
+    
+    try {
+      // Upload file to Firebase Storage
+      const fileRef = storageRef(storage, `books/${Date.now()}_${file.name}`);
+      await uploadBytes(fileRef, file);
+      const downloadURL = await getDownloadURL(fileRef);
+      
+      // Save book info to database
+      await push(ref(db, 'books'), {
+        title,
+        author,
+        course: course || 'General',
+        fileUrl: downloadURL,
+        uploadedBy: auth.currentUser.uid,
+        uploadedByName: name,
+        ts: Date.now()
+      });
+      
+      alert('Book uploaded successfully!');
+      $('#bookTitle').value = '';
+      $('#bookAuthor').value = '';
+      $('#bookCourse').value = '';
+      $('#bookFile').value = '';
+    } catch (error) {
+      console.error('Error uploading book:', error);
+      alert('Error uploading book: ' + error.message);
+    }
+  }
+  
+  function renderBooks(containerId, snap, canDelete=false) {
+    const wrap = $(containerId);
+    wrap.innerHTML = '';
+    
+    if (!snap.exists()) {
+      wrap.innerHTML = '<div class="muted">No books available yet.</div>';
+      return;
+    }
+    
+    const items = [];
+    snap.forEach(ch => {
+      items.push({ key: ch.key, ...ch.val() });
+    });
+    
+    // Sort by timestamp (newest first)
+    items.sort((a, b) => (b.ts || 0) - (a.ts || 0));
+    
+    items.forEach(book => {
+      const card = document.createElement('div');
+      card.className = 'book-card';
+      card.innerHTML = `
+        <div class="left">
+          <i class="fas fa-file-pdf book-icon"></i>
+          <div class="book-info">
+            <div><b>${book.title}</b></div>
+            <div class="book-meta">by ${book.author} • ${book.course}</div>
+          </div>
+          <div class="book-view">View</div>
+        </div>
+        ${canDelete ? `<button class="btn-ghost small" data-del="${book.key}" style="margin-top: 8px"><i class="fa fa-trash"></i></button>` : ''}
+      `;
+      
+      card.querySelector('.book-view').onclick = () => {
+        $('#pdfTitle').textContent = book.title;
+        $('#pdfFrame').src = book.fileUrl;
+        $('#pdfViewer').classList.add('active');
+      };
+      
+      if (canDelete) {
+        card.querySelector('[data-del]').onclick = async () => {
+          if (confirm('Delete this book?')) {
+            await remove(ref(db, `books/${book.key}`));
+          }
+        };
+      }
+      
+      wrap.appendChild(card);
+    });
+  }
+  
+  // Close PDF viewer
+  $('#closePdf').onclick = () => {
+    $('#pdfViewer').classList.remove('active');
+    $('#pdfFrame').src = '';
+  };
+  
+  /* ===== NOTIFICATION LISTENER ===== */
+  function listenForNotifications() {
+    // Listen for new messages in group chat
+    onValue(ref(db, `groups/${GROUP_ID}/messages`), (snap) => {
+      if (!snap.exists()) return;
+      
+      const messages = [];
+      snap.forEach(ch => messages.push(ch.val()));
+      
+      // Check if there are new messages (not sent by current user)
+      const newMessages = messages.filter(m => 
+        m.uid !== auth.currentUser.uid && 
+        m.ts > (Date.now() - 10000) // Messages from last 10 seconds
+      );
+      
+      if (newMessages.length > 0) {
+        showNotification(`New message from ${newMessages[0].name}`);
+      }
+    });
+    
+    // Listen for new notices
+    onValue(ref(db, 'notices'), (snap) => {
+      if (!snap.exists()) return;
+      
+      const notices = [];
+      snap.forEach(ch => notices.push({...ch.val(), key: ch.key}));
+      
+      // Check if there are new notices (not sent by current user)
+      const newNotices = notices.filter(n => 
+        n.uid !== auth.currentUser.uid && 
+        n.ts > (Date.now() - 10000) // Notices from last 10 seconds
+      );
+      
+      if (newNotices.length > 0) {
+        showNotification(`New notice from ${newNotices[0].name}`);
+      }
+    });
+    
+    // Listen for friend requests (admin only)
+    if (role === 'admin') {
+      onValue(ref(db, `friendRequests/${auth.currentUser.uid}`), (snap) => {
+        if (!snap.exists()) return;
+        
+        const requests = [];
+        snap.forEach(ch => requests.push({...ch.val(), key: ch.key}));
+        
+        // Check if there are new requests
+        const newRequests = requests.filter(r => 
+          r.ts > (Date.now() - 10000) // Requests from last 10 seconds
+        );
+        
+        if (newRequests.length > 0) {
+          showNotification(`New friend request from ${newRequests[0].name}`);
+        }
+      });
+    }
+    
+    // Listen for exam results (admin only)
+    if (role === 'admin') {
+      onValue(ref(db, 'results'), (snap) => {
+        if (!snap.exists()) return;
+        
+        const results = [];
+        snap.forEach(user => {
+          user.forEach(result => {
+            results.push({...result.val(), userId: user.key, key: result.key});
+          });
+        });
+        
+        // Check if there are new results
+        const newResults = results.filter(r => 
+          r.ts > (Date.now() - 10000) // Results from last 10 seconds
+        );
+        
+        if (newResults.length > 0) {
+          showNotification(`New exam result submitted`);
+        }
       });
     }
   }
