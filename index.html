@@ -392,30 +392,54 @@
     font-size: 20px;
   }
   
-  /* Option selection styling */
+  /* Option selection styling - IMPROVED */
   .option-label {
     display: flex;
     align-items: center;
-    padding: 8px;
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
+    width: 100%;
   }
   .option-label:hover {
     background: #f9f9f9;
   }
   .option-label input[type="radio"] {
-    margin-right: 10px;
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
   }
   .option-label.selected {
     background: #e6f7ff;
     border-color: var(--brand);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
   .option-label.locked {
     background: #f5f5f5;
     cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .option-text {
+    flex: 1;
+    font-size: 15px;
+  }
+  
+  /* Question container improvements */
+  .question-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .question-text {
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 16px;
+    line-height: 1.4;
   }
   
   /* Separate headers for different pages */
@@ -428,6 +452,46 @@
     font-size: 20px;
     border-radius: 0 0 15px 15px;
     margin-bottom: 20px;
+  }
+  
+  /* Mobile notification improvements */
+  @media (max-width: 480px) {
+    .notification-toast {
+      bottom: 80px;
+      padding: 10px 16px;
+      font-size: 14px;
+    }
+    
+    .option-label {
+      padding: 10px;
+    }
+    
+    .option-label input[type="radio"] {
+      margin-right: 10px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  /* Book upload form improvements */
+  .book-upload-form {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .book-upload-form h4 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: var(--brand);
+  }
+  
+  /* Exam option grid layout */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
   
 @media print{
@@ -828,13 +892,15 @@
     <div id="admin-tab-book" class="tab-content" style="display:none;">
       <div class="page-content">
         <h3>Book Management</h3>
-        <div class="card">
+        <!-- Improved book upload form -->
+        <div class="book-upload-form">
           <h4>Upload PDF Book</h4>
-          <input type="text" id="bookTitle" placeholder="Book Title">
-          <input type="text" id="bookAuthor" placeholder="Author">
+          <input type="text" id="bookTitle" placeholder="Book Title *">
+          <input type="text" id="bookAuthor" placeholder="Author *">
           <input type="text" id="bookCourse" placeholder="Course (Optional)">
           <input type="file" id="bookFile" accept=".pdf">
           <button id="uploadBookBtn" class="btn-ok">Upload Book</button>
+          <div class="muted small">* Required fields</div>
         </div>
         <div class="card">
           <h4>All Books</h4>
@@ -885,6 +951,19 @@
           <div class="help-item">
             <h4>How to delete a notice?</h4>
             <p>Each notice has a delete button (trash icon) that only admins can see.</p>
+          </div>
+        </div>
+        
+        <!-- Book Management Help Section -->
+        <div class="help-section">
+          <h3>Book Management</h3>
+          <div class="help-item">
+            <h4>How to upload a book?</h4>
+            <p>Go to Book tab, fill in the book details, select a PDF file, and click "Upload Book".</p>
+          </div>
+          <div class="help-item">
+            <h4>What file format is supported?</h4>
+            <p>Currently, only PDF files are supported for book uploads.</p>
           </div>
         </div>
       </div>
@@ -1065,7 +1144,7 @@
   const initialFrom = n => (n||'?').trim().charAt(0).toUpperCase();
   const timeMini = ts => new Date(ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   let currentUser=null, role="user", name="", email="", adminUid=null, lastPhotoChange=0;
-  let notificationSound = new Audio("data:audio/wav;base64,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极");
+  let notificationSound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbVtfdJivrJBhNjVgodDbq2EcBStztvLJjFQNAB1Ql9L/4KZQHAAKLWiv6/LJm2EcAQASTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp1AcAAosaK/r8smbYRwBABVMgdT/4KdQHAAKLGiv6/LJm2EcAQAVTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp1AcAAosaK/r8smbYRwBABVMgdT/4KdQHAAKLGiv6/LJm2EcAQAVTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp1AcAAosaK/r8smbYRwBABVMgdT/4KdQHAAKLGiv6/LJm2EcAQAVTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp极");
   
   // Play notification sound
   function playNotificationSound() {
@@ -1089,6 +1168,12 @@
     // Request browser notification if supported
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification('Darpan Book', { body: message, icon: 'https://example.com/icon.png' });
+    } else if ('Notification' in window && Notification.permission !== 'denied') {
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          new Notification('Darpan Book', { body: message });
+        }
+      });
     }
     
     // Auto hide after 3 seconds
@@ -1099,7 +1184,7 @@
   
   // Request notification permission
   function requestNotificationPermission() {
-    if ('Notification' in window) {
+    if ('Notification' in window && Notification.permission === 'default') {
       Notification.requestPermission();
     }
   }
@@ -1814,21 +1899,27 @@
       if(remainingSec<=0){ clearInterval(uTimerInt); autoSubmitExam(course,subject,student); }
     },1000);
 
-    // render questions
+    // render questions with improved layout
     const box=$('uQList'); box.innerHTML='';
     loadedExam.questions.forEach((q,idx)=>{
-      const div=document.createElement('div'); div.className='q-item';
+      const questionDiv=document.createElement('div'); 
+      questionDiv.className='question-container';
+      
       const name=`q_${idx}`;
-      div.innerHTML = `<div><b>Q${idx+1}.</b> ${q.q}</div>
-        ${q.opts.map((op,i)=>`
-          <label class="option-label" id="option-${idx}-${i}">
-            <input type="radio" name="${name}" value="${i}">
-            <span>${String.fromCharCode(65+i)}) ${op}</span>
-          </label>`).join('')}
+      questionDiv.innerHTML = `
+        <div class="question-text"><b>Q${idx+1}.</b> ${q.q}</div>
+        <div class="options-grid">
+          ${q.opts.map((op,i)=>`
+            <label class="option-label" id="option-${idx}-${i}">
+              <input type="radio" name="${name}" value="${i}">
+              <span class="option-text">${String.fromCharCode(65+i)}) ${op}</span>
+            </label>`).join('')}
+        </div>
         <div class="q-meta">Once selected, it locks (cannot change).</div>`;
-      box.appendChild(div);
+      box.appendChild(questionDiv);
+      
       // one-tick lock
-      div.querySelectorAll(`input[name="${name}"]`).forEach(r=>{
+      questionDiv.querySelectorAll(`input[name="${name}"]`).forEach(r=>{
         r.addEventListener('change', (e)=>{
           if(lockSet[name]) return;
           userAnswers[name]=parseInt(e.target.value,10);
@@ -1843,7 +1934,7 @@
           selectedOption.classList.add('selected');
           
           // lock radios
-          div.querySelectorAll(`input[name="${name}"]`).forEach(rr=>{
+          questionDiv.querySelectorAll(`input[name="${name}"]`).forEach(rr=>{
             if(rr!==e.target) {
               rr.disabled=true;
               $(`option-${idx}-${rr.value}`).classList.add('locked');
