@@ -494,42 +494,60 @@
     gap: 8px;
   }
   
-  /* Message status indicators */
-  .msg-status {
-    font-size: 10px;
-    margin-top: 2px;
-    text-align: right;
-    color: #8a8a8a;
+  /* Search Modal */
+  .search-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
   }
-  .msg-status i {
-    margin-right: 2px;
+  .search-modal.active {
+    display: flex;
   }
-  
-  /* User profile in chat */
-  .user-profile-status {
+  .search-content {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow: auto;
+  }
+  .search-header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-top: 4px;
+    margin-bottom: 12px;
   }
-  .online-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--ok);
+  .search-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    margin-right: 10px;
   }
-  .offline-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--muted);
+  .search-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
   }
-  
-  /* Back button improvements */
-  .back-btn-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .search-results {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  .search-result-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+  }
+  .search-result-item:last-child {
+    border-bottom: none;
   }
   
 @media print{
@@ -547,9 +565,9 @@
   <!-- LOGIN PAGE -->
   <div id="page-login" class="page active">
     <div class="login-header">दर्पण पाठशाला</div>
-    <div class="login">
+    <div class="login"><br><br><br><br>
       <div class="brand">Login Page</div>
-
+<br><br>
       <div class="card" id="loginCard">
         <input type="email" id="loginEmail" placeholder="Email">
         <input type="password" id="loginPassword" placeholder="Password">
@@ -575,7 +593,7 @@
   <div class="header" id="user-header">
     <div class="title">दर्पण पाठशाला</div>
     <div class="hdr-actions">
-      <i class="fas fa-search" title="Search"></i>
+      <i class="fas fa-search" title="Search" id="user-search-icon"></i>
       <i class="fas fa-bell" title="Notifications" id="user-notification-icon">
         <span class="badge" id="user-notification-badge">0</span>
       </i>
@@ -587,18 +605,12 @@
     <div id="user-tab-chat" class="tab-content">
       <div class="chat-container">
         <div class="chat-header">
-          <div class="back-btn-container">
-            <button class="back-btn" id="backFromChat"><i class="fas fa-arrow-left"></i></button>
-          </div>
+          <button class="back-btn" id="backFromChat"><i class="fas fa-arrow-left"></i></button>
           <div class="chat-header-info">
             <div class="chat-header-avatar" id="userChatIcon">A</div>
             <div>
               <div class="chat-header-name" id="userChatName">Admin Group</div>
               <div class="chat-header-status">Group chat</div>
-              <div class="user-profile-status" id="userChatStatus">
-                <span class="online-indicator" id="onlineIndicator"></span>
-                <span class="muted small" id="lastSeenText">Last seen recently</span>
-              </div>
             </div>
           </div>
           <div class="chat-header-actions">
@@ -746,9 +758,7 @@
       <!-- Main Profile View -->
       <div id="user-profile-view" class="profile-page active">
         <div class="profile-header">
-          <div class="back-btn-container">
-            <button class="back-btn" id="backFromProfile"><i class="fas fa-arrow-left"></i></button>
-          </div>
+          <button class="back-btn" id="backFromProfile"><i class="fas fa-arrow-left"></i></button>
           <div class="profile-header-title">My Profile</div>
         </div>
         <div class="profile-content">
@@ -757,10 +767,6 @@
               <img id="userProfilePic" class="profile-pic" src="" alt="Profile Picture">
               <div id="userNameText" style="font-weight:700;font-size:18px;margin-top:8px"></div>
               <div id="userEmailText" class="muted"></div>
-              <div class="user-profile-status" id="userProfileStatus">
-                <span class="online-indicator" id="userOnlineIndicator"></span>
-                <span class="muted small" id="userLastSeenText">Last seen recently</span>
-              </div>
             </div>
           </div>
           <div class="flex" style="flex-direction:column;gap:12px">
@@ -779,9 +785,7 @@
       <!-- Results Page -->
       <div id="user-results-page" class="profile-page">
         <div class="profile-header">
-          <div class="back-btn-container">
-            <button class="back-btn" id="backFromResults"><i class="fas fa-arrow-left"></i></button>
-          </div>
+          <button class="back-btn" id="backFromResults"><i class="fas fa-arrow-left"></i></button>
           <div class="profile-header-title">Exam Results</div>
         </div>
         <div class="profile-content">
@@ -792,9 +796,7 @@
       <!-- Edit Profile Page -->
       <div id="user-edit-profile-page" class="profile-page">
         <div class="profile-header">
-          <div class="back-btn-container">
-            <button class="back-btn" id="backFromEditProfile"><i class="fas fa-arrow-left"></i></button>
-          </div>
+          <button class="back-btn" id="backFromEditProfile"><i class="fas fa-arrow-left"></i></button>
           <div class="profile-header-title">Edit Profile</div>
         </div>
         <div class="profile-content">
@@ -828,7 +830,7 @@
   <div class="header" id="admin-header">
     <div class="title">दर्पण पाठशाला</div>
     <div class="hdr-actions">
-      <i class="fas fa-search" title="Search"></i>
+      <i class="fas fa-search" title="Search" id="admin-search-icon"></i>
       <i class="fas fa-bell" title="Notifications" id="admin-notification-icon">
         <span class="badge" id="admin-notification-badge">0</span>
       </i>
@@ -840,18 +842,13 @@
     <div id="admin-tab-chat" class="tab-content">
       <div class="chat-container">
         <div class="chat-header">
-          <div class="back-btn-container">
-            <button class="back-btn" id="backFromAdminChat"><i class="fas fa-arrow-left"></i></button>
-          </div>
+          <button class="back-btn" id="backFromAdminChat"><i class="fas fa-arrow-left"></i>
+          </button>
           <div class="chat-header-info">
             <div class="chat-header-avatar" id="adminChatIcon">G</div>
             <div>
               <div class="chat-header-name" id="adminChatName">Admin Group</div>
               <div class="chat-header-status">All accepted users</div>
-              <div class="user-profile-status" id="adminChatStatus">
-                <span class="online-indicator" id="adminOnlineIndicator"></span>
-                <span class="muted small" id="adminLastSeenText">Last seen recently</span>
-              </div>
             </div>
           </div>
           <div class="chat-header-actions">
@@ -1033,9 +1030,7 @@
       <!-- Main Profile View -->
       <div id="admin-profile-view" class="profile-page active">
         <div class="profile-header">
-          <div class="back-btn-container">
-            <button class="back-btn" id="backFromAdminProfile"><i class="fas fa-arrow-left"></i></button>
-          </div>
+          <button class="back-btn" id="backFromAdminProfile"><i class="fas fa-arrow-left"></i></button>
           <div class="profile-header-title">Admin Profile</div>
         </div>
         <div class="profile-content">
@@ -1044,10 +1039,6 @@
               <img id="adminProfilePic" class="profile-pic" src="" alt="Profile Picture">
               <div id="adminNameText" style="font-weight:700;font-size:18px;margin-top:8px"></div>
               <div id="adminEmailText" class="muted"></div>
-              <div class="user-profile-status" id="adminProfileStatus">
-                <span class="online-indicator" id="adminProfileOnlineIndicator"></span>
-                <span class="muted small" id="adminProfileLastSeenText">Last seen recently</span>
-              </div>
             </div>
           </div>
           
@@ -1067,9 +1058,7 @@
       <!-- Results Page -->
       <div id="admin-results-page" class="profile-page">
         <div class="profile-header">
-          <div class="back-btn-container">
-            <button class="back-btn" id="backFromAdminResults"><i class="fas fa-arrow-left"></i></button>
-          </div>
+          <button class="back-btn" id="backFromAdminResults"><i class="fas fa-arrow-left"></i></button>
           <div class="profile-header-title">Student Results</div>
         </div>
         <div class="profile-content">
@@ -1080,9 +1069,7 @@
       <!-- Edit Profile Page -->
       <div id="admin-edit-profile-page" class="profile-page">
         <div class="profile-header">
-          <div class="back-btn-container">
-            <button class="back-btn" id="backFromEditAdminProfile"><i class="fas fa-arrow-left"></i></button>
-          </div>
+          <button class="back-btn" id="backFromEditAdminProfile"><i class="fas fa-arrow-left"></i></button>
           <div class="profile-header-title">Edit Profile</div>
         </div>
         <div class="profile-content">
@@ -1141,6 +1128,17 @@
   <div id="notificationToast" class="notification-toast" style="display: none;">
     <i class="fas fa-bell notification-icon"></i>
     <span id="notificationMessage"></span>
+  </div>
+
+  <!-- Search Modal -->
+  <div id="searchModal" class="search-modal">
+    <div class="search-content">
+      <div class="search-header">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search...">
+        <button class="search-close" id="closeSearch"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="search-results" id="searchResults"></div>
+    </div>
   </div>
 
 </div>
@@ -1213,7 +1211,7 @@
   const initialFrom = n => (n||'?').trim().charAt(0).toUpperCase();
   const timeMini = ts => new Date(ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   let currentUser=null, role="user", name="", email="", adminUid=null, lastPhotoChange=0;
-  let notificationSound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbVtfdJivrJBhNjVgodDbq2EcBStztvLJjFQNAB1Ql9L/4K5QHAAKLGiv6/LJm2EcAQASTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/L极");
+  let notificationSound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbVtfdJivrJBhNjVgodDbq2EcBStztvLJjFQNAB1Ql9L/4KdQHAAKLWiv6/LJm2EcAQASTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp1AcAAosaK/r8smbYRwBABVMgdT/4KdQHAAKLGiv6/LJm2EcAQAVTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp1AcAAosaK/r8smbYRwBABVMgdT/4KdQHAAKLGiv6/LJm2EcAQAVTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp1AcAAosaK/r8smbYRwBABVMgdT/4KdQHAAKLGiv6/LJm2EcAQAVTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp极");
   
   // Play notification sound
   function playNotificationSound() {
@@ -1258,44 +1256,13 @@
     }
   }
 
-  // Handle mobile back button
-  let navigationHistory = [];
-  window.addEventListener('popstate', function(event) {
-    if (navigationHistory.length > 0) {
-      const lastState = navigationHistory.pop();
-      if (lastState === 'results') {
-        if ($('user-results-page').classList.contains('active')) {
-          $('user-results-page').classList.remove('active');
-          $('user-profile-view').classList.add('active');
-        } else if ($('admin-results-page').classList.contains('active')) {
-          $('admin-results-page').classList.remove('active');
-          $('admin-profile-view').classList.add('active');
-        }
-      } else if (lastState === 'edit-profile') {
-        if ($('user-edit-profile-page').classList.contains('active')) {
-          $('user-edit-profile-page').classList.remove('active');
-          $('user-profile-view').classList.add('active');
-        } else if ($('admin-edit-profile-page').classList.contains('active')) {
-          $('admin-edit-profile-page').classList.remove('active');
-          $('admin-profile-view').classList.add('active');
-        }
-      }
-      // Push state again to maintain navigation
-      history.pushState(null, null, window.location.href);
-    }
-  });
-
   /* ===== LOGIN / REGISTER ===== */
   $('toRegister').onclick = ()=>{ $('loginCard').style.display='none'; $('registerCard').style.display='block'; $('error').style.display='none'; }
   $('toLogin').onclick    = ()=>{ $('registerCard').style.display='none'; $('loginCard').style.display='block'; $('error').style.display='none'; }
   $('loginBtn').onclick = async ()=>{
     const em=$('loginEmail').value.trim(), pw=$('loginPassword').value.trim();
     if(!em||!pw){ showErr("Please enter email & password."); return; }
-    try{ 
-      await signInWithEmailAndPassword(auth, em, pw); 
-      // Store login state in localStorage
-      localStorage.setItem('isLoggedIn', 'true');
-    }catch(e){ showErr(cleanFirebaseError(e.message)); }
+    try{ await signInWithEmailAndPassword(auth, em, pw); }catch(e){ showErr(cleanFirebaseError(e.message)); }
   };
   $('registerBtn').onclick = async ()=>{
     const nm=$('regName').value.trim(), em=$('regEmail').value.trim(), pw=$('regPassword').value.trim();
@@ -1307,43 +1274,21 @@
         email:em, 
         role:"user",
         photoUrl: `https://ui-avatars.com/api/?name=${initialFrom(nm)}&background=random&color=fff&size=120`,
-        lastPhotoChange: 0,
-        lastSeen: Date.now(),
-        isOnline: false
+        lastPhotoChange: 0
       });
       alert("Account created! Please log in."); $('toLogin').click();
     }catch(e){ alert(cleanFirebaseError(e.message)); }
   };
   $('logoutUser').onclick = () => {
-    // Update online status before signing out
-    if (currentUser) {
-      set(ref(db, `users/${currentUser.uid}/isOnline`), false);
-      set(ref(db, `users/${currentUser.uid}/lastSeen`), Date.now());
-    }
     signOut(auth).then(() => {
-      // Clear login state from localStorage
-      localStorage.removeItem('isLoggedIn');
       showPage('page-login');
     });
   };
   $('logoutAdmin').onclick = () => {
-    // Update online status before signing out
-    if (currentUser) {
-      set(ref(db, `users/${currentUser.uid}/isOnline`), false);
-      set(ref(db, `users/${currentUser.uid}/lastSeen`), Date.now());
-    }
     signOut(auth).then(() => {
-      // Clear login state from localStorage
-      localStorage.removeItem('isLoggedIn');
       showPage('page-login');
     });
   };
-
-  // Check if user was previously logged in
-  if (localStorage.getItem('isLoggedIn') === 'true') {
-    // User was logged in, try to automatically authenticate
-    // This will be handled by onAuthStateChanged
-  }
 
   onAuthStateChanged(auth, async (u)=>{
     if(!u){ 
@@ -1359,15 +1304,9 @@
         email: u.email||'', 
         role:'user',
         photoUrl: `https://ui-avatars.com/api/?name=${initialFrom(u.email?.split('@')[0]||'U')}&background=random&color=fff&size=120`,
-        lastPhotoChange: 0,
-        lastSeen: Date.now(),
-        isOnline: true
+        lastPhotoChange: 0
       });
       snap = await get(usRef);
-    } else {
-      // Update online status
-      await set(ref(db, `users/${u.uid}/isOnline`), true);
-      await set(ref(db, `users/${u.uid}/lastSeen`), Date.now());
     }
     const data = snap.val();
     role = (data.role||'user').toString().trim().toLowerCase();
@@ -1421,12 +1360,10 @@
     $('backFromResults').onclick = ()=> {
       $('user-profile-view').classList.add('active');
       $('user-results-page').classList.remove('active');
-      navigationHistory.pop();
     };
     $('backFromEditProfile').onclick = ()=> {
       $('user-profile-view').classList.add('active');
       $('user-edit-profile-page').classList.remove('active');
-      navigationHistory.pop();
     };
     $('backFromChat').onclick = ()=> setActiveTab('user', 'profile');
     
@@ -1436,16 +1373,12 @@
       $('user-edit-profile-page').classList.add('active');
       $('editUserName').value = name;
       $('editUserEmail').value = email;
-      navigationHistory.push('edit-profile');
-      history.pushState(null, null, window.location.href);
     };
     
     // results
     $('openUserResults').onclick = async ()=>{
       $('user-profile-view').classList.remove('active');
       $('user-results-page').classList.add('active');
-      navigationHistory.push('results');
-      history.pushState(null, null, window.location.href);
       const s = await get(ref(db, `results/${auth.currentUser.uid}`));
       renderResultsList('userResultsList', s, true);
     };
@@ -1500,11 +1433,15 @@
     $('cancelPhotoSelect').onclick = ()=> $('photoSelector').classList.remove('active');
     $('confirmPhotoSelect').onclick = ()=> confirmPhotoSelection();
     
+    // Search functionality
+    $('user-search-icon').onclick = () => showSearchModal('user');
+    $('closeSearch').onclick = () => $('#searchModal').classList.remove('active');
+    
     // Listen for notifications
     listenForNotifications();
     
-    // Track user online status
-    trackUserOnlineStatus();
+    // Handle mobile back button
+    setupMobileBackButton();
   }
 
   function showPhotoSelectorWithGallery() {
@@ -1616,12 +1553,10 @@
     $('backFromAdminResults').onclick = ()=> {
       $('admin-profile-view').classList.add('active');
       $('admin-results-page').classList.remove('active');
-      navigationHistory.pop();
     };
     $('backFromEditAdminProfile').onclick = ()=> {
-      $('admin-profile-view').classList.add('active');
+      $('admin-profile-view').classList.remove('active');
       $('admin-edit-profile-page').classList.add('active');
-      navigationHistory.pop();
     };
     $('backFromAdminChat').onclick = ()=> setActiveTab('admin', 'profile');
     
@@ -1631,16 +1566,12 @@
       $('admin-edit-profile-page').classList.add('active');
       $('editAdminName').value = name;
       $('editAdminEmail').value = email;
-      navigationHistory.push('edit-profile');
-      history.pushState(null, null, window.location.href);
     };
     
     // results
     $('loadAllResults').onclick = async ()=>{
       $('admin-profile-view').classList.remove('active');
       $('admin-results-page').classList.add('active');
-      navigationHistory.push('results');
-      history.pushState(null, null, window.location.href);
       const all = await get(ref(db,'results'));
       renderAllResultsForAdmin(all);
     };
@@ -1733,11 +1664,14 @@
     // Photo selector
     $('changeAdminPhotoBtn').onclick = showPhotoSelectorWithGallery;
     
+    // Search functionality
+    $('admin-search-icon').onclick = () => showSearchModal('admin');
+    
     // Listen for notifications
     listenForNotifications();
     
-    // Track user online status
-    trackUserOnlineStatus();
+    // Handle mobile back button
+    setupMobileBackButton();
   }
 
   /* ======== GROUP CHAT ======== */
@@ -1758,24 +1692,11 @@
         avatar.className = 'mini-avatar'; avatar.innerText = initialFrom(m.name||'U');
         const bubble = document.createElement('div');
         bubble.className = 'msg-bubble';
-        
-        // Add message status (seen/delivered) for user's own messages
-        let statusHtml = '';
-        if (isMine) {
-          const status = m.seen ? 'seen' : 'delivered';
-          statusHtml = `<div class="msg-status"><i class="fas fa-${status === 'seen' ? 'check-double' : 'check'}"></i> ${status}</div>`;
-        }
-        
-        bubble.innerHTML = `<div>${m.text || ''}</div><div class="msg-meta">${m.name||'User'} · ${timeMini(m.ts)}</div>${statusHtml}`;
+        bubble.innerHTML = `<div>${m.text || ''}</div><div class="msg-meta">${m.name||'User'} · ${timeMini(m.ts)}</div>`;
         if(isMine){ row.appendChild(bubble); }else{ row.appendChild(avatar); row.appendChild(bubble); }
         listEl.appendChild(row);
       });
       listEl.scrollTop = listEl.scrollHeight;
-      
-      // Mark messages as seen if user is viewing the chat
-      if (scope === 'user' || scope === 'admin') {
-        markMessagesAsSeen();
-      }
     });
 
     if(scope==='user') userChatBound=true; else adminChatBound=true;
@@ -1786,37 +1707,10 @@
     const input = isAdmin ? $('adminChatInput') : $('userChatInput');
     const text = input.value.trim();
     if(!text) return;
-    
-    const messageData = {
-      uid: auth.currentUser.uid, 
-      name: senderName||'User', 
-      text, 
-      ts: Date.now(),
-      seen: false
-    };
-    
-    const newMessageRef = await push(ref(db, `groups/${GROUP_ID}/messages`), messageData);
+    await push(ref(db, `groups/${GROUP_ID}/messages`), {
+      uid: auth.currentUser.uid, name: senderName||'User', text, ts: Date.now()
+    });
     input.value='';
-    
-    // Update message status for sender
-    await set(ref(db, `groups/${GROUP_ID}/messages/${newMessageRef.key}/delivered`), true);
-  }
-
-  async function markMessagesAsSeen() {
-    if (!currentUser) return;
-    
-    const messagesRef = ref(db, `groups/${GROUP_ID}/messages`);
-    const snapshot = await get(messagesRef);
-    
-    if (snapshot.exists()) {
-      snapshot.forEach((messageSnap) => {
-        const message = messageSnap.val();
-        // Mark as seen if message is not from current user and not already seen
-        if (message.uid !== currentUser.uid && !message.seen) {
-          set(ref(db, `groups/${GROUP_ID}/messages/${messageSnap.key}/seen`), true);
-        }
-      });
-    }
   }
 
   /* ======== EXAM BUILDER (ADMIN) ======== */
@@ -2484,83 +2378,178 @@
     }
   }
   
-  /* ===== USER ONLINE STATUS TRACKING ===== */
-  function trackUserOnlineStatus() {
-    // Update user's online status periodically
-    setInterval(async () => {
-      if (currentUser) {
-        await set(ref(db, `users/${currentUser.uid}/lastSeen`), Date.now());
+  /* ===== SEARCH FUNCTIONALITY ===== */
+  function showSearchModal(scope) {
+    $('#searchModal').classList.add('active');
+    $('#searchInput').value = '';
+    $('#searchResults').innerHTML = '';
+    
+    // Set up search input event listener
+    $('#searchInput').oninput = async (e) => {
+      const query = e.target.value.trim().toLowerCase();
+      if (query.length < 2) {
+        $('#searchResults').innerHTML = '';
+        return;
       }
-    }, 30000); // Update every 30 seconds
-    
-    // Track admin online status for users
-    if (role === 'user' && adminUid) {
-      onValue(ref(db, `users/${adminUid}`), (snap) => {
-        if (snap.exists()) {
-          const adminData = snap.val();
-          const isOnline = adminData.isOnline || false;
-          const lastSeen = adminData.lastSeen || Date.now();
-          
-          // Update online indicator
-          const onlineIndicator = $('#onlineIndicator');
-          const lastSeenText = $('#lastSeenText');
-          
-          if (isOnline) {
-            onlineIndicator.className = 'online-indicator';
-            lastSeenText.textContent = 'Online now';
-          } else {
-            onlineIndicator.className = 'offline-indicator';
-            const lastSeenDate = new Date(lastSeen);
-            const now = new Date();
-            const diffMs = now - lastSeenDate;
-            const diffMins = Math.floor(diffMs / 60000);
-            const diffHours = Math.floor(diffMs / 3600000);
-            
-            if (diffMins < 1) {
-              lastSeenText.textContent = 'Last seen just now';
-            } else if (diffMins < 60) {
-              lastSeenText.textContent = `Last seen ${diffMins} min ago`;
-            } else if (diffHours < 24) {
-              lastSeenText.textContent = `Last seen ${diffHours} hour ago`;
-            } else {
-              lastSeenText.textContent = `Last seen ${lastSeenDate.toLocaleDateString()}`;
-            }
-          }
-        }
-      });
-    }
-    
-    // Track user online status for admin
-    if (role === 'admin') {
-      onValue(ref(db, 'users'), (snap) => {
-        if (snap.exists()) {
-          let onlineUsers = 0;
-          let totalUsers = 0;
-          
-          snap.forEach((userSnap) => {
-            const userData = userSnap.val();
-            if (userData.role === 'user') {
-              totalUsers++;
-              if (userData.isOnline) {
-                onlineUsers++;
-              }
+      
+      let results = [];
+      
+      // Search in different areas based on scope
+      if (scope === 'user') {
+        // Search in user's messages
+        const messagesSnap = await get(ref(db, `groups/${GROUP_ID}/messages`));
+        if (messagesSnap.exists()) {
+          messagesSnap.forEach(ch => {
+            const msg = ch.val();
+            if (msg.text && msg.text.toLowerCase().includes(query)) {
+              results.push({
+                type: 'message',
+                title: `Message from ${msg.name}`,
+                content: msg.text,
+                timestamp: msg.ts
+              });
             }
           });
-          
-          // Update admin dashboard with user stats
-          const adminOnlineIndicator = $('#adminOnlineIndicator');
-          const adminLastSeenText = $('#adminLastSeenText');
-          const adminProfileOnlineIndicator = $('#adminProfileOnlineIndicator');
-          const adminProfileLastSeenText = $('#adminProfileLastSeenText');
-          
-          adminOnlineIndicator.className = 'online-indicator';
-          adminLastSeenText.textContent = `${onlineUsers}/${totalUsers} users online`;
-          
-          adminProfileOnlineIndicator.className = 'online-indicator';
-          adminProfileLastSeenText.textContent = `${onlineUsers}/${totalUsers} users online`;
         }
+        
+        // Search in notices
+        const noticesSnap = await get(ref(db, 'notices'));
+        if (noticesSnap.exists()) {
+          noticesSnap.forEach(ch => {
+            const notice = ch.val();
+            if (notice.text && notice.text.toLowerCase().includes(query)) {
+              results.push({
+                type: 'notice',
+                title: `Notice from ${notice.name}`,
+                content: notice.text,
+                timestamp: notice.ts
+              });
+            }
+          });
+        }
+        
+        // Search in books
+        const booksSnap = await get(ref(db, 'books'));
+        if (booksSnap.exists()) {
+          booksSnap.forEach(ch => {
+            const book = ch.val();
+            if ((book.title && book.title.toLowerCase().includes(query)) ||
+                (book.author && book.author.toLowerCase().includes(query))) {
+              results.push({
+                type: 'book',
+                title: `Book: ${book.title}`,
+                content: `By ${book.author}`,
+                timestamp: book.ts
+              });
+            }
+          });
+        }
+      } else if (scope === 'admin') {
+        // Admin can search in all user data, exam results, etc.
+        // Search in user results
+        const resultsSnap = await get(ref(db, 'results'));
+        if (resultsSnap.exists()) {
+          resultsSnap.forEach(user => {
+            user.forEach(result => {
+              const res = result.val();
+              if ((res.student.name && res.student.name.toLowerCase().includes(query)) ||
+                  (res.course && res.course.toLowerCase().includes(query)) ||
+                  (res.subject && res.subject.toLowerCase().includes(query))) {
+                results.push({
+                  type: 'result',
+                  title: `Result: ${res.student.name} - ${res.course} ${res.subject}`,
+                  content: `Score: ${res.correct}/${res.total} (${res.percent}%)`,
+                  timestamp: res.ts
+                });
+              }
+            });
+          });
+        }
+        
+        // Search in users
+        const usersSnap = await get(ref(db, 'users'));
+        if (usersSnap.exists()) {
+          usersSnap.forEach(ch => {
+            const user = ch.val();
+            if ((user.name && user.name.toLowerCase().includes(query)) ||
+                (user.email && user.email.toLowerCase().includes(query))) {
+              results.push({
+                type: 'user',
+                title: `User: ${user.name}`,
+                content: user.email,
+                timestamp: 0
+              });
+            }
+          });
+        }
+      }
+      
+      // Sort by timestamp (newest first)
+      results.sort((a, b) => b.timestamp - a.timestamp);
+      
+      // Display results
+      $('#searchResults').innerHTML = '';
+      if (results.length === 0) {
+        $('#searchResults').innerHTML = '<div class="muted">No results found</div>';
+        return;
+      }
+      
+      results.forEach(result => {
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+        item.innerHTML = `
+          <div><strong>${result.title}</strong></div>
+          <div class="small">${result.content}</div>
+        `;
+        $('#searchResults').appendChild(item);
       });
-    }
+    };
+  }
+  
+  /* ===== MOBILE BACK BUTTON HANDLING ===== */
+  function setupMobileBackButton() {
+    // Handle browser back button
+    window.addEventListener('popstate', function(event) {
+      // Check if we're in a sub-page that needs to go back to main view
+      if ($('user-results-page').classList.contains('active')) {
+        $('user-results-page').classList.remove('active');
+        $('user-profile-view').classList.add('active');
+        history.pushState(null, null, window.location.href);
+      } else if ($('user-edit-profile-page').classList.contains('active')) {
+        $('user-edit-profile-page').classList.remove('active');
+        $('user-profile-view').classList.add('active');
+        history.pushState(null, null, window.location.href);
+      } else if ($('admin-results-page').classList.contains('active')) {
+        $('admin-results-page').classList.remove('active');
+        $('admin-profile-view').classList.add('active');
+        history.pushState(null, null, window.location.href);
+      } else if ($('admin-edit-profile-page').classList.contains('active')) {
+        $('admin-edit-profile-page').classList.remove('active');
+        $('admin-profile-view').classList.add('active');
+        history.pushState(null, null, window.location.href);
+      } else if ($('searchModal').classList.contains('active')) {
+        $('searchModal').classList.remove('active');
+        history.pushState(null, null, window.location.href);
+      } else if ($('pdfViewer').classList.contains('active')) {
+        $('pdfViewer').classList.remove('active');
+        history.pushState(null, null, window.location.href);
+      } else if ($('photoSelector').classList.contains('active')) {
+        $('photoSelector').classList.remove('active');
+        history.pushState(null, null, window.location.href);
+      } else if (document.querySelector('.app').classList.contains('chat-fullscreen')) {
+        // If in chat fullscreen mode, go back to previous tab
+        const scope = role === 'admin' ? 'admin' : 'user';
+        setActiveTab(scope, 'profile');
+        history.pushState(null, null, window.location.href);
+      } else if (window.location.hash) {
+        // If there's a hash, remove it and stay on current page
+        window.location.hash = '';
+        history.pushState(null, null, window.location.href);
+      }
+    });
+    
+    // Add initial state
+    history.pushState(null, null, window.location.href);
   }
 </script>
 </body>
