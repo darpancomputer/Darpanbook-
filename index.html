@@ -3,8 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#1877f2" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Darpan Book">
+<meta name="mobile-web-app-capable" content="yes">
 <title>Darpan Book - Social Messenger & Exam System</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="manifest" id="app-manifest">
 <style>
   :root{
     --brand:#1877f2; --bg:#f0f2f5; --card:#fff; --muted:#6b6b6b;
@@ -513,41 +519,97 @@
   .search-content {
     background: #fff;
     border-radius: 12px;
-    padding: 16px;
     width: 90%;
     max-width: 400px;
     max-height: 80vh;
-    overflow: auto;
+    overflow: hidden;
   }
   .search-header {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
     display: flex;
     align-items: center;
-    margin-bottom: 12px;
   }
   .search-input {
     flex: 1;
-    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 20px;
-    margin-right: 10px;
+    padding: 10px 16px;
+    font-size: 16px;
   }
   .search-close {
     background: none;
     border: none;
     font-size: 20px;
+    margin-left: 10px;
     cursor: pointer;
   }
   .search-results {
     max-height: 300px;
     overflow-y: auto;
+    padding: 10px;
   }
   .search-result-item {
-    padding: 10px;
+    padding: 12px;
     border-bottom: 1px solid #eee;
     cursor: pointer;
   }
-  .search-result-item:last-child {
-    border-bottom: none;
+  .search-result-item:hover {
+    background: #f5f5f5;
+  }
+  
+  /* Message context menu */
+  .context-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    padding: 8px 0;
+  }
+  .context-menu-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .context-menu-item:hover {
+    background: #f0f2f5;
+  }
+  .context-menu-item i {
+    width: 16px;
+    text-align: center;
+  }
+  
+  /* Install app prompt */
+  .install-prompt {
+    display: none;
+    position: fixed;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    z-index: 1000;
+    max-width: 90%;
+    text-align: center;
+  }
+  .install-prompt.active {
+    display: block;
+  }
+  .install-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    justify-content: center;
+  }
+  .install-buttons button {
+    width: auto;
+    padding: 8px 16px;
   }
   
 @media print{
@@ -593,7 +655,7 @@
   <div class="header" id="user-header">
     <div class="title">दर्पण पाठशाला</div>
     <div class="hdr-actions">
-      <i class="fas fa-search" title="Search" id="user-search-icon"></i>
+      <i class="fas fa-search" title="Search" id="user-search-btn"></i>
       <i class="fas fa-bell" title="Notifications" id="user-notification-icon">
         <span class="badge" id="user-notification-badge">0</span>
       </i>
@@ -830,7 +892,7 @@
   <div class="header" id="admin-header">
     <div class="title">दर्पण पाठशाला</div>
     <div class="hdr-actions">
-      <i class="fas fa-search" title="Search" id="admin-search-icon"></i>
+      <i class="fas fa-search" title="Search" id="admin-search-btn"></i>
       <i class="fas fa-bell" title="Notifications" id="admin-notification-icon">
         <span class="badge" id="admin-notification-badge">0</span>
       </i>
@@ -1134,10 +1196,30 @@
   <div id="searchModal" class="search-modal">
     <div class="search-content">
       <div class="search-header">
-        <input type="text" class="search-input" id="searchInput" placeholder="Search...">
-        <button class="search-close" id="closeSearch"><i class="fas fa-times"></i></button>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search...">
+        <button id="closeSearch" class="search-close"><i class="fas fa-times"></i></button>
       </div>
-      <div class="search-results" id="searchResults"></div>
+      <div class="search-results" id="searchResults">
+        <!-- Search results will be displayed here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Context Menu -->
+  <div id="contextMenu" class="context-menu">
+    <div class="context-menu-item" id="unsendMessage">
+      <i class="fas fa-trash"></i>
+      <span>Unsend Message</span>
+    </div>
+  </div>
+
+  <!-- Install App Prompt -->
+  <div id="installPrompt" class="install-prompt">
+    <h4>Install Darpan Book App</h4>
+    <p>Get the full experience with our mobile app</p>
+    <div class="install-buttons">
+      <button id="installAppBtn" class="btn-ok">Install</button>
+      <button id="cancelInstallBtn" class="btn-ghost">Not Now</button>
     </div>
   </div>
 
@@ -1147,7 +1229,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import { getDatabase, ref, get, set, onValue, push, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+  import { getDatabase, ref, get, set, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
   import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
 
   /* ===== CONFIG ===== */
@@ -1211,7 +1293,7 @@
   const initialFrom = n => (n||'?').trim().charAt(0).toUpperCase();
   const timeMini = ts => new Date(ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   let currentUser=null, role="user", name="", email="", adminUid=null, lastPhotoChange=0;
-  let notificationSound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbVtfdJivrJBhNjVgodDbq2EcBStztvLJjFQNAB1Ql9L/4KdQHAAKLWiv6/LJm2EcAQASTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp1AcAAosaK/r8smbYRwBABVMgdT/4KdQHAAKLGiv6/LJm2EcAQAVTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp1AcAAosaK/r8smbYRwBABVMgdT/4KdQHAAKLGiv6/LJm2EcAQAVTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp1AcAAosaK/r8smbYRwBABVMgdT/4KdQHAAKLGiv6/LJm2EcAQAVTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp极");
+  let notificationSound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbVtfdJivrJBhNjVgodDbq2EcBStztvLJjFQNAB1Ql9L/4K5QHAAKLGiv6/LJm2EcAQASTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/L极");
   
   // Play notification sound
   function playNotificationSound() {
@@ -1274,7 +1356,9 @@
         email:em, 
         role:"user",
         photoUrl: `https://ui-avatars.com/api/?name=${initialFrom(nm)}&background=random&color=fff&size=120`,
-        lastPhotoChange: 0
+        lastPhotoChange: 0,
+        unsendCount: 5, // Initialize unsend count
+        lastUnsendReset: Date.now()
       });
       alert("Account created! Please log in."); $('toLogin').click();
     }catch(e){ alert(cleanFirebaseError(e.message)); }
@@ -1290,6 +1374,7 @@
     });
   };
 
+  // Check if user is already logged in
   onAuthStateChanged(auth, async (u)=>{
     if(!u){ 
       showPage('page-login'); 
@@ -1304,7 +1389,9 @@
         email: u.email||'', 
         role:'user',
         photoUrl: `https://ui-avatars.com/api/?name=${initialFrom(u.email?.split('@')[0]||'U')}&background=random&color=fff&size=120`,
-        lastPhotoChange: 0
+        lastPhotoChange: 0,
+        unsendCount: 5, // Initialize unsend count
+        lastUnsendReset: Date.now()
       });
       snap = await get(usRef);
     }
@@ -1313,6 +1400,16 @@
     name = data.name || '';
     email = data.email || u.email || '';
     lastPhotoChange = data.lastPhotoChange || 0;
+
+    // Reset unsend count if 24 hours have passed
+    const now = Date.now();
+    const lastReset = data.lastUnsendReset || now;
+    if (now - lastReset > 24 * 60 * 60 * 1000) {
+      await update(ref(db, `users/${u.uid}`), {
+        unsendCount: 5,
+        lastUnsendReset: now
+      });
+    }
 
     // find admin uid (first found)
     adminUid = null;
@@ -1338,6 +1435,9 @@
     
     // Request notification permission
     requestNotificationPermission();
+    
+    // Check if we should show install prompt
+    checkAndShowInstallPrompt();
   });
 
   function showErr(msg){ const el=$('error'); el.innerText=msg; el.style.display='block'; }
@@ -1433,15 +1533,16 @@
     $('cancelPhotoSelect').onclick = ()=> $('photoSelector').classList.remove('active');
     $('confirmPhotoSelect').onclick = ()=> confirmPhotoSelection();
     
-    // Search functionality
-    $('user-search-icon').onclick = () => showSearchModal('user');
-    $('closeSearch').onclick = () => $('#searchModal').classList.remove('active');
-    
     // Listen for notifications
     listenForNotifications();
     
-    // Handle mobile back button
-    setupMobileBackButton();
+    // Search functionality
+    $('user-search-btn').onclick = () => showSearchModal('user');
+    $('closeSearch').onclick = () => $('searchModal').classList.remove('active');
+    $('searchInput').addEventListener('input', handleSearchInput);
+    
+    // Handle back button
+    setupBackButtonHandling();
   }
 
   function showPhotoSelectorWithGallery() {
@@ -1664,14 +1765,14 @@
     // Photo selector
     $('changeAdminPhotoBtn').onclick = showPhotoSelectorWithGallery;
     
-    // Search functionality
-    $('admin-search-icon').onclick = () => showSearchModal('admin');
-    
     // Listen for notifications
     listenForNotifications();
     
-    // Handle mobile back button
-    setupMobileBackButton();
+    // Search functionality
+    $('admin-search-btn').onclick = () => showSearchModal('admin');
+    
+    // Handle back button
+    setupBackButtonHandling();
   }
 
   /* ======== GROUP CHAT ======== */
@@ -1688,12 +1789,26 @@
         const isMine = (m.uid === auth.currentUser.uid);
         const row = document.createElement('div');
         row.className = `msg-row ${isMine?'mine':'theirs'}`;
+        row.dataset.messageId = ch.key;
+        row.dataset.timestamp = m.ts;
+        
         const avatar = document.createElement('div');
         avatar.className = 'mini-avatar'; avatar.innerText = initialFrom(m.name||'U');
         const bubble = document.createElement('div');
         bubble.className = 'msg-bubble';
         bubble.innerHTML = `<div>${m.text || ''}</div><div class="msg-meta">${m.name||'User'} · ${timeMini(m.ts)}</div>`;
-        if(isMine){ row.appendChild(bubble); }else{ row.appendChild(avatar); row.appendChild(bubble); }
+        
+        if(isMine){ 
+          row.appendChild(bubble); 
+          // Add context menu for user's own messages
+          row.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            showMessageContextMenu(e, ch.key, m.ts);
+          });
+        } else { 
+          row.appendChild(avatar); 
+          row.appendChild(bubble); 
+        }
         listEl.appendChild(row);
       });
       listEl.scrollTop = listEl.scrollHeight;
@@ -1708,9 +1823,322 @@
     const text = input.value.trim();
     if(!text) return;
     await push(ref(db, `groups/${GROUP_ID}/messages`), {
-      uid: auth.currentUser.uid, name: senderName||'User', text, ts: Date.now()
+      uid: auth.currentUser.uid, 
+      name: senderName||'User', 
+      text, 
+      ts: Date.now(),
+      unsendable: true
     });
     input.value='';
+  }
+
+  /* ======== MESSAGE UNSEND FEATURE ======== */
+  async function showMessageContextMenu(e, messageId, messageTimestamp) {
+    // Check if message is within 24 hours
+    const now = Date.now();
+    if (now - messageTimestamp > 24 * 60 * 60 * 1000) {
+      alert("You can only unsend messages within 24 hours.");
+      return;
+    }
+    
+    // Check user's unsend count
+    const userRef = ref(db, `users/${auth.currentUser.uid}`);
+    const userSnap = await get(userRef);
+    const userData = userSnap.val();
+    const unsendCount = userData.unsendCount || 5;
+    
+    if (unsendCount <= 0) {
+      alert("You have used all your unsend attempts for today.");
+      return;
+    }
+    
+    // Show context menu
+    const contextMenu = $('#contextMenu');
+    contextMenu.style.display = 'block';
+    contextMenu.style.left = e.pageX + 'px';
+    contextMenu.style.top = e.pageY + 'px';
+    
+    // Set up unsend functionality
+    $('#unsendMessage').onclick = async () => {
+      await unsendMessage(messageId);
+      contextMenu.style.display = 'none';
+    };
+    
+    // Hide context menu when clicking elsewhere
+    const hideContextMenu = (event) => {
+      if (!contextMenu.contains(event.target)) {
+        contextMenu.style.display = 'none';
+        document.removeEventListener('click', hideContextMenu);
+      }
+    };
+    
+    setTimeout(() => {
+      document.addEventListener('click', hideContextMenu);
+    }, 100);
+  }
+  
+  async function unsendMessage(messageId) {
+    try {
+      // Get user data to check unsend count
+      const userRef = ref(db, `users/${auth.currentUser.uid}`);
+      const userSnap = await get(userRef);
+      const userData = userSnap.val();
+      let unsendCount = userData.unsendCount || 5;
+      
+      if (unsendCount <= 0) {
+        alert("You have used all your unsend attempts for today.");
+        return;
+      }
+      
+      // Update message to show as unsent
+      await update(ref(db, `groups/${GROUP_ID}/messages/${messageId}`), {
+        text: "This message was unsent",
+        unsent: true,
+        originalSender: userData.name
+      });
+      
+      // Decrement unsend count
+      unsendCount--;
+      await update(ref(db, `users/${auth.currentUser.uid}`), {
+        unsendCount: unsendCount
+      });
+      
+      showNotification(`Message unsent. ${unsendCount} unsend attempts remaining today.`);
+    } catch (error) {
+      console.error("Error unsending message:", error);
+      alert("Error unsending message. Please try again.");
+    }
+  }
+
+  /* ======== SEARCH FUNCTIONALITY ======== */
+  function showSearchModal(scope) {
+    $('searchModal').classList.add('active');
+    $('searchInput').value = '';
+    $('searchInput').focus();
+    $('searchInput').dataset.scope = scope;
+    $('searchResults').innerHTML = '<div class="muted" style="padding: 20px; text-align: center;">Type to search</div>';
+  }
+  
+  async function handleSearchInput(e) {
+    const query = e.target.value.trim();
+    const scope = e.target.dataset.scope;
+    
+    if (!query) {
+      $('searchResults').innerHTML = '<div class="muted" style="padding: 20px; text-align: center;">Type to search</div>';
+      return;
+    }
+    
+    try {
+      let results = [];
+      
+      if (scope === 'user') {
+        // Search in user's messages
+        const messagesRef = ref(db, `groups/${GROUP_ID}/messages`);
+        const messagesSnap = await get(messagesRef);
+        
+        if (messagesSnap.exists()) {
+          messagesSnap.forEach(child => {
+            const message = child.val();
+            if (message.text && message.text.toLowerCase().includes(query.toLowerCase()) && !message.unsent) {
+              results.push({
+                type: 'message',
+                id: child.key,
+                content: message.text,
+                timestamp: message.ts,
+                sender: message.name
+              });
+            }
+          });
+        }
+        
+        // Search in notices
+        const noticesRef = ref(db, 'notices');
+        const noticesSnap = await get(noticesRef);
+        
+        if (noticesSnap.exists()) {
+          noticesSnap.forEach(child => {
+            const notice = child.val();
+            if (notice.text && notice.text.toLowerCase().includes(query.toLowerCase())) {
+              results.push({
+                type: 'notice',
+                id: child.key,
+                content: notice.text,
+                timestamp: notice.ts,
+                sender: notice.name
+              });
+            }
+          });
+        }
+      } else if (scope === 'admin') {
+        // Admin can search in additional areas
+        // Search in user list
+        const usersRef = ref(db, 'users');
+        const usersSnap = await get(usersRef);
+        
+        if (usersSnap.exists()) {
+          usersSnap.forEach(child => {
+            const user = child.val();
+            if (user.name && user.name.toLowerCase().includes(query.toLowerCase())) {
+              results.push({
+                type: 'user',
+                id: child.key,
+                content: user.name,
+                email: user.email,
+                role: user.role
+              });
+            }
+          });
+        }
+      }
+      
+      displaySearchResults(results, scope);
+    } catch (error) {
+      console.error("Search error:", error);
+      $('searchResults').innerHTML = '<div class="muted" style="padding: 20px; text-align: center;">Error performing search</div>';
+    }
+  }
+  
+  function displaySearchResults(results, scope) {
+    const resultsContainer = $('searchResults');
+    
+    if (results.length === 0) {
+      resultsContainer.innerHTML = '<div class="muted" style="padding: 20px; text-align: center;">No results found</div>';
+      return;
+    }
+    
+    resultsContainer.innerHTML = '';
+    
+    results.forEach(result => {
+      const item = document.createElement('div');
+      item.className = 'search-result-item';
+      
+      let html = '';
+      if (result.type === 'message') {
+        html = `
+          <div><strong>Message from ${result.sender}</strong></div>
+          <div class="small">${result.content}</div>
+          <div class="muted small">${new Date(result.timestamp).toLocaleString()}</div>
+        `;
+      } else if (result.type === 'notice') {
+        html = `
+          <div><strong>Notice from ${result.sender}</strong></div>
+          <div class="small">${result.content}</div>
+          <div class="muted small">${new Date(result.timestamp).toLocaleString()}</div>
+        `;
+      } else if (result.type === 'user' && scope === 'admin') {
+        html = `
+          <div><strong>User: ${result.content}</strong></div>
+          <div class="small">${result.email}</div>
+          <div class="muted small">Role: ${result.role}</div>
+        `;
+      }
+      
+      item.innerHTML = html;
+      resultsContainer.appendChild(item);
+    });
+  }
+
+  /* ======== PWA INSTALL PROMPT ======== */
+  let deferredPrompt;
+  
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent the mini-infobar from appearing on mobile
+    e.preventDefault();
+    // Stash the event so it can be triggered later
+    deferredPrompt = e;
+  });
+  
+  function checkAndShowInstallPrompt() {
+    // Check if app is already installed
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+      return;
+    }
+    
+    // Show install prompt if available
+    if (deferredPrompt) {
+      setTimeout(() => {
+        $('#installPrompt').classList.add('active');
+      }, 3000);
+    }
+  }
+  
+  $('#installAppBtn').onclick = async () => {
+    if (!deferredPrompt) return;
+    
+    // Show the install prompt
+    deferredPrompt.prompt();
+    
+    // Wait for the user to respond to the prompt
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    // We've used the prompt, and can't use it again, throw it away
+    deferredPrompt = null;
+    
+    // Hide the install prompt
+    $('#installPrompt').classList.remove('active');
+  };
+  
+  $('#cancelInstallBtn').onclick = () => {
+    $('#installPrompt').classList.remove('active');
+  };
+  
+  // Create app manifest dynamically
+  const manifest = {
+    "name": "Darpan Book",
+    "short_name": "Darpan",
+    "description": "Social Messenger & Exam System",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#1877f2",
+    "theme_color": "#1877f2",
+    "icons": [
+      {
+        "src": "https://example.com/icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "https://example.com/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  };
+  
+  const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+  const manifestURL = URL.createObjectURL(manifestBlob);
+  $('#app-manifest').href = manifestURL;
+
+  /* ======== BACK BUTTON HANDLING ======== */
+  function setupBackButtonHandling() {
+    let currentPage = '';
+    let currentTab = '';
+    
+    // Track navigation
+    const originalSetActiveTab = setActiveTab;
+    window.setActiveTab = function(scope, tab) {
+      currentPage = scope;
+      currentTab = tab;
+      originalSetActiveTab(scope, tab);
+    };
+    
+    // Handle back button/gesture
+    window.addEventListener('popstate', function(event) {
+      if (currentPage === 'user' || currentPage === 'admin') {
+        if (currentTab === 'chat') {
+          setActiveTab(currentPage, 'profile');
+        } else {
+          // For other tabs, go back to chat (main tab)
+          setActiveTab(currentPage, 'chat');
+        }
+      } else if (currentPage === 'login') {
+        // Prevent going back from login page
+        window.history.forward();
+      }
+    });
+    
+    // Add initial state
+    window.history.replaceState({page: 'login'}, '', '');
   }
 
   /* ======== EXAM BUILDER (ADMIN) ======== */
@@ -2376,180 +2804,6 @@
         }
       });
     }
-  }
-  
-  /* ===== SEARCH FUNCTIONALITY ===== */
-  function showSearchModal(scope) {
-    $('#searchModal').classList.add('active');
-    $('#searchInput').value = '';
-    $('#searchResults').innerHTML = '';
-    
-    // Set up search input event listener
-    $('#searchInput').oninput = async (e) => {
-      const query = e.target.value.trim().toLowerCase();
-      if (query.length < 2) {
-        $('#searchResults').innerHTML = '';
-        return;
-      }
-      
-      let results = [];
-      
-      // Search in different areas based on scope
-      if (scope === 'user') {
-        // Search in user's messages
-        const messagesSnap = await get(ref(db, `groups/${GROUP_ID}/messages`));
-        if (messagesSnap.exists()) {
-          messagesSnap.forEach(ch => {
-            const msg = ch.val();
-            if (msg.text && msg.text.toLowerCase().includes(query)) {
-              results.push({
-                type: 'message',
-                title: `Message from ${msg.name}`,
-                content: msg.text,
-                timestamp: msg.ts
-              });
-            }
-          });
-        }
-        
-        // Search in notices
-        const noticesSnap = await get(ref(db, 'notices'));
-        if (noticesSnap.exists()) {
-          noticesSnap.forEach(ch => {
-            const notice = ch.val();
-            if (notice.text && notice.text.toLowerCase().includes(query)) {
-              results.push({
-                type: 'notice',
-                title: `Notice from ${notice.name}`,
-                content: notice.text,
-                timestamp: notice.ts
-              });
-            }
-          });
-        }
-        
-        // Search in books
-        const booksSnap = await get(ref(db, 'books'));
-        if (booksSnap.exists()) {
-          booksSnap.forEach(ch => {
-            const book = ch.val();
-            if ((book.title && book.title.toLowerCase().includes(query)) ||
-                (book.author && book.author.toLowerCase().includes(query))) {
-              results.push({
-                type: 'book',
-                title: `Book: ${book.title}`,
-                content: `By ${book.author}`,
-                timestamp: book.ts
-              });
-            }
-          });
-        }
-      } else if (scope === 'admin') {
-        // Admin can search in all user data, exam results, etc.
-        // Search in user results
-        const resultsSnap = await get(ref(db, 'results'));
-        if (resultsSnap.exists()) {
-          resultsSnap.forEach(user => {
-            user.forEach(result => {
-              const res = result.val();
-              if ((res.student.name && res.student.name.toLowerCase().includes(query)) ||
-                  (res.course && res.course.toLowerCase().includes(query)) ||
-                  (res.subject && res.subject.toLowerCase().includes(query))) {
-                results.push({
-                  type: 'result',
-                  title: `Result: ${res.student.name} - ${res.course} ${res.subject}`,
-                  content: `Score: ${res.correct}/${res.total} (${res.percent}%)`,
-                  timestamp: res.ts
-                });
-              }
-            });
-          });
-        }
-        
-        // Search in users
-        const usersSnap = await get(ref(db, 'users'));
-        if (usersSnap.exists()) {
-          usersSnap.forEach(ch => {
-            const user = ch.val();
-            if ((user.name && user.name.toLowerCase().includes(query)) ||
-                (user.email && user.email.toLowerCase().includes(query))) {
-              results.push({
-                type: 'user',
-                title: `User: ${user.name}`,
-                content: user.email,
-                timestamp: 0
-              });
-            }
-          });
-        }
-      }
-      
-      // Sort by timestamp (newest first)
-      results.sort((a, b) => b.timestamp - a.timestamp);
-      
-      // Display results
-      $('#searchResults').innerHTML = '';
-      if (results.length === 0) {
-        $('#searchResults').innerHTML = '<div class="muted">No results found</div>';
-        return;
-      }
-      
-      results.forEach(result => {
-        const item = document.createElement('div');
-        item.className = 'search-result-item';
-        item.innerHTML = `
-          <div><strong>${result.title}</strong></div>
-          <div class="small">${result.content}</div>
-        `;
-        $('#searchResults').appendChild(item);
-      });
-    };
-  }
-  
-  /* ===== MOBILE BACK BUTTON HANDLING ===== */
-  function setupMobileBackButton() {
-    // Handle browser back button
-    window.addEventListener('popstate', function(event) {
-      // Check if we're in a sub-page that needs to go back to main view
-      if ($('user-results-page').classList.contains('active')) {
-        $('user-results-page').classList.remove('active');
-        $('user-profile-view').classList.add('active');
-        history.pushState(null, null, window.location.href);
-      } else if ($('user-edit-profile-page').classList.contains('active')) {
-        $('user-edit-profile-page').classList.remove('active');
-        $('user-profile-view').classList.add('active');
-        history.pushState(null, null, window.location.href);
-      } else if ($('admin-results-page').classList.contains('active')) {
-        $('admin-results-page').classList.remove('active');
-        $('admin-profile-view').classList.add('active');
-        history.pushState(null, null, window.location.href);
-      } else if ($('admin-edit-profile-page').classList.contains('active')) {
-        $('admin-edit-profile-page').classList.remove('active');
-        $('admin-profile-view').classList.add('active');
-        history.pushState(null, null, window.location.href);
-      } else if ($('searchModal').classList.contains('active')) {
-        $('searchModal').classList.remove('active');
-        history.pushState(null, null, window.location.href);
-      } else if ($('pdfViewer').classList.contains('active')) {
-        $('pdfViewer').classList.remove('active');
-        history.pushState(null, null, window.location.href);
-      } else if ($('photoSelector').classList.contains('active')) {
-        $('photoSelector').classList.remove('active');
-        history.pushState(null, null, window.location.href);
-      } else if (document.querySelector('.app').classList.contains('chat-fullscreen')) {
-        // If in chat fullscreen mode, go back to previous tab
-        const scope = role === 'admin' ? 'admin' : 'user';
-        setActiveTab(scope, 'profile');
-        history.pushState(null, null, window.location.href);
-      } else if (window.location.hash) {
-        // If there's a hash, remove it and stay on current page
-        window.location.hash = '';
-        history.pushState(null, null, window.location.href);
-      }
-    });
-    
-    // Add initial state
-    history.pushState(null, null, window.location.href);
   }
 </script>
 </body>
