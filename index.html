@@ -3,14 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="theme-color" content="#1877f2" />
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Darpan Book">
-<meta name="mobile-web-app-capable" content="yes">
 <title>Darpan Book - Social Messenger & Exam System</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="manifest" id="app-manifest">
 <style>
   :root{
     --brand:#1877f2; --bg:#f0f2f5; --card:#fff; --muted:#6b6b6b;
@@ -500,116 +494,161 @@
     gap: 8px;
   }
   
-  /* Search Modal */
-  .search-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 2000;
-    align-items: center;
-    justify-content: center;
-  }
-  .search-modal.active {
+  /* New styles for chat reactions and message options */
+  .msg-actions {
     display: flex;
+    gap: 8px;
+    margin-top: 4px;
+    opacity: 0;
+    transition: opacity 0.2s;
   }
-  .search-content {
-    background: #fff;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 400px;
-    max-height: 80vh;
-    overflow: hidden;
+  
+  .msg-row:hover .msg-actions {
+    opacity: 1;
   }
-  .search-header {
-    padding: 16px;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    align-items: center;
-  }
-  .search-input {
-    flex: 1;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    padding: 10px 16px;
-    font-size: 16px;
-  }
-  .search-close {
+  
+  .reaction-btn, .msg-option-btn {
     background: none;
     border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--muted);
+    padding: 4px;
+  }
+  
+  .reaction-btn:hover, .msg-option-btn:hover {
+    color: var(--brand);
+  }
+  
+  .reaction-picker {
+    position: absolute;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    padding: 8px;
+    display: none;
+    z-index: 100;
+  }
+  
+  .reaction-picker span {
     font-size: 20px;
-    margin-left: 10px;
+    margin: 0 4px;
     cursor: pointer;
+    transition: transform 0.2s;
   }
-  .search-results {
-    max-height: 300px;
-    overflow-y: auto;
+  
+  .reaction-picker span:hover {
+    transform: scale(1.3);
+  }
+  
+  .msg-reactions {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+  
+  .reaction {
+    background: rgba(0,0,0,0.05);
+    border-radius: 10px;
+    padding: 2px 6px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  
+  .reaction-count {
+    font-size: 10px;
+    color: var(--muted);
+  }
+  
+  /* Search bar */
+  .search-container {
     padding: 10px;
-  }
-  .search-result-item {
-    padding: 12px;
+    background: white;
     border-bottom: 1px solid #eee;
-    cursor: pointer;
+    display: none;
   }
-  .search-result-item:hover {
-    background: #f5f5f5;
+  
+  .search-input {
+    display: flex;
+    align-items: center;
+    background: #f0f2f5;
+    border-radius: 18px;
+    padding: 8px 12px;
+  }
+  
+  .search-input input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .search-input i {
+    color: var(--muted);
+    margin-right: 8px;
+  }
+  
+  /* Pull to refresh */
+  .pull-to-refresh {
+    text-align: center;
+    padding: 10px;
+    color: var(--muted);
   }
   
   /* Message context menu */
   .context-menu {
-    display: none;
     position: absolute;
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     z-index: 1000;
-    padding: 8px 0;
+    display: none;
   }
+  
   .context-menu-item {
-    padding: 10px 16px;
+    padding: 12px 16px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
+  
   .context-menu-item:hover {
     background: #f0f2f5;
   }
-  .context-menu-item i {
-    width: 16px;
-    text-align: center;
+  
+  /* Mobile notification bar */
+  .mobile-notification-bar {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    background: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 90;
+    max-width: 420px;
+    margin: 0 auto;
   }
   
-  /* Install app prompt */
-  .install-prompt {
-    display: none;
-    position: fixed;
-    bottom: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    z-index: 1000;
-    max-width: 90%;
-    text-align: center;
+  .mobile-notification-content {
+    flex: 1;
+    margin: 0 10px;
+    font-size: 14px;
   }
-  .install-prompt.active {
-    display: block;
-  }
-  .install-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-    justify-content: center;
-  }
-  .install-buttons button {
-    width: auto;
-    padding: 8px 16px;
+  
+  .mobile-notification-close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
   }
   
 @media print{
@@ -662,6 +701,24 @@
     </div>
   </div>
 
+  <!-- Search Container -->
+  <div class="search-container" id="user-search-container">
+    <div class="search-input">
+      <i class="fas fa-search"></i>
+      <input type="text" id="user-search-input" placeholder="Search messages...">
+      <i class="fas fa-times" id="user-search-close"></i>
+    </div>
+  </div>
+
+  <!-- Mobile Notification Bar -->
+  <div class="mobile-notification-bar" id="mobile-notification-bar" style="display: none;">
+    <i class="fas fa-bell"></i>
+    <div class="mobile-notification-content" id="mobile-notification-content"></div>
+    <button class="mobile-notification-close" id="mobile-notification-close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
   <div id="page-user" class="page">
     <!-- Chat -->
     <div id="user-tab-chat" class="tab-content">
@@ -679,6 +736,9 @@
             <i class="fas fa-phone" title="Voice Call"></i>
             <i class="fas fa-video" title="Video Call"></i>
           </div>
+        </div>
+        <div class="pull-to-refresh" id="pull-to-refresh">
+          <i class="fas fa-sync-alt"></i> Pull down to refresh
         </div>
         <div class="chat-messages" id="userChatMessages"></div>
         <div class="chat-input-container">
@@ -899,6 +959,15 @@
     </div>
   </div>
 
+  <!-- Admin Search Container -->
+  <div class="search-container" id="admin-search-container">
+    <div class="search-input">
+      <i class="fas fa-search"></i>
+      <input type="text" id="admin-search-input" placeholder="Search messages...">
+      <i class="fas fa-times" id="admin-search-close"></i>
+    </div>
+  </div>
+
   <div id="page-admin" class="page">
     <!-- Chat -->
     <div id="admin-tab-chat" class="tab-content">
@@ -917,6 +986,9 @@
             <i class="fas fa-phone" title="Voice Call"></i>
             <i class="fas fa-video" title="Video Call"></i>
           </div>
+        </div>
+        <div class="pull-to-refresh" id="admin-pull-to-refresh">
+          <i class="fas fa-sync-alt"></i> Pull down to refresh
         </div>
         <div class="chat-messages" id="adminChatMessages"></div>
         <div class="chat-input-container">
@@ -1192,35 +1264,30 @@
     <span id="notificationMessage"></span>
   </div>
 
-  <!-- Search Modal -->
-  <div id="searchModal" class="search-modal">
-    <div class="search-content">
-      <div class="search-header">
-        <input type="text" id="searchInput" class="search-input" placeholder="Search...">
-        <button id="closeSearch" class="search-close"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="search-results" id="searchResults">
-        <!-- Search results will be displayed here -->
-      </div>
-    </div>
-  </div>
-
   <!-- Context Menu -->
-  <div id="contextMenu" class="context-menu">
-    <div class="context-menu-item" id="unsendMessage">
-      <i class="fas fa-trash"></i>
-      <span>Unsend Message</span>
+  <div class="context-menu" id="contextMenu">
+    <div class="context-menu-item" data-action="react">
+      <i class="fas fa-smile"></i> React
+    </div>
+    <div class="context-menu-item" data-action="reply">
+      <i class="fas fa-reply"></i> Reply
+    </div>
+    <div class="context-menu-item" data-action="copy">
+      <i class="fas fa-copy"></i> Copy
+    </div>
+    <div class="context-menu-item" data-action="delete" id="deleteMessageOption">
+      <i class="fas fa-trash"></i> Delete
     </div>
   </div>
 
-  <!-- Install App Prompt -->
-  <div id="installPrompt" class="install-prompt">
-    <h4>Install Darpan Book App</h4>
-    <p>Get the full experience with our mobile app</p>
-    <div class="install-buttons">
-      <button id="installAppBtn" class="btn-ok">Install</button>
-      <button id="cancelInstallBtn" class="btn-ghost">Not Now</button>
-    </div>
+  <!-- Reaction Picker -->
+  <div class="reaction-picker" id="reactionPicker">
+    <span title="Like">👍</span>
+    <span title="Love">❤️</span>
+    <span title="Laugh">😂</span>
+    <span title="Wow">😮</span>
+    <span title="Sad">😢</span>
+    <span title="Angry">😠</span>
   </div>
 
 </div>
@@ -1293,7 +1360,7 @@
   const initialFrom = n => (n||'?').trim().charAt(0).toUpperCase();
   const timeMini = ts => new Date(ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   let currentUser=null, role="user", name="", email="", adminUid=null, lastPhotoChange=0;
-  let notificationSound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbVtfdJivrJBhNjVgodDbq2EcBStztvLJjFQNAB1Ql9L/4K5QHAAKLGiv6/LJm2EcAQASTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/L极");
+  let notificationSound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbVtfdJivrJBhNjVgodDbq2EcBStztvLJjFQNAB1Ql9L/4K5QHAAKLWiv6/LJm2EcAQASTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/L极");
   
   // Play notification sound
   function playNotificationSound() {
@@ -1325,10 +1392,15 @@
       });
     }
     
-    // Auto hide after 3 seconds
+    // Show in mobile notification bar
+    $('#mobile-notification-content').text(message);
+    $('#mobile-notification-bar').style.display = 'flex';
+    
+    // Auto hide after 5 seconds
     setTimeout(() => {
       toast.style.display = 'none';
-    }, 3000);
+      $('#mobile-notification-bar').style.display = 'none';
+    }, 5000);
   }
   
   // Request notification permission
@@ -1356,9 +1428,7 @@
         email:em, 
         role:"user",
         photoUrl: `https://ui-avatars.com/api/?name=${initialFrom(nm)}&background=random&color=fff&size=120`,
-        lastPhotoChange: 0,
-        unsendCount: 5, // Initialize unsend count
-        lastUnsendReset: Date.now()
+        lastPhotoChange: 0
       });
       alert("Account created! Please log in."); $('toLogin').click();
     }catch(e){ alert(cleanFirebaseError(e.message)); }
@@ -1374,7 +1444,6 @@
     });
   };
 
-  // Check if user is already logged in
   onAuthStateChanged(auth, async (u)=>{
     if(!u){ 
       showPage('page-login'); 
@@ -1389,9 +1458,7 @@
         email: u.email||'', 
         role:'user',
         photoUrl: `https://ui-avatars.com/api/?name=${initialFrom(u.email?.split('@')[0]||'U')}&background=random&color=fff&size=120`,
-        lastPhotoChange: 0,
-        unsendCount: 5, // Initialize unsend count
-        lastUnsendReset: Date.now()
+        lastPhotoChange: 0
       });
       snap = await get(usRef);
     }
@@ -1400,16 +1467,6 @@
     name = data.name || '';
     email = data.email || u.email || '';
     lastPhotoChange = data.lastPhotoChange || 0;
-
-    // Reset unsend count if 24 hours have passed
-    const now = Date.now();
-    const lastReset = data.lastUnsendReset || now;
-    if (now - lastReset > 24 * 60 * 60 * 1000) {
-      await update(ref(db, `users/${u.uid}`), {
-        unsendCount: 5,
-        lastUnsendReset: now
-      });
-    }
 
     // find admin uid (first found)
     adminUid = null;
@@ -1435,9 +1492,6 @@
     
     // Request notification permission
     requestNotificationPermission();
-    
-    // Check if we should show install prompt
-    checkAndShowInstallPrompt();
   });
 
   function showErr(msg){ const el=$('error'); el.innerText=msg; el.style.display='block'; }
@@ -1445,6 +1499,7 @@
 
   /* ======== USER PANEL ======== */
   let userChatBound=false, adminChatBound=false;
+  let currentSelectedMessage = null;
 
   function loadUser(photoUrl){
     // profile
@@ -1533,16 +1588,33 @@
     $('cancelPhotoSelect').onclick = ()=> $('photoSelector').classList.remove('active');
     $('confirmPhotoSelect').onclick = ()=> confirmPhotoSelection();
     
+    // Search functionality
+    $('user-search-btn').onclick = () => {
+      $('user-search-container').style.display = 'block';
+      $('user-search-input').focus();
+    };
+    
+    $('user-search-close').onclick = () => {
+      $('user-search-container').style.display = 'none';
+      $('user-search-input').value = '';
+      // Reset chat view
+      bindGroupChat('user');
+    };
+    
+    $('user-search-input').addEventListener('input', (e) => {
+      searchMessages(e.target.value, 'user');
+    });
+    
+    // Mobile notification close
+    $('mobile-notification-close').onclick = () => {
+      $('#mobile-notification-bar').style.display = 'none';
+    };
+    
+    // Pull to refresh
+    initPullToRefresh('user');
+    
     // Listen for notifications
     listenForNotifications();
-    
-    // Search functionality
-    $('user-search-btn').onclick = () => showSearchModal('user');
-    $('closeSearch').onclick = () => $('searchModal').classList.remove('active');
-    $('searchInput').addEventListener('input', handleSearchInput);
-    
-    // Handle back button
-    setupBackButtonHandling();
   }
 
   function showPhotoSelectorWithGallery() {
@@ -1765,14 +1837,28 @@
     // Photo selector
     $('changeAdminPhotoBtn').onclick = showPhotoSelectorWithGallery;
     
+    // Search functionality
+    $('admin-search-btn').onclick = () => {
+      $('admin-search-container').style.display = 'block';
+      $('admin-search-input').focus();
+    };
+    
+    $('admin-search-close').onclick = () => {
+      $('admin-search-container').style.display = 'none';
+      $('admin-search-input').value = '';
+      // Reset chat view
+      bindGroupChat('admin');
+    };
+    
+    $('admin-search-input').addEventListener('input', (e) => {
+      searchMessages(e.target.value, 'admin');
+    });
+    
+    // Pull to refresh
+    initPullToRefresh('admin');
+    
     // Listen for notifications
     listenForNotifications();
-    
-    // Search functionality
-    $('admin-search-btn').onclick = () => showSearchModal('admin');
-    
-    // Handle back button
-    setupBackButtonHandling();
   }
 
   /* ======== GROUP CHAT ======== */
@@ -1790,25 +1876,82 @@
         const row = document.createElement('div');
         row.className = `msg-row ${isMine?'mine':'theirs'}`;
         row.dataset.messageId = ch.key;
-        row.dataset.timestamp = m.ts;
         
         const avatar = document.createElement('div');
-        avatar.className = 'mini-avatar'; avatar.innerText = initialFrom(m.name||'U');
+        avatar.className = 'mini-avatar'; 
+        avatar.innerText = initialFrom(m.name||'U');
+        
         const bubble = document.createElement('div');
         bubble.className = 'msg-bubble';
-        bubble.innerHTML = `<div>${m.text || ''}</div><div class="msg-meta">${m.name||'User'} · ${timeMini(m.ts)}</div>`;
+        
+        // Message content
+        const messageContent = document.createElement('div');
+        messageContent.innerHTML = m.text || '';
+        
+        // Message metadata
+        const meta = document.createElement('div');
+        meta.className = 'msg-meta';
+        meta.innerHTML = `${m.name||'User'} · ${timeMini(m.ts)}`;
+        
+        // Message actions
+        const actions = document.createElement('div');
+        actions.className = 'msg-actions';
+        
+        // Reaction button
+        const reactBtn = document.createElement('button');
+        reactBtn.className = 'reaction-btn';
+        reactBtn.innerHTML = '<i class="fas fa-smile"></i>';
+        reactBtn.onclick = (e) => {
+          e.stopPropagation();
+          showReactionPicker(e, ch.key);
+        };
+        
+        // Options button (only for own messages)
+        if (isMine) {
+          const optionsBtn = document.createElement('button');
+          optionsBtn.className = 'msg-option-btn';
+          optionsBtn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
+          optionsBtn.onclick = (e) => {
+            e.stopPropagation();
+            showMessageOptions(e, ch.key, m);
+          };
+          actions.appendChild(optionsBtn);
+        }
+        
+        actions.appendChild(reactBtn);
+        
+        // Reactions display
+        const reactionsContainer = document.createElement('div');
+        reactionsContainer.className = 'msg-reactions';
+        if (m.reactions) {
+          Object.entries(m.reactions).forEach(([reaction, users]) => {
+            if (users && Object.keys(users).length > 0) {
+              const reactionEl = document.createElement('div');
+              reactionEl.className = 'reaction';
+              reactionEl.innerHTML = `${reaction} <span class="reaction-count">${Object.keys(users).length}</span>`;
+              reactionsContainer.appendChild(reactionEl);
+            }
+          });
+        }
+        
+        bubble.appendChild(messageContent);
+        bubble.appendChild(meta);
+        bubble.appendChild(actions);
+        bubble.appendChild(reactionsContainer);
         
         if(isMine){ 
           row.appendChild(bubble); 
-          // Add context menu for user's own messages
-          row.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            showMessageContextMenu(e, ch.key, m.ts);
-          });
         } else { 
           row.appendChild(avatar); 
           row.appendChild(bubble); 
         }
+        
+        // Add context menu
+        row.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          showContextMenu(e, ch.key, m, isMine);
+        });
+        
         listEl.appendChild(row);
       });
       listEl.scrollTop = listEl.scrollHeight;
@@ -1823,322 +1966,225 @@
     const text = input.value.trim();
     if(!text) return;
     await push(ref(db, `groups/${GROUP_ID}/messages`), {
-      uid: auth.currentUser.uid, 
-      name: senderName||'User', 
-      text, 
-      ts: Date.now(),
-      unsendable: true
+      uid: auth.currentUser.uid, name: senderName||'User', text, ts: Date.now()
     });
     input.value='';
   }
 
-  /* ======== MESSAGE UNSEND FEATURE ======== */
-  async function showMessageContextMenu(e, messageId, messageTimestamp) {
-    // Check if message is within 24 hours
-    const now = Date.now();
-    if (now - messageTimestamp > 24 * 60 * 60 * 1000) {
-      alert("You can only unsend messages within 24 hours.");
-      return;
-    }
+  function showReactionPicker(event, messageId) {
+    const picker = $('#reactionPicker');
+    picker.style.display = 'block';
+    picker.style.left = `${event.clientX}px`;
+    picker.style.top = `${event.clientY}px`;
     
-    // Check user's unsend count
-    const userRef = ref(db, `users/${auth.currentUser.uid}`);
-    const userSnap = await get(userRef);
-    const userData = userSnap.val();
-    const unsendCount = userData.unsendCount || 5;
+    // Add event listeners to reactions
+    const reactions = picker.querySelectorAll('span');
+    reactions.forEach(reaction => {
+      reaction.onclick = async () => {
+        await addReaction(messageId, reaction.textContent);
+        picker.style.display = 'none';
+      };
+    });
     
-    if (unsendCount <= 0) {
-      alert("You have used all your unsend attempts for today.");
-      return;
-    }
-    
-    // Show context menu
-    const contextMenu = $('#contextMenu');
-    contextMenu.style.display = 'block';
-    contextMenu.style.left = e.pageX + 'px';
-    contextMenu.style.top = e.pageY + 'px';
-    
-    // Set up unsend functionality
-    $('#unsendMessage').onclick = async () => {
-      await unsendMessage(messageId);
-      contextMenu.style.display = 'none';
-    };
-    
-    // Hide context menu when clicking elsewhere
-    const hideContextMenu = (event) => {
-      if (!contextMenu.contains(event.target)) {
-        contextMenu.style.display = 'none';
-        document.removeEventListener('click', hideContextMenu);
+    // Hide picker when clicking elsewhere
+    const hidePicker = (e) => {
+      if (!picker.contains(e.target)) {
+        picker.style.display = 'none';
+        document.removeEventListener('click', hidePicker);
       }
     };
     
     setTimeout(() => {
-      document.addEventListener('click', hideContextMenu);
+      document.addEventListener('click', hidePicker);
     }, 100);
   }
   
-  async function unsendMessage(messageId) {
-    try {
-      // Get user data to check unsend count
-      const userRef = ref(db, `users/${auth.currentUser.uid}`);
-      const userSnap = await get(userRef);
-      const userData = userSnap.val();
-      let unsendCount = userData.unsendCount || 5;
+  async function addReaction(messageId, reaction) {
+    const reactionRef = ref(db, `groups/${GROUP_ID}/messages/${messageId}/reactions/${reaction}/${auth.currentUser.uid}`);
+    const snapshot = await get(reactionRef);
+    
+    if (snapshot.exists()) {
+      // Remove reaction if already exists
+      await remove(reactionRef);
+    } else {
+      // Add reaction
+      await set(reactionRef, true);
+    }
+  }
+  
+  function showMessageOptions(event, messageId, message) {
+    const contextMenu = $('#contextMenu');
+    contextMenu.style.display = 'block';
+    contextMenu.style.left = `${event.clientX}px`;
+    contextMenu.style.top = `${event.clientY}px`;
+    
+    // Store current selected message
+    currentSelectedMessage = { id: messageId, data: message };
+    
+    // Hide delete option if not own message
+    const deleteOption = $('#deleteMessageOption');
+    if (message.uid !== auth.currentUser.uid) {
+      deleteOption.style.display = 'none';
+    } else {
+      deleteOption.style.display = 'flex';
+    }
+    
+    // Add event listeners to context menu items
+    const menuItems = contextMenu.querySelectorAll('.context-menu-item');
+    menuItems.forEach(item => {
+      item.onclick = () => {
+        const action = item.getAttribute('data-action');
+        handleMessageAction(action, messageId, message);
+        contextMenu.style.display = 'none';
+      };
+    });
+    
+    // Hide menu when clicking elsewhere
+    const hideMenu = (e) => {
+      if (!contextMenu.contains(e.target)) {
+        contextMenu.style.display = 'none';
+        document.removeEventListener('click', hideMenu);
+      }
+    };
+    
+    setTimeout(() => {
+      document.addEventListener('click', hideMenu);
+    }, 100);
+  }
+  
+  function showContextMenu(event, messageId, message, isMine) {
+    event.preventDefault();
+    showMessageOptions(event, messageId, message);
+  }
+  
+  async function handleMessageAction(action, messageId, message) {
+    switch (action) {
+      case 'react':
+        // Already handled by reaction button
+        break;
+      case 'reply':
+        const input = role === 'admin' ? $('adminChatInput') : $('userChatInput');
+        input.value = `Replying to ${message.name}: ${message.text} `;
+        input.focus();
+        break;
+      case 'copy':
+        navigator.clipboard.writeText(message.text);
+        showNotification('Message copied to clipboard');
+        break;
+      case 'delete':
+        if (message.uid === auth.currentUser.uid || role === 'admin') {
+          if (confirm('Are you sure you want to delete this message?')) {
+            await remove(ref(db, `groups/${GROUP_ID}/messages/${messageId}`));
+            showNotification('Message deleted');
+          }
+        }
+        break;
+    }
+  }
+  
+  function searchMessages(query, scope) {
+    if (!query.trim()) {
+      // Reset to normal view if query is empty
+      bindGroupChat(scope);
+      return;
+    }
+    
+    const messagesRef = ref(db, `groups/${GROUP_ID}/messages`);
+    get(messagesRef).then((snapshot) => {
+      const listEl = scope === 'admin' ? $('adminChatMessages') : $('userChatMessages');
+      listEl.innerHTML = '';
       
-      if (unsendCount <= 0) {
-        alert("You have used all your unsend attempts for today.");
+      if (!snapshot.exists()) return;
+      
+      const results = [];
+      snapshot.forEach((child) => {
+        const message = child.val();
+        if (message.text && message.text.toLowerCase().includes(query.toLowerCase())) {
+          results.push({ key: child.key, ...message });
+        }
+      });
+      
+      if (results.length === 0) {
+        listEl.innerHTML = '<div class="muted" style="text-align: center; padding: 20px;">No messages found</div>';
         return;
       }
       
-      // Update message to show as unsent
-      await update(ref(db, `groups/${GROUP_ID}/messages/${messageId}`), {
-        text: "This message was unsent",
-        unsent: true,
-        originalSender: userData.name
+      // Display search results
+      results.forEach((m) => {
+        const isMine = (m.uid === auth.currentUser.uid);
+        const row = document.createElement('div');
+        row.className = `msg-row ${isMine?'mine':'theirs'}`;
+        
+        const avatar = document.createElement('div');
+        avatar.className = 'mini-avatar'; 
+        avatar.innerText = initialFrom(m.name||'U');
+        
+        const bubble = document.createElement('div');
+        bubble.className = 'msg-bubble';
+        
+        // Highlight the search term in the message
+        const messageText = m.text.replace(
+          new RegExp(query, 'gi'),
+          match => `<mark>${match}</mark>`
+        );
+        
+        bubble.innerHTML = `
+          <div>${messageText}</div>
+          <div class="msg-meta">${m.name||'User'} · ${timeMini(m.ts)}</div>
+        `;
+        
+        if(isMine){ 
+          row.appendChild(bubble); 
+        } else { 
+          row.appendChild(avatar); 
+          row.appendChild(bubble); 
+        }
+        
+        listEl.appendChild(row);
       });
-      
-      // Decrement unsend count
-      unsendCount--;
-      await update(ref(db, `users/${auth.currentUser.uid}`), {
-        unsendCount: unsendCount
-      });
-      
-      showNotification(`Message unsent. ${unsendCount} unsend attempts remaining today.`);
-    } catch (error) {
-      console.error("Error unsending message:", error);
-      alert("Error unsending message. Please try again.");
-    }
-  }
-
-  /* ======== SEARCH FUNCTIONALITY ======== */
-  function showSearchModal(scope) {
-    $('searchModal').classList.add('active');
-    $('searchInput').value = '';
-    $('searchInput').focus();
-    $('searchInput').dataset.scope = scope;
-    $('searchResults').innerHTML = '<div class="muted" style="padding: 20px; text-align: center;">Type to search</div>';
-  }
-  
-  async function handleSearchInput(e) {
-    const query = e.target.value.trim();
-    const scope = e.target.dataset.scope;
-    
-    if (!query) {
-      $('searchResults').innerHTML = '<div class="muted" style="padding: 20px; text-align: center;">Type to search</div>';
-      return;
-    }
-    
-    try {
-      let results = [];
-      
-      if (scope === 'user') {
-        // Search in user's messages
-        const messagesRef = ref(db, `groups/${GROUP_ID}/messages`);
-        const messagesSnap = await get(messagesRef);
-        
-        if (messagesSnap.exists()) {
-          messagesSnap.forEach(child => {
-            const message = child.val();
-            if (message.text && message.text.toLowerCase().includes(query.toLowerCase()) && !message.unsent) {
-              results.push({
-                type: 'message',
-                id: child.key,
-                content: message.text,
-                timestamp: message.ts,
-                sender: message.name
-              });
-            }
-          });
-        }
-        
-        // Search in notices
-        const noticesRef = ref(db, 'notices');
-        const noticesSnap = await get(noticesRef);
-        
-        if (noticesSnap.exists()) {
-          noticesSnap.forEach(child => {
-            const notice = child.val();
-            if (notice.text && notice.text.toLowerCase().includes(query.toLowerCase())) {
-              results.push({
-                type: 'notice',
-                id: child.key,
-                content: notice.text,
-                timestamp: notice.ts,
-                sender: notice.name
-              });
-            }
-          });
-        }
-      } else if (scope === 'admin') {
-        // Admin can search in additional areas
-        // Search in user list
-        const usersRef = ref(db, 'users');
-        const usersSnap = await get(usersRef);
-        
-        if (usersSnap.exists()) {
-          usersSnap.forEach(child => {
-            const user = child.val();
-            if (user.name && user.name.toLowerCase().includes(query.toLowerCase())) {
-              results.push({
-                type: 'user',
-                id: child.key,
-                content: user.name,
-                email: user.email,
-                role: user.role
-              });
-            }
-          });
-        }
-      }
-      
-      displaySearchResults(results, scope);
-    } catch (error) {
-      console.error("Search error:", error);
-      $('searchResults').innerHTML = '<div class="muted" style="padding: 20px; text-align: center;">Error performing search</div>';
-    }
-  }
-  
-  function displaySearchResults(results, scope) {
-    const resultsContainer = $('searchResults');
-    
-    if (results.length === 0) {
-      resultsContainer.innerHTML = '<div class="muted" style="padding: 20px; text-align: center;">No results found</div>';
-      return;
-    }
-    
-    resultsContainer.innerHTML = '';
-    
-    results.forEach(result => {
-      const item = document.createElement('div');
-      item.className = 'search-result-item';
-      
-      let html = '';
-      if (result.type === 'message') {
-        html = `
-          <div><strong>Message from ${result.sender}</strong></div>
-          <div class="small">${result.content}</div>
-          <div class="muted small">${new Date(result.timestamp).toLocaleString()}</div>
-        `;
-      } else if (result.type === 'notice') {
-        html = `
-          <div><strong>Notice from ${result.sender}</strong></div>
-          <div class="small">${result.content}</div>
-          <div class="muted small">${new Date(result.timestamp).toLocaleString()}</div>
-        `;
-      } else if (result.type === 'user' && scope === 'admin') {
-        html = `
-          <div><strong>User: ${result.content}</strong></div>
-          <div class="small">${result.email}</div>
-          <div class="muted small">Role: ${result.role}</div>
-        `;
-      }
-      
-      item.innerHTML = html;
-      resultsContainer.appendChild(item);
     });
   }
-
-  /* ======== PWA INSTALL PROMPT ======== */
-  let deferredPrompt;
   
-  window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent the mini-infobar from appearing on mobile
-    e.preventDefault();
-    // Stash the event so it can be triggered later
-    deferredPrompt = e;
-  });
-  
-  function checkAndShowInstallPrompt() {
-    // Check if app is already installed
-    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-      return;
-    }
+  function initPullToRefresh(scope) {
+    const messagesContainer = scope === 'admin' ? $('adminChatMessages') : $('userChatMessages');
+    const pullToRefreshText = scope === 'admin' ? $('admin-pull-to-refresh') : $('pull-to-refresh');
     
-    // Show install prompt if available
-    if (deferredPrompt) {
-      setTimeout(() => {
-        $('#installPrompt').classList.add('active');
-      }, 3000);
-    }
-  }
-  
-  $('#installAppBtn').onclick = async () => {
-    if (!deferredPrompt) return;
+    let startY = 0;
+    let currentY = 0;
+    let isRefreshing = false;
     
-    // Show the install prompt
-    deferredPrompt.prompt();
-    
-    // Wait for the user to respond to the prompt
-    const { outcome } = await deferredPrompt.userChoice;
-    
-    // We've used the prompt, and can't use it again, throw it away
-    deferredPrompt = null;
-    
-    // Hide the install prompt
-    $('#installPrompt').classList.remove('active');
-  };
-  
-  $('#cancelInstallBtn').onclick = () => {
-    $('#installPrompt').classList.remove('active');
-  };
-  
-  // Create app manifest dynamically
-  const manifest = {
-    "name": "Darpan Book",
-    "short_name": "Darpan",
-    "description": "Social Messenger & Exam System",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#1877f2",
-    "theme_color": "#1877f2",
-    "icons": [
-      {
-        "src": "https://example.com/icon-192x192.png",
-        "sizes": "192x192",
-        "type": "image/png"
-      },
-      {
-        "src": "https://example.com/icon-512x512.png",
-        "sizes": "512x512",
-        "type": "image/png"
-      }
-    ]
-  };
-  
-  const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-  const manifestURL = URL.createObjectURL(manifestBlob);
-  $('#app-manifest').href = manifestURL;
-
-  /* ======== BACK BUTTON HANDLING ======== */
-  function setupBackButtonHandling() {
-    let currentPage = '';
-    let currentTab = '';
-    
-    // Track navigation
-    const originalSetActiveTab = setActiveTab;
-    window.setActiveTab = function(scope, tab) {
-      currentPage = scope;
-      currentTab = tab;
-      originalSetActiveTab(scope, tab);
-    };
-    
-    // Handle back button/gesture
-    window.addEventListener('popstate', function(event) {
-      if (currentPage === 'user' || currentPage === 'admin') {
-        if (currentTab === 'chat') {
-          setActiveTab(currentPage, 'profile');
-        } else {
-          // For other tabs, go back to chat (main tab)
-          setActiveTab(currentPage, 'chat');
-        }
-      } else if (currentPage === 'login') {
-        // Prevent going back from login page
-        window.history.forward();
+    messagesContainer.addEventListener('scroll', () => {
+      if (messagesContainer.scrollTop === 0) {
+        pullToRefreshText.style.display = 'block';
+      } else {
+        pullToRefreshText.style.display = 'none';
       }
     });
     
-    // Add initial state
-    window.history.replaceState({page: 'login'}, '', '');
+    messagesContainer.addEventListener('touchstart', (e) => {
+      if (messagesContainer.scrollTop === 0) {
+        startY = e.touches[0].clientY;
+      }
+    });
+    
+    messagesContainer.addEventListener('touchmove', (e) => {
+      if (messagesContainer.scrollTop === 0) {
+        currentY = e.touches[0].clientY;
+        const pullDistance = currentY - startY;
+        
+        if (pullDistance > 50 && !isRefreshing) {
+          isRefreshing = true;
+          pullToRefreshText.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
+          
+          // Reload chat
+          setTimeout(() => {
+            bindGroupChat(scope);
+            pullToRefreshText.innerHTML = '<i class="fas fa-sync-alt"></i> Pull down to refresh';
+            isRefreshing = false;
+          }, 1000);
+        }
+      }
+    });
   }
 
   /* ======== EXAM BUILDER (ADMIN) ======== */
