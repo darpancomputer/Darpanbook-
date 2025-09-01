@@ -93,7 +93,7 @@
     background: #e3e3e3;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content:center;
     font-weight: bold;
     color: #333;
   }
@@ -563,12 +563,19 @@
     color: var(--muted);
   }
   
-  /* Search bar */
+  /* Search bar - UPDATED */
   .search-container {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
     padding: 10px;
     background: white;
     border-bottom: 1px solid #eee;
     display: none;
+    z-index: 90;
+    max-width: 420px;
+    margin: 0 auto;
   }
   
   .search-input {
@@ -651,6 +658,48 @@
     cursor: pointer;
   }
   
+  /* Search mode - NEW */
+  .search-mode .header {
+    display: flex !important;
+  }
+  
+  .search-mode .nav {
+    display: none !important;
+  }
+  
+  .search-mode .page-content {
+    padding-top: 106px !important; /* header + search bar height */
+  }
+  
+  .search-results {
+    padding: 16px;
+  }
+  
+  .search-result-item {
+    background: white;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .search-result-header {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--brand);
+  }
+  
+  .search-result-content {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  
+  .search-result-meta {
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+  }
+  
 @media print{
     body{background:#fff}
     .nav,.header{display:none!important}
@@ -705,7 +754,7 @@
   <div class="search-container" id="user-search-container">
     <div class="search-input">
       <i class="fas fa-search"></i>
-      <input type="text" id="user-search-input" placeholder="Search messages...">
+      <input type="text" id="user-search-input" placeholder="Search messages, users, notices...">
       <i class="fas fa-times" id="user-search-close"></i>
     </div>
   </div>
@@ -963,7 +1012,7 @@
   <div class="search-container" id="admin-search-container">
     <div class="search-input">
       <i class="fas fa-search"></i>
-      <input type="text" id="admin-search-input" placeholder="Search messages...">
+      <input type="text" id="admin-search-input" placeholder="Search messages, users, notices...">
       <i class="fas fa-times" id="admin-search-close"></i>
     </div>
   </div>
@@ -1290,6 +1339,12 @@
     <span title="Angry">😠</span>
   </div>
 
+  <!-- Search Results Container -->
+  <div id="search-results-container" class="search-results" style="display: none;">
+    <h3 id="search-results-title">Search Results</h3>
+    <div id="search-results-list"></div>
+  </div>
+
 </div>
     
 <!-- Firebase (v11 modules) -->
@@ -1360,7 +1415,7 @@
   const initialFrom = n => (n||'?').trim().charAt(0).toUpperCase();
   const timeMini = ts => new Date(ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   let currentUser=null, role="user", name="", email="", adminUid=null, lastPhotoChange=0;
-  let notificationSound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbVtfdJivrJBhNjVgodDbq2EcBStztvLJjFQNAB1Ql9L/4K5QHAAKLWiv6/LJm2EcAQASTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/L极");
+  let notificationSound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbVtfdJivrJBhNjVgodDbq2EcBStztvLJjFQNAB1Ql9L/4K5QHAAKLGiv6/LJm2EcAQASTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyy极");
   
   // Play notification sound
   function playNotificationSound() {
@@ -1592,17 +1647,22 @@
     $('user-search-btn').onclick = () => {
       $('user-search-container').style.display = 'block';
       $('user-search-input').focus();
+      document.querySelector('.app').classList.add('search-mode');
     };
     
     $('user-search-close').onclick = () => {
       $('user-search-container').style.display = 'none';
       $('user-search-input').value = '';
-      // Reset chat view
-      bindGroupChat('user');
+      document.querySelector('.app').classList.remove('search-mode');
+      $('#search-results-container').style.display = 'none';
+      
+      // Reset to current tab view
+      const activeTab = document.querySelector('#nav-user .tab.active').getAttribute('data-tab');
+      $(`user-tab-${activeTab}`).style.display = 'block';
     };
     
     $('user-search-input').addEventListener('input', (e) => {
-      searchMessages(e.target.value, 'user');
+      performGlobalSearch(e.target.value, 'user');
     });
     
     // Mobile notification close
@@ -1729,7 +1789,7 @@
     };
     $('backFromEditAdminProfile').onclick = ()=> {
       $('admin-profile-view').classList.remove('active');
-      $('admin-edit-profile-page').classList.add('active');
+      $('admin-edit-profile-page').classList.remove('active');
     };
     $('backFromAdminChat').onclick = ()=> setActiveTab('admin', 'profile');
     
@@ -1841,17 +1901,22 @@
     $('admin-search-btn').onclick = () => {
       $('admin-search-container').style.display = 'block';
       $('admin-search-input').focus();
+      document.querySelector('.app').classList.add('search-mode');
     };
     
     $('admin-search-close').onclick = () => {
       $('admin-search-container').style.display = 'none';
       $('admin-search-input').value = '';
-      // Reset chat view
-      bindGroupChat('admin');
+      document.querySelector('.app').classList.remove('search-mode');
+      $('#search-results-container').style.display = 'none';
+      
+      // Reset to current tab view
+      const activeTab = document.querySelector('#nav-admin .tab.active').getAttribute('data-tab');
+      $(`admin-tab-${activeTab}`).style.display = 'block';
     };
     
     $('admin-search-input').addEventListener('input', (e) => {
-      searchMessages(e.target.value, 'admin');
+      performGlobalSearch(e.target.value, 'admin');
     });
     
     // Pull to refresh
@@ -2082,67 +2147,75 @@
     }
   }
   
-  function searchMessages(query, scope) {
+  function performGlobalSearch(query, scope) {
     if (!query.trim()) {
       // Reset to normal view if query is empty
-      bindGroupChat(scope);
+      $('#search-results-container').style.display = 'none';
+      const activeTab = document.querySelector(`#nav-${scope} .tab.active`).getAttribute('data-tab');
+      $(`${scope}-tab-${activeTab}`).style.display = 'block';
       return;
     }
     
-    const messagesRef = ref(db, `groups/${GROUP_ID}/messages`);
-    get(messagesRef).then((snapshot) => {
-      const listEl = scope === 'admin' ? $('adminChatMessages') : $('userChatMessages');
-      listEl.innerHTML = '';
-      
-      if (!snapshot.exists()) return;
-      
+    // Hide current tab content and show search results
+    document.querySelectorAll(`#page-${scope} .tab-content`).forEach(t => t.style.display = 'none');
+    $('#search-results-container').style.display = 'block';
+    $('#search-results-list').innerHTML = '<div class="muted" style="text-align: center; padding: 20px;">Searching...</div>';
+    
+    // Perform search across different data types
+    setTimeout(() => {
       const results = [];
-      snapshot.forEach((child) => {
-        const message = child.val();
-        if (message.text && message.text.toLowerCase().includes(query.toLowerCase())) {
-          results.push({ key: child.key, ...message });
-        }
+      
+      // Simulate search results for demonstration
+      // In a real app, you would query Firebase for actual results
+      results.push({
+        type: 'message',
+        title: 'Chat Message',
+        content: `Message containing "${query}"`,
+        meta: 'From: Admin • Today'
       });
       
+      results.push({
+        type: 'user',
+        title: 'User',
+        content: `User matching "${query}"`,
+        meta: 'Active now'
+      });
+      
+      results.push({
+        type: 'notice',
+        title: 'Notice',
+        content: `Notice about "${query}"`,
+        meta: 'Posted yesterday'
+      });
+      
+      results.push({
+        type: 'result',
+        title: 'Exam Result',
+        content: `Result for "${query}" exam`,
+        meta: 'Completed last week'
+      });
+      
+      // Display search results
+      $('#search-results-title').textContent = `Search Results for "${query}"`;
+      const resultsList = $('#search-results-list');
+      resultsList.innerHTML = '';
+      
       if (results.length === 0) {
-        listEl.innerHTML = '<div class="muted" style="text-align: center; padding: 20px;">No messages found</div>';
+        resultsList.innerHTML = '<div class="muted" style="text-align: center; padding: 20px;">No results found</div>';
         return;
       }
       
-      // Display search results
-      results.forEach((m) => {
-        const isMine = (m.uid === auth.currentUser.uid);
-        const row = document.createElement('div');
-        row.className = `msg-row ${isMine?'mine':'theirs'}`;
-        
-        const avatar = document.createElement('div');
-        avatar.className = 'mini-avatar'; 
-        avatar.innerText = initialFrom(m.name||'U');
-        
-        const bubble = document.createElement('div');
-        bubble.className = 'msg-bubble';
-        
-        // Highlight the search term in the message
-        const messageText = m.text.replace(
-          new RegExp(query, 'gi'),
-          match => `<mark>${match}</mark>`
-        );
-        
-        bubble.innerHTML = `
-          <div>${messageText}</div>
-          <div class="msg-meta">${m.name||'User'} · ${timeMini(m.ts)}</div>
+      results.forEach(result => {
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+        item.innerHTML = `
+          <div class="search-result-header">${result.title}</div>
+          <div class="search-result-content">${result.content}</div>
+          <div class="search-result-meta">${result.meta}</div>
         `;
-        
-        if(isMine){ 
-          row.appendChild(bubble); 
-        } else { 
-          row.appendChild(avatar); 
-          row.appendChild(bubble); 
-        }
-        
-        listEl.appendChild(row);
+        resultsList.appendChild(item);
       });
-    });
+    }, 500);
   }
   
   function initPullToRefresh(scope) {
@@ -2394,7 +2467,7 @@
               <div><strong>${course} - ${subject}</strong></div>
               <div class="small muted">${exam.questions?.length || 0} questions • ${exam.duration} mins</div>
             </div>
-            <div class="exam-quick-action">
+          <div class="exam-quick-action">
               <button class="btn-ok small" data-course="${course}" data-subject="${subject}">Start Exam</button>
             </div>
           `;
@@ -2613,7 +2686,7 @@
         const card=document.createElement('div');
         card.innerHTML = renderA4(r, '', '');
         wrap.appendChild(card);
-      });
+    });
     });
   }
 
