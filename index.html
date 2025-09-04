@@ -193,7 +193,7 @@
 
   /* Notice cards */
   .notice-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:10px;margin:8px 0}
-  .notice-img{width:100%;max-height:600px;object-fit:cover;border-radius:10px;border:2px solid #eee;margin-top:8px}
+  .notice-img{width:100%;max-height:600px;object-fit:cover;border-radius:10px;border:2px solid #eee;margin-top:8px;cursor:pointer}
 
   /* Profile Edit */
   .profile-edit{display:none}
@@ -699,6 +699,44 @@
     color: #999;
     margin-top: 4px;
   }
+
+  /* Fullscreen image viewer */
+  .image-viewer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 2000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .image-viewer.active {
+    display: flex;
+  }
+  
+  .image-viewer img {
+    max-width: 95%;
+    max-height: 80%;
+    object-fit: contain;
+  }
+  
+  .image-viewer-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+  }
   
 @media print{
     body{background:#fff}
@@ -914,7 +952,7 @@
           <h3>Profile</h3>
           <div class="help-item">
             <h4>How to change my profile picture?</h4>
-            <p>Go to Profile → Edit Profile → Change Photo. Note: You can only change every 6 months.</p>
+            <p>Go to Profile → Edit Profile → Change Photo. You can change your profile picture anytime.</p>
           </div>
           <div class="help-item">
             <h4>Where can I see my exam results?</h4>
@@ -1095,6 +1133,7 @@
               <button id="deleteExamBtn" class="btn-danger">Delete</button>
             </div>
             <div class="muted small">Tip: You can add up to 200+ questions (one by one).</div>
+            <div class="muted small" id="userCountDisplay">Total Users: Loading...</div>
           </div>
         </div>
         <div class="card">
@@ -1166,6 +1205,10 @@
           <div class="help-item">
             <h4>How to remove users?</h4>
             <p>Currently, you need to manually remove them from the Firebase database.</p>
+          </div>
+          <div class="help-item">
+            <h4>User Statistics</h4>
+            <p id="adminUserStats">Total Users: Loading...</p>
           </div>
         </div>
         
@@ -1305,6 +1348,14 @@
       </div>
       <iframe id="pdfFrame" width="100%" height="100%" style="border:none;"></iframe>
     </div>
+  </div>
+
+  <!-- Image Viewer Modal -->
+  <div id="imageViewer" class="image-viewer">
+    <button id="closeImageViewer" class="image-viewer-close">
+      <i class="fas fa-times"></i>
+    </button>
+    <img id="fullscreenImage" src="" alt="Fullscreen image">
   </div>
 
   <!-- Notification Toast -->
@@ -1572,7 +1623,7 @@
       $('user-results-page').classList.remove('active');
     };
     $('backFromEditProfile').onclick = ()=> {
-      $('user-profile-view').classList.add('active');
+      $('user-profile-view').classList.remove('active');
       $('user-edit-profile-page').classList.remove('active');
     };
     $('backFromChat').onclick = ()=> setActiveTab('user', 'profile');
@@ -1638,7 +1689,7 @@
     // Load available exams in profile
     loadAvailableExamsForUser();
 
-    // Photo selector
+    // Photo selector - REMOVED 6-MONTH RESTRICTION
     $('changePhotoBtn').onclick = showPhotoSelectorWithGallery;
     $('cancelPhotoSelect').onclick = ()=> $('photoSelector').classList.remove('active');
     $('confirmPhotoSelect').onclick = ()=> confirmPhotoSelection();
@@ -1678,15 +1729,6 @@
   }
 
   function showPhotoSelectorWithGallery() {
-    const now = Date.now();
-    const sixMonths = 6 * 30 * 24 * 60 * 60 * 1000; // 6 months in milliseconds
-    
-    if (now - lastPhotoChange < sixMonths) {
-      const nextChange = new Date(lastPhotoChange + sixMonths);
-      alert(`You can only change your profile photo once every 6 months. Next change available on ${nextChange.toLocaleDateString()}`);
-      return;
-    }
-    
     $('photoOptions').innerHTML = '';
     
     // Add device gallery option
@@ -1894,7 +1936,7 @@
       renderBooks('adminBookList', snap, true);
     });
 
-    // Photo selector
+    // Photo selector - REMOVED 6-MONTH RESTRICTION
     $('changeAdminPhotoBtn').onclick = showPhotoSelectorWithGallery;
     
     // Search functionality
@@ -1924,6 +1966,9 @@
     
     // Listen for notifications
     listenForNotifications();
+    
+    // Load user count for admin
+    loadUserCountForAdmin();
   }
 
   /* ======== GROUP CHAT ======== */
@@ -2734,7 +2779,7 @@
           ${canDelete?`<button class="btn-ghost small" data-del="${n.key}"><i class="fa fa-trash"></i></button>`:''}
         </div>
         <div style="margin-top:6px">${n.text||''}</div>
-        ${n.photoDataUrl?`<img class="notice-img" src="${n.photoDataUrl}" alt="notice image">`:''}
+        ${n.photoDataUrl?`<img class="notice-img" src="${n.photoDataUrl}" alt="notice image" onclick="showFullscreenImage('${n.photoDataUrl}')">`:''}
       `;
       wrap.appendChild(card);
     });
@@ -2844,6 +2889,47 @@
     $('#pdfFrame').src = '';
   };
   
+  // Fullscreen image viewer functions
+  function showFullscreenImage(imageUrl) {
+    $('#fullscreenImage').src = imageUrl;
+    $('#imageViewer').classList.add('active');
+  }
+  
+  $('#closeImageViewer').onclick = () => {
+    $('#imageViewer').classList.remove('active');
+  };
+  
+  // Load user count for admin panel
+  async function loadUserCountForAdmin() {
+    try {
+      const usersSnapshot = await get(ref(db, 'users'));
+      let userCount = 0;
+      let adminCount = 0;
+      
+      if (usersSnapshot.exists()) {
+        usersSnapshot.forEach(user => {
+          const userData = user.val();
+          if (userData.role === 'admin') {
+            adminCount++;
+          } else {
+            userCount++;
+          }
+        });
+      }
+      
+      // Update user count display in exam tab
+      $('#userCountDisplay').textContent = `Total Users: ${userCount} | Admins: ${adminCount}`;
+      
+      // Update user count in help section
+      $('#adminUserStats').textContent = `Total Users: ${userCount} | Admins: ${adminCount}`;
+      
+    } catch (error) {
+      console.error('Error loading user count:', error);
+      $('#userCountDisplay').textContent = 'Total Users: Error loading';
+      $('#adminUserStats').textContent = 'Total Users: Error loading';
+    }
+  }
+
   /* ===== NOTIFICATION LISTENER ===== */
   function listenForNotifications() {
     // Listen for new messages in group chat
@@ -2923,6 +3009,30 @@
         }
       });
     }
+  }
+
+  // Initialize the application
+  function initApp() {
+    // Set up image viewer close button
+    $('#closeImageViewer').onclick = () => {
+      $('#imageViewer').classList.remove('active');
+    };
+    
+    // Make showFullscreenImage function globally available
+    window.showFullscreenImage = showFullscreenImage;
+    
+    // Update header title as requested
+    $('user-header').querySelector('.title').textContent = 'दर्पण पाठशाला';
+    $('admin-header').querySelector('.title').textContent = 'दर्पण पाठशाला';
+    
+    console.log('Darpan Book application initialized');
+  }
+
+  // Run initialization when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    initApp();
   }
 </script>
 </body>
