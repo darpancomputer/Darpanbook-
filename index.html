@@ -7,8 +7,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
   :root{
-    --brand:#1877f2; --bg:#f0f2f5; --card:#fff; --muted:#6b6b6b;
-    --mine:#DCF8C6; --theirs:#ffffff; --danger:#ff3b30; --ok:#15a34a;
+    --brand:#FF1493; --bg:#f0f2f5; --card:#fff; --muted:#6b6b6b;
+    --mine:#DCF8C6; --theirs:#ffffff; --danger:#ff3b30; --ok:#FF1493;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -48,7 +48,7 @@
   .nav{
     height:50px;background:#fff;border-top:1px solid #e9e9e9;
     display:flex;justify-content:space-around;align-items:center;
-    position:fixed;left:0;right:0;bottom:0;max-width:450px;margin:0 auto;z-index:50;
+    position:fixed;left:0;right:0;bottom:0;max-width:400px;margin:0 auto;z-index:50;
   }
   .nav .tab{text-align:center;font-size:12px;color:#555;cursor:pointer;line-height:1}
   .nav .tab i{display:block;font-size:20px;margin-bottom:4px}
@@ -70,7 +70,7 @@
   }
   .chat-header {
     height: 60px;
-    background: #1877f2;
+    background: #FF1493;
     color: white;
     display: flex;
     align-items: center;
@@ -93,7 +93,7 @@
     background: #e3e3e3;
     display: flex;
     align-items: center;
-    justify-content:center;
+    justify-content: center;
     font-weight: bold;
     color: #333;
   }
@@ -115,7 +115,7 @@
     flex: 1;
     overflow-y: auto;
     padding: 10px;
-    background: #f7fbff;
+    background:#F8F8FF;
     margin-bottom: 50px; /* Space for input */
   }
   .msg-row{display:flex;align-items:flex-end;margin:8px 0;gap:8px}
@@ -129,7 +129,7 @@
   .chat-input-container {
     padding: 2px;
     background: white;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #FF1493;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -193,7 +193,7 @@
 
   /* Notice cards */
   .notice-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:10px;margin:8px 0}
-  .notice-img{width:100%;max-height:600px;object-fit:cover;border-radius:10px;border:2px solid #eee;margin-top:8px;cursor:pointer}
+  .notice-img{width:100%;max-height:600px;object-fit:cover;border-radius:10px;border:2px solid #eee;margin-top:8px}
 
   /* Profile Edit */
   .profile-edit{display:none}
@@ -249,25 +249,26 @@
   .profile-page {
     display: none;
     flex-direction: column;
-    height: 100%;
+    height: 120%;
   }
   .profile-page.active {
     display: flex;
   }
   .profile-header {
-    height: 45px;
-    background: ;
+    height: 47px;
+    width:900px;
+    background:;
     color: white;
     display: flex;
     align-items: center;
-    padding: 0 12px;
+    padding: 0 15px;
     position: sticky;
     top: 0;
     z-index: 10;
   }
   .profile-header-title {
     font-weight: bold;
-    margin-left: 10px;
+    margin-left: 0px;
     flex: 1;
   }
   .profile-content {
@@ -494,248 +495,60 @@
     gap: 8px;
   }
   
-  /* New styles for chat reactions and message options */
-  .msg-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 4px;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  
-  .msg-row:hover .msg-actions {
-    opacity: 1;
-  }
-  
-  .reaction-btn, .msg-option-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    color: var(--muted);
-    padding: 4px;
-  }
-  
-  .reaction-btn:hover, .msg-option-btn:hover {
-    color: var(--brand);
-  }
-  
-  .reaction-picker {
-    position: absolute;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    padding: 8px;
-    display: none;
-    z-index: 100;
-  }
-  
-  .reaction-picker span {
-    font-size: 20px;
-    margin: 0 4px;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  
-  .reaction-picker span:hover {
-    transform: scale(1.3);
-  }
-  
-  .msg-reactions {
-    display: flex;
-    gap: 4px;
-    margin-top: 4px;
-    flex-wrap: wrap;
-  }
-  
-  .reaction {
-    background: rgba(0,0,0,0.05);
-    border-radius: 10px;
-    padding: 2px 6px;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    gap: 2px;
-  }
-  
-  .reaction-count {
-    font-size: 10px;
-    color: var(--muted);
-  }
-  
-  /* Search bar - UPDATED */
-  .search-container {
-    position: fixed;
-    top: 56px;
-    left: 0;
-    right: 0;
-    padding: 10px;
-    background: white;
-    border-bottom: 1px solid #eee;
-    display: none;
-    z-index: 90;
-    max-width: 420px;
-    margin: 0 auto;
-  }
-  
-  .search-input {
-    display: flex;
-    align-items: center;
-    background: #f0f2f5;
-    border-radius: 18px;
-    padding: 8px 12px;
-  }
-  
-  .search-input input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .search-input i {
-    color: var(--muted);
-    margin-right: 8px;
-  }
-  
-  /* Pull to refresh */
-  .pull-to-refresh {
-    text-align: center;
-    padding: 10px;
-    color: var(--muted);
-  }
-  
-  /* Message context menu */
-  .context-menu {
-    position: absolute;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    z-index: 1000;
-    display: none;
-  }
-  
-  .context-menu-item {
-    padding: 12px 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .context-menu-item:hover {
-    background: #f0f2f5;
-  }
-  
-  /* Mobile notification bar */
-  .mobile-notification-bar {
-    position: fixed;
-    top: 56px;
-    left: 0;
-    right: 0;
-    background: #333;
-    color: white;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 90;
-    max-width: 420px;
-    margin: 0 auto;
-  }
-  
-  .mobile-notification-content {
-    flex: 1;
-    margin: 0 10px;
-    font-size: 14px;
-  }
-  
-  .mobile-notification-close {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-  }
-  
-  /* Search mode - NEW */
-  .search-mode .header {
-    display: flex !important;
-  }
-  
-  .search-mode .nav {
-    display: none !important;
-  }
-  
-  .search-mode .page-content {
-    padding-top: 106px !important; /* header + search bar height */
-  }
-  
-  .search-results {
-    padding: 16px;
-  }
-  
-  .search-result-item {
-    background: white;
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .search-result-header {
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: var(--brand);
-  }
-  
-  .search-result-content {
-    color: var(--muted);
-    font-size: 14px;
-  }
-  
-  .search-result-meta {
-    font-size: 12px;
-    color: #999;
-    margin-top: 4px;
-  }
-
-  /* Fullscreen image viewer */
-  .image-viewer {
+  /* Search Modal */
+  .search-modal {
     display: none;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.95);
+    background: rgba(0,0,0,0.8);
     z-index: 2000;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
   }
-  
-  .image-viewer.active {
+  .search-modal.active {
     display: flex;
   }
-  
-  .image-viewer img {
-    max-width: 95%;
-    max-height: 80%;
-    object-fit: contain;
+  .search-content {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow: auto;
   }
-  
-  .image-viewer-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: var(--danger);
-    color: white;
+  .search-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .search-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+  .search-close {
+    background: none;
     border: none;
-    padding: 10px 15px;
-    border-radius: 50%;
-    cursor: pointer;
     font-size: 20px;
+    cursor: pointer;
+  }
+  .search-results {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  .search-result-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+  }
+  .search-result-item:last-child {
+    border-bottom: none;
   }
   
 @media print{
@@ -745,7 +558,68 @@
     .a4{width:300mm;min-height:297mm;margin:0 auto;border:none}
   }
   
+
+/* === FIX 2: Profile header black background with white text/icons === */
+.profile-header {
+  background: #FF1493 !important;
+  color: #fff !important;
+}
+.profile-header .back-btn i,
+.profile-header .profile-header-title {
+  color: #fff !important;
+}
+.profile-header .hdr-actions i {
+  color: #fff !important;
+}
+
+
+/* Hide headers on login by default */
+#page-login .header,
+#user-header,
+#admin-header {
+  display: none;
+}
+
 </style>
+
+<style id="ai-injected-styles">
+/* === AI Injected Styles === */
+.title .back-btn{
+  border:none;
+  background:transparent;
+  font-size:1.05rem;
+  margin-right:.5rem;
+  cursor:pointer;
+}
+/* Seen ticks */
+.message .ticks{
+  display:inline-flex;
+  align-items:center;
+  margin-left:.35rem;
+  font-size:.9em;
+  opacity:.9;
+}
+.message .ticks .tick{ line-height:1; }
+.message .ticks .tick.seen{ color:#1aa31a; } /* Green for seen */
+/* Chat search input */
+#chatSearchWrap{ display:flex; gap:.5rem; align-items:center; padding:.4rem .6rem; }
+#chatSearchInput{
+  flex:1;
+  padding:.4rem .6rem;
+  border:1px solid rgba(0,0,0,.15);
+  border-radius:.5rem;
+}
+.message.hidden-by-search{ display:none !important; }
+
+/* Hide headers on login by default */
+#page-login .header,
+#user-header,
+#admin-header {
+  display: none;
+}
+
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -779,31 +653,13 @@
 
   <!-- USER PANEL -->
   <div class="header" id="user-header">
-    <div class="title">दर्पण पाठशाला</div>
+    <div class="title"><button class="back-btn" id="headerBackBtn" aria-label="Back" style="display:none">âµ</button><span id="dynamicHeaderTitle"></span></div>
     <div class="hdr-actions">
-      <i class="fas fa-search" title="Search" id="user-search-btn"></i>
+      <i class="fas fa-search" title="Search" id="user-search-icon"></i>
       <i class="fas fa-bell" title="Notifications" id="user-notification-icon">
         <span class="badge" id="user-notification-badge">0</span>
       </i>
     </div>
-  </div>
-
-  <!-- Search Container -->
-  <div class="search-container" id="user-search-container">
-    <div class="search-input">
-      <i class="fas fa-search"></i>
-      <input type="text" id="user-search-input" placeholder="Search messages, users, notices...">
-      <i class="fas fa-times" id="user-search-close"></i>
-    </div>
-  </div>
-
-  <!-- Mobile Notification Bar -->
-  <div class="mobile-notification-bar" id="mobile-notification-bar" style="display: none;">
-    <i class="fas fa-bell"></i>
-    <div class="mobile-notification-content" id="mobile-notification-content"></div>
-    <button class="mobile-notification-close" id="mobile-notification-close">
-      <i class="fas fa-times"></i>
-    </button>
   </div>
 
   <div id="page-user" class="page">
@@ -811,7 +667,7 @@
     <div id="user-tab-chat" class="tab-content">
       <div class="chat-container">
         <div class="chat-header">
-          <button class="back-btn" id="backFromChat"><i class="fas fa-arrow-left"></i></button>
+          <button class="back-btn" id="backFromChat"></button><i class="fas fa-arrow-left"></i>
           <div class="chat-header-info">
             <div class="chat-header-avatar" id="userChatIcon">A</div>
             <div>
@@ -823,9 +679,6 @@
             <i class="fas fa-phone" title="Voice Call"></i>
             <i class="fas fa-video" title="Video Call"></i>
           </div>
-        </div>
-        <div class="pull-to-refresh" id="pull-to-refresh">
-          <i class="fas fa-sync-alt"></i> Pull down to refresh
         </div>
         <div class="chat-messages" id="userChatMessages"></div>
         <div class="chat-input-container">
@@ -885,8 +738,8 @@
 
         <div class="card" id="userExamCard" style="display:none;">
           <div class="flex" style="justify-content:space-between">
-            <div><b id="uexTitle"></b> • <span id="uexCount" class="muted small"></span></div>
-            <div class="timer">⏳ <span id="uTimer">00:00</span></div>
+            <div><b id="uexTitle"></b> â¢ <span id="uexCount" class="muted small"></span></div>
+            <div class="timer">â³ <span id="uTimer">00:00</span></div>
           </div>
           <div id="uQList"></div>
           <div class="flex" style="justify-content:space-between">
@@ -947,16 +800,20 @@
             <p>Yes, you can retake exams unless the admin has restricted attempts.</p>
           </div>
         </div>
-        
-        <div class="help-section">
-          <h3>Profile</h3>
+         
+        <div class="help-section"> 
+          <h3>Information</h3>
           <div class="help-item">
-            <h4>How to change my profile picture?</h4>
-            <p>Go to Profile → Edit Profile → Change Photo. You can change your profile picture anytime.</p>
+            <p>Developed By: ©️Darpan Computer (Sundar Rawal)
+यो App लाई नेपालमा बन्द भएका Social Media लाई मध्यनजर गर्दै वैकल्पिक रूपमा विकास गरिएको हो, जसको उद्देश्य विद्यार्थी, शिक्षक र संस्थाबीच सूचना, नोटिस तथा अध्ययन सामग्री छिटो र सहज रूपमा साझा गर्ने र समूह संवादलाई प्रभावकारी बनाउनु हो।</p>
           </div>
+          
+          
+          
           <div class="help-item">
-            <h4>Where can I see my exam results?</h4>
-            <p>Go to Profile → Exam Results to view all your previous exam scores.</p>
+            <h4>सम्पर्क विवरण:</h4>
+            <p>•    इमेल: dipenrawal2080@gmail.com
+             <br> 	•  फोन: 9802548486 / 9864883913</p>
           </div>
         </div>
       </div>
@@ -967,7 +824,7 @@
       <!-- Main Profile View -->
       <div id="user-profile-view" class="profile-page active">
         <div class="profile-header">
-          <button class="back-btn" id="backFromProfile"><i class="fas fa-arrow-left"></i></button>
+          <button class="back-btn" id="backFromProfile"></button>
           <div class="profile-header-title">My Profile</div>
         </div>
         <div class="profile-content">
@@ -984,17 +841,20 @@
                 <li id="openUserResults"><i class="fas fa-poll"></i> Exam Results</li>
                 <li id="editUserProfile"><i class="fas fa-user-edit"></i> Edit Profile</li>
                 <li id="openUserHelp"><i class="fas fa-question-circle"></i> Help</li>
+                <li id="openUserGoExam"><i class="fas fa-file-lines"></i> Go Exam</li>
                 <li id="logoutUser"><i class="fas fa-sign-out-alt"></i> Logout</li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-      
+      <!-- Help -->
+    <div id="user-tab-goexam" class="tab-content" style="display:none;">
+      <div class="goexam-page"><h2>Help Center</h2></div></div>
       <!-- Results Page -->
       <div id="user-results-page" class="profile-page">
         <div class="profile-header">
-          <button class="back-btn" id="backFromResults"><i class="fas fa-arrow-left"></i></button>
+          <button class="back-btn" id="backFromResults"></button><i class="fas fa-arrow-left">&nbsp;&nbsp;&nbsp;</i>
           <div class="profile-header-title">Exam Results</div>
         </div>
         <div class="profile-content">
@@ -1002,10 +862,12 @@
         </div>
       </div>
       
+      
+      
       <!-- Edit Profile Page -->
       <div id="user-edit-profile-page" class="profile-page">
         <div class="profile-header">
-          <button class="back-btn" id="backFromEditProfile"><i class="fas fa-arrow-left"></i></button>
+          <button class="back-btn" id="backFromEditProfile"></button><i class="fas fa-arrow-left">&nbsp;&nbsp;&nbsp;</i>
           <div class="profile-header-title">Edit Profile</div>
         </div>
         <div class="profile-content">
@@ -1037,21 +899,12 @@
 
   <!-- ADMIN PANEL -->
   <div class="header" id="admin-header">
-    <div class="title">दर्पण पाठशाला</div>
+    <div class="title"><button class="back-btn" id="headerBackBtn" aria-label="Back" style="display:none">âµ</button><span id="dynamicHeaderTitle"></span></div>
     <div class="hdr-actions">
-      <i class="fas fa-search" title="Search" id="admin-search-btn"></i>
+      <i class="fas fa-search" title="Search" id="admin-search-icon"></i>
       <i class="fas fa-bell" title="Notifications" id="admin-notification-icon">
         <span class="badge" id="admin-notification-badge">0</span>
       </i>
-    </div>
-  </div>
-
-  <!-- Admin Search Container -->
-  <div class="search-container" id="admin-search-container">
-    <div class="search-input">
-      <i class="fas fa-search"></i>
-      <input type="text" id="admin-search-input" placeholder="Search messages, users, notices...">
-      <i class="fas fa-times" id="admin-search-close"></i>
     </div>
   </div>
 
@@ -1060,8 +913,8 @@
     <div id="admin-tab-chat" class="tab-content">
       <div class="chat-container">
         <div class="chat-header">
-          <button class="back-btn" id="backFromAdminChat"><i class="fas fa-arrow-left"></i>
-          </button>
+          <button class="back-btn" id="backFromAdminChat">
+          </button><i class="fas fa-arrow-left"></i>
           <div class="chat-header-info">
             <div class="chat-header-avatar" id="adminChatIcon">G</div>
             <div>
@@ -1073,9 +926,6 @@
             <i class="fas fa-phone" title="Voice Call"></i>
             <i class="fas fa-video" title="Video Call"></i>
           </div>
-        </div>
-        <div class="pull-to-refresh" id="admin-pull-to-refresh">
-          <i class="fas fa-sync-alt"></i> Pull down to refresh
         </div>
         <div class="chat-messages" id="adminChatMessages"></div>
         <div class="chat-input-container">
@@ -1133,7 +983,6 @@
               <button id="deleteExamBtn" class="btn-danger">Delete</button>
             </div>
             <div class="muted small">Tip: You can add up to 200+ questions (one by one).</div>
-            <div class="muted small" id="userCountDisplay">Total Users: Loading...</div>
           </div>
         </div>
         <div class="card">
@@ -1206,10 +1055,6 @@
             <h4>How to remove users?</h4>
             <p>Currently, you need to manually remove them from the Firebase database.</p>
           </div>
-          <div class="help-item">
-            <h4>User Statistics</h4>
-            <p id="adminUserStats">Total Users: Loading...</p>
-          </div>
         </div>
         
         <div class="help-section">
@@ -1256,7 +1101,7 @@
       <!-- Main Profile View -->
       <div id="admin-profile-view" class="profile-page active">
         <div class="profile-header">
-          <button class="back-btn" id="backFromAdminProfile"><i class="fas fa-arrow-left"></i></button>
+          <button class="back-btn" id="backFromAdminProfile"></button>
           <div class="profile-header-title">Admin Profile</div>
         </div>
         <div class="profile-content">
@@ -1284,7 +1129,7 @@
       <!-- Results Page -->
       <div id="admin-results-page" class="profile-page">
         <div class="profile-header">
-          <button class="back-btn" id="backFromAdminResults"><i class="fas fa-arrow-left"></i></button>
+          <button class="back-btn" id="backFromAdminResults"></button><i class="fas fa-arrow-left">&nbsp;&nbsp;&nbsp;</i>
           <div class="profile-header-title">Student Results</div>
         </div>
         <div class="profile-content">
@@ -1295,7 +1140,7 @@
       <!-- Edit Profile Page -->
       <div id="admin-edit-profile-page" class="profile-page">
         <div class="profile-header">
-          <button class="back-btn" id="backFromEditAdminProfile"><i class="fas fa-arrow-left"></i></button>
+          <button class="back-btn" id="backFromEditAdminProfile"></button><i class="fas fa-arrow-left">&nbsp;&nbsp;&nbsp;</i>
           <div class="profile-header-title">Edit Profile</div>
         </div>
         <div class="profile-content">
@@ -1350,50 +1195,21 @@
     </div>
   </div>
 
-  <!-- Image Viewer Modal -->
-  <div id="imageViewer" class="image-viewer">
-    <button id="closeImageViewer" class="image-viewer-close">
-      <i class="fas fa-times"></i>
-    </button>
-    <img id="fullscreenImage" src="" alt="Fullscreen image">
-  </div>
-
   <!-- Notification Toast -->
   <div id="notificationToast" class="notification-toast" style="display: none;">
     <i class="fas fa-bell notification-icon"></i>
     <span id="notificationMessage"></span>
   </div>
 
-  <!-- Context Menu -->
-  <div class="context-menu" id="contextMenu">
-    <div class="context-menu-item" data-action="react">
-      <i class="fas fa-smile"></i> React
+  <!-- Search Modal -->
+  <div id="searchModal" class="search-modal">
+    <div class="search-content">
+      <div class="search-header">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search...">
+        <button class="search-close" id="closeSearch"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="search-results" id="searchResults"></div>
     </div>
-    <div class="context-menu-item" data-action="reply">
-      <i class="fas fa-reply"></i> Reply
-    </div>
-    <div class="context-menu-item" data-action="copy">
-      <i class="fas fa-copy"></i> Copy
-    </div>
-    <div class="context-menu-item" data-action="delete" id="deleteMessageOption">
-      <i class="fas fa-trash"></i> Delete
-    </div>
-  </div>
-
-  <!-- Reaction Picker -->
-  <div class="reaction-picker" id="reactionPicker">
-    <span title="Like">👍</span>
-    <span title="Love">❤️</span>
-    <span title="Laugh">😂</span>
-    <span title="Wow">😮</span>
-    <span title="Sad">😢</span>
-    <span title="Angry">😠</span>
-  </div>
-
-  <!-- Search Results Container -->
-  <div id="search-results-container" class="search-results" style="display: none;">
-    <h3 id="search-results-title">Search Results</h3>
-    <div id="search-results-list"></div>
   </div>
 
 </div>
@@ -1402,7 +1218,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import { getDatabase, ref, get, set, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+  import { getDatabase, ref, get, set, onValue, push, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
   import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
 
   /* ===== CONFIG ===== */
@@ -1448,6 +1264,7 @@
     
     // Toggle fullscreen chat mode
     const app = document.querySelector('.app');
+    adjustHeaderVisibility(scope, tab);
     if (tab === 'chat') {
       app.classList.add('chat-fullscreen');
     } else {
@@ -1459,14 +1276,14 @@
   const COURSES = {
     "Basic": ["Basics","WinWord","Excel","PowerPoint"],
     "Diploma": ["Photoshop","PageMaker","Access","Tally","HTML"],
-    "All": ["Basics","WinWord","Excel","PowerPoint","Photoshop","PageMaker","Access","Tally","HTML"]
+    "All": ["Basics","Diploma","Basics+Diploma","WinWord","Excel","PowerPoint","Photoshop","PageMaker","Access","Tally","HTML"]
   };
   const gradeFromPct = p => p>=90?'A+':p>=80?'A':p>=70?'B+':p>=60?'B':p>=50?'C':p>=40?'D':'F';
   const gpaFromPct = p => p>=90?4.0:p>=80?3.6:p>=70?3.2:p>=60?2.8:p>=50?2.4:p>=40?2.0:0.0;
   const initialFrom = n => (n||'?').trim().charAt(0).toUpperCase();
   const timeMini = ts => new Date(ts||Date.now()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   let currentUser=null, role="user", name="", email="", adminUid=null, lastPhotoChange=0;
-  let notificationSound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbVtfdJivrJBhNjVgodDbq2EcBStztvLJjFQNAB1Ql9L/4K5QHAAKLGiv6/LJm2EcAQASTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyyZthHAEAFUyB1P/grlAcAAosaK/r8smbYRwBABVMgdT/4K5QHAAKLGiv6/LJm2EcAQAVTIHU/+CuUBwACixor+vyy极");
+  let notificationSound = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbVtfdJivrJBhNjVgodDbq2EcBStztvLJjFQNAB1Ql9L/4KdQHAAKLWiv6/LJm2EcAQASTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp1AcAAosaK/r8smbYRwBABVMgdT/4KdQHAAKLGiv6/LJm2EcAQAVTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp1AcAAosaK/r8smbYRwBABVMgdT/4KdQHAAKLGiv6/LJm2EcAQAVTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gp1AcAAosaK/r8smbYRwBABVMgdT/4KdQHAAKLGiv6/LJm2EcAQAVTIHU/+CnUBwACixor+vyyZthHAEAFUyB1P/gpæ");
   
   // Play notification sound
   function playNotificationSound() {
@@ -1498,15 +1315,10 @@
       });
     }
     
-    // Show in mobile notification bar
-    $('#mobile-notification-content').text(message);
-    $('#mobile-notification-bar').style.display = 'flex';
-    
-    // Auto hide after 5 seconds
+    // Auto hide after 3 seconds
     setTimeout(() => {
       toast.style.display = 'none';
-      $('#mobile-notification-bar').style.display = 'none';
-    }, 5000);
+    }, 3000);
   }
   
   // Request notification permission
@@ -1605,7 +1417,6 @@
 
   /* ======== USER PANEL ======== */
   let userChatBound=false, adminChatBound=false;
-  let currentSelectedMessage = null;
 
   function loadUser(photoUrl){
     // profile
@@ -1623,7 +1434,7 @@
       $('user-results-page').classList.remove('active');
     };
     $('backFromEditProfile').onclick = ()=> {
-      $('user-profile-view').classList.remove('active');
+      $('user-profile-view').classList.add('active');
       $('user-edit-profile-page').classList.remove('active');
     };
     $('backFromChat').onclick = ()=> setActiveTab('user', 'profile');
@@ -1636,6 +1447,7 @@
       $('editUserEmail').value = email;
     };
     
+     
     // results
     $('openUserResults').onclick = async ()=>{
       $('user-profile-view').classList.remove('active');
@@ -1643,11 +1455,17 @@
       const s = await get(ref(db, `results/${auth.currentUser.uid}`));
       renderResultsList('userResultsList', s, true);
     };
-    
+     
     // help
     $('openUserHelp').onclick = ()=> {
       setActiveTab('user', 'help');
     };
+    
+     // goexam
+    $('openUserGoExam').onclick = ()=> {
+      setActiveTab('user', 'openUserGoExam');
+    };
+    
 
     // bottom nav
     document.querySelectorAll('#nav-user .tab').forEach(t=> t.onclick = ()=> setActiveTab('user', t.dataset.tab));
@@ -1689,46 +1507,32 @@
     // Load available exams in profile
     loadAvailableExamsForUser();
 
-    // Photo selector - REMOVED 6-MONTH RESTRICTION
+    // Photo selector
     $('changePhotoBtn').onclick = showPhotoSelectorWithGallery;
     $('cancelPhotoSelect').onclick = ()=> $('photoSelector').classList.remove('active');
     $('confirmPhotoSelect').onclick = ()=> confirmPhotoSelection();
     
     // Search functionality
-    $('user-search-btn').onclick = () => {
-      $('user-search-container').style.display = 'block';
-      $('user-search-input').focus();
-      document.querySelector('.app').classList.add('search-mode');
-    };
-    
-    $('user-search-close').onclick = () => {
-      $('user-search-container').style.display = 'none';
-      $('user-search-input').value = '';
-      document.querySelector('.app').classList.remove('search-mode');
-      $('#search-results-container').style.display = 'none';
-      
-      // Reset to current tab view
-      const activeTab = document.querySelector('#nav-user .tab.active').getAttribute('data-tab');
-      $(`user-tab-${activeTab}`).style.display = 'block';
-    };
-    
-    $('user-search-input').addEventListener('input', (e) => {
-      performGlobalSearch(e.target.value, 'user');
-    });
-    
-    // Mobile notification close
-    $('mobile-notification-close').onclick = () => {
-      $('#mobile-notification-bar').style.display = 'none';
-    };
-    
-    // Pull to refresh
-    initPullToRefresh('user');
+    $('user-search-icon').onclick = () => showSearchModal('user');
+    $('closeSearch').onclick = () => $('#searchModal').classList.remove('active');
     
     // Listen for notifications
     listenForNotifications();
+    
+    // Handle mobile back button
+    setupMobileBackButton();
   }
 
   function showPhotoSelectorWithGallery() {
+    const now = Date.now();
+    const sixMonths = 6 * 30 * 24 * 60 * 60 * 1000; // 6 months in milliseconds
+    
+    if (now - lastPhotoChange < sixMonths) {
+      const nextChange = new Date(lastPhotoChange + sixMonths);
+      alert(`You can only change your profile photo once every 6 months. Next change available on ${nextChange.toLocaleDateString()}`);
+      return;
+    }
+    
     $('photoOptions').innerHTML = '';
     
     // Add device gallery option
@@ -1830,8 +1634,10 @@
       $('admin-results-page').classList.remove('active');
     };
     $('backFromEditAdminProfile').onclick = ()=> {
-      $('admin-profile-view').classList.remove('active');
+      $('admin-profile-view').classList.add('active');
       $('admin-edit-profile-page').classList.remove('active');
+      $('admin-profile-view').classList.remove('active');
+      $('admin-edit-profile-page').classList.add('active');
     };
     $('backFromAdminChat').onclick = ()=> setActiveTab('admin', 'profile');
     
@@ -1936,39 +1742,17 @@
       renderBooks('adminBookList', snap, true);
     });
 
-    // Photo selector - REMOVED 6-MONTH RESTRICTION
+    // Photo selector
     $('changeAdminPhotoBtn').onclick = showPhotoSelectorWithGallery;
     
     // Search functionality
-    $('admin-search-btn').onclick = () => {
-      $('admin-search-container').style.display = 'block';
-      $('admin-search-input').focus();
-      document.querySelector('.app').classList.add('search-mode');
-    };
-    
-    $('admin-search-close').onclick = () => {
-      $('admin-search-container').style.display = 'none';
-      $('admin-search-input').value = '';
-      document.querySelector('.app').classList.remove('search-mode');
-      $('#search-results-container').style.display = 'none';
-      
-      // Reset to current tab view
-      const activeTab = document.querySelector('#nav-admin .tab.active').getAttribute('data-tab');
-      $(`admin-tab-${activeTab}`).style.display = 'block';
-    };
-    
-    $('admin-search-input').addEventListener('input', (e) => {
-      performGlobalSearch(e.target.value, 'admin');
-    });
-    
-    // Pull to refresh
-    initPullToRefresh('admin');
+    $('admin-search-icon').onclick = () => showSearchModal('admin');
     
     // Listen for notifications
     listenForNotifications();
     
-    // Load user count for admin
-    loadUserCountForAdmin();
+    // Handle mobile back button
+    setupMobileBackButton();
   }
 
   /* ======== GROUP CHAT ======== */
@@ -1985,83 +1769,12 @@
         const isMine = (m.uid === auth.currentUser.uid);
         const row = document.createElement('div');
         row.className = `msg-row ${isMine?'mine':'theirs'}`;
-        row.dataset.messageId = ch.key;
-        
         const avatar = document.createElement('div');
-        avatar.className = 'mini-avatar'; 
-        avatar.innerText = initialFrom(m.name||'U');
-        
+        avatar.className = 'mini-avatar'; avatar.innerText = initialFrom(m.name||'U');
         const bubble = document.createElement('div');
         bubble.className = 'msg-bubble';
-        
-        // Message content
-        const messageContent = document.createElement('div');
-        messageContent.innerHTML = m.text || '';
-        
-        // Message metadata
-        const meta = document.createElement('div');
-        meta.className = 'msg-meta';
-        meta.innerHTML = `${m.name||'User'} · ${timeMini(m.ts)}`;
-        
-        // Message actions
-        const actions = document.createElement('div');
-        actions.className = 'msg-actions';
-        
-        // Reaction button
-        const reactBtn = document.createElement('button');
-        reactBtn.className = 'reaction-btn';
-        reactBtn.innerHTML = '<i class="fas fa-smile"></i>';
-        reactBtn.onclick = (e) => {
-          e.stopPropagation();
-          showReactionPicker(e, ch.key);
-        };
-        
-        // Options button (only for own messages)
-        if (isMine) {
-          const optionsBtn = document.createElement('button');
-          optionsBtn.className = 'msg-option-btn';
-          optionsBtn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
-          optionsBtn.onclick = (e) => {
-            e.stopPropagation();
-            showMessageOptions(e, ch.key, m);
-          };
-          actions.appendChild(optionsBtn);
-        }
-        
-        actions.appendChild(reactBtn);
-        
-        // Reactions display
-        const reactionsContainer = document.createElement('div');
-        reactionsContainer.className = 'msg-reactions';
-        if (m.reactions) {
-          Object.entries(m.reactions).forEach(([reaction, users]) => {
-            if (users && Object.keys(users).length > 0) {
-              const reactionEl = document.createElement('div');
-              reactionEl.className = 'reaction';
-              reactionEl.innerHTML = `${reaction} <span class="reaction-count">${Object.keys(users).length}</span>`;
-              reactionsContainer.appendChild(reactionEl);
-            }
-          });
-        }
-        
-        bubble.appendChild(messageContent);
-        bubble.appendChild(meta);
-        bubble.appendChild(actions);
-        bubble.appendChild(reactionsContainer);
-        
-        if(isMine){ 
-          row.appendChild(bubble); 
-        } else { 
-          row.appendChild(avatar); 
-          row.appendChild(bubble); 
-        }
-        
-        // Add context menu
-        row.addEventListener('contextmenu', (e) => {
-          e.preventDefault();
-          showContextMenu(e, ch.key, m, isMine);
-        });
-        
+        bubble.innerHTML = `<div>${m.text || ''}</div><div class="msg-meta">${m.name||'User'} Â· ${timeMini(m.ts)}</div>`;
+        if(isMine){ row.appendChild(bubble); }else{ row.appendChild(avatar); row.appendChild(bubble); }
         listEl.appendChild(row);
       });
       listEl.scrollTop = listEl.scrollHeight;
@@ -2079,230 +1792,6 @@
       uid: auth.currentUser.uid, name: senderName||'User', text, ts: Date.now()
     });
     input.value='';
-  }
-
-  function showReactionPicker(event, messageId) {
-    const picker = $('#reactionPicker');
-    picker.style.display = 'block';
-    picker.style.left = `${event.clientX}px`;
-    picker.style.top = `${event.clientY}px`;
-    
-    // Add event listeners to reactions
-    const reactions = picker.querySelectorAll('span');
-    reactions.forEach(reaction => {
-      reaction.onclick = async () => {
-        await addReaction(messageId, reaction.textContent);
-        picker.style.display = 'none';
-      };
-    });
-    
-    // Hide picker when clicking elsewhere
-    const hidePicker = (e) => {
-      if (!picker.contains(e.target)) {
-        picker.style.display = 'none';
-        document.removeEventListener('click', hidePicker);
-      }
-    };
-    
-    setTimeout(() => {
-      document.addEventListener('click', hidePicker);
-    }, 100);
-  }
-  
-  async function addReaction(messageId, reaction) {
-    const reactionRef = ref(db, `groups/${GROUP_ID}/messages/${messageId}/reactions/${reaction}/${auth.currentUser.uid}`);
-    const snapshot = await get(reactionRef);
-    
-    if (snapshot.exists()) {
-      // Remove reaction if already exists
-      await remove(reactionRef);
-    } else {
-      // Add reaction
-      await set(reactionRef, true);
-    }
-  }
-  
-  function showMessageOptions(event, messageId, message) {
-    const contextMenu = $('#contextMenu');
-    contextMenu.style.display = 'block';
-    contextMenu.style.left = `${event.clientX}px`;
-    contextMenu.style.top = `${event.clientY}px`;
-    
-    // Store current selected message
-    currentSelectedMessage = { id: messageId, data: message };
-    
-    // Hide delete option if not own message
-    const deleteOption = $('#deleteMessageOption');
-    if (message.uid !== auth.currentUser.uid) {
-      deleteOption.style.display = 'none';
-    } else {
-      deleteOption.style.display = 'flex';
-    }
-    
-    // Add event listeners to context menu items
-    const menuItems = contextMenu.querySelectorAll('.context-menu-item');
-    menuItems.forEach(item => {
-      item.onclick = () => {
-        const action = item.getAttribute('data-action');
-        handleMessageAction(action, messageId, message);
-        contextMenu.style.display = 'none';
-      };
-    });
-    
-    // Hide menu when clicking elsewhere
-    const hideMenu = (e) => {
-      if (!contextMenu.contains(e.target)) {
-        contextMenu.style.display = 'none';
-        document.removeEventListener('click', hideMenu);
-      }
-    };
-    
-    setTimeout(() => {
-      document.addEventListener('click', hideMenu);
-    }, 100);
-  }
-  
-  function showContextMenu(event, messageId, message, isMine) {
-    event.preventDefault();
-    showMessageOptions(event, messageId, message);
-  }
-  
-  async function handleMessageAction(action, messageId, message) {
-    switch (action) {
-      case 'react':
-        // Already handled by reaction button
-        break;
-      case 'reply':
-        const input = role === 'admin' ? $('adminChatInput') : $('userChatInput');
-        input.value = `Replying to ${message.name}: ${message.text} `;
-        input.focus();
-        break;
-      case 'copy':
-        navigator.clipboard.writeText(message.text);
-        showNotification('Message copied to clipboard');
-        break;
-      case 'delete':
-        if (message.uid === auth.currentUser.uid || role === 'admin') {
-          if (confirm('Are you sure you want to delete this message?')) {
-            await remove(ref(db, `groups/${GROUP_ID}/messages/${messageId}`));
-            showNotification('Message deleted');
-          }
-        }
-        break;
-    }
-  }
-  
-  function performGlobalSearch(query, scope) {
-    if (!query.trim()) {
-      // Reset to normal view if query is empty
-      $('#search-results-container').style.display = 'none';
-      const activeTab = document.querySelector(`#nav-${scope} .tab.active`).getAttribute('data-tab');
-      $(`${scope}-tab-${activeTab}`).style.display = 'block';
-      return;
-    }
-    
-    // Hide current tab content and show search results
-    document.querySelectorAll(`#page-${scope} .tab-content`).forEach(t => t.style.display = 'none');
-    $('#search-results-container').style.display = 'block';
-    $('#search-results-list').innerHTML = '<div class="muted" style="text-align: center; padding: 20px;">Searching...</div>';
-    
-    // Perform search across different data types
-    setTimeout(() => {
-      const results = [];
-      
-      // Simulate search results for demonstration
-      // In a real app, you would query Firebase for actual results
-      results.push({
-        type: 'message',
-        title: 'Chat Message',
-        content: `Message containing "${query}"`,
-        meta: 'From: Admin • Today'
-      });
-      
-      results.push({
-        type: 'user',
-        title: 'User',
-        content: `User matching "${query}"`,
-        meta: 'Active now'
-      });
-      
-      results.push({
-        type: 'notice',
-        title: 'Notice',
-        content: `Notice about "${query}"`,
-        meta: 'Posted yesterday'
-      });
-      
-      results.push({
-        type: 'result',
-        title: 'Exam Result',
-        content: `Result for "${query}" exam`,
-        meta: 'Completed last week'
-      });
-      
-      // Display search results
-      $('#search-results-title').textContent = `Search Results for "${query}"`;
-      const resultsList = $('#search-results-list');
-      resultsList.innerHTML = '';
-      
-      if (results.length === 0) {
-        resultsList.innerHTML = '<div class="muted" style="text-align: center; padding: 20px;">No results found</div>';
-        return;
-      }
-      
-      results.forEach(result => {
-        const item = document.createElement('div');
-        item.className = 'search-result-item';
-        item.innerHTML = `
-          <div class="search-result-header">${result.title}</div>
-          <div class="search-result-content">${result.content}</div>
-          <div class="search-result-meta">${result.meta}</div>
-        `;
-        resultsList.appendChild(item);
-      });
-    }, 500);
-  }
-  
-  function initPullToRefresh(scope) {
-    const messagesContainer = scope === 'admin' ? $('adminChatMessages') : $('userChatMessages');
-    const pullToRefreshText = scope === 'admin' ? $('admin-pull-to-refresh') : $('pull-to-refresh');
-    
-    let startY = 0;
-    let currentY = 0;
-    let isRefreshing = false;
-    
-    messagesContainer.addEventListener('scroll', () => {
-      if (messagesContainer.scrollTop === 0) {
-        pullToRefreshText.style.display = 'block';
-      } else {
-        pullToRefreshText.style.display = 'none';
-      }
-    });
-    
-    messagesContainer.addEventListener('touchstart', (e) => {
-      if (messagesContainer.scrollTop === 0) {
-        startY = e.touches[0].clientY;
-      }
-    });
-    
-    messagesContainer.addEventListener('touchmove', (e) => {
-      if (messagesContainer.scrollTop === 0) {
-        currentY = e.touches[0].clientY;
-        const pullDistance = currentY - startY;
-        
-        if (pullDistance > 50 && !isRefreshing) {
-          isRefreshing = true;
-          pullToRefreshText.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Refreshing...';
-          
-          // Reload chat
-          setTimeout(() => {
-            bindGroupChat(scope);
-            pullToRefreshText.innerHTML = '<i class="fas fa-sync-alt"></i> Pull down to refresh';
-            isRefreshing = false;
-          }, 1000);
-        }
-      }
-    });
   }
 
   /* ======== EXAM BUILDER (ADMIN) ======== */
@@ -2414,7 +1903,7 @@
         item.innerHTML = `
           <div class="exam-quick-info">
             <div><strong>${course} - ${subject}</strong></div>
-            <div class="small muted">${exam.questions?.length || 0} questions • ${exam.duration} mins</div>
+            <div class="small muted">${exam.questions?.length || 0} questions â¢ ${exam.duration} mins</div>
           </div>
           <div class="exam-quick-status ${exam.active ? 'active' : 'inactive'}">
             ${exam.active ? 'Active' : 'Inactive'}
@@ -2473,13 +1962,13 @@
       return;
     }
     
-    $('uExamMeta').innerText = `Duration: ${loadedExam.duration} min • Questions: ${loadedExam.questions?.length||0}`;
+    $('uExamMeta').innerText = `Duration: ${loadedExam.duration} min â¢ Questions: ${loadedExam.questions?.length||0}`;
     $('userInfoCard').style.display='block';
     $('userExamCard').style.display='none';
     $('uResultWrap').innerHTML='';
     userAnswers={}; lockSet={};
     // preview title
-    $('uexTitle').innerText = `${course} • ${subject}`;
+    $('uexTitle').innerText = `${course} â¢ ${subject}`;
     $('uexCount').innerText = `${loadedExam.questions.length} questions`;
     $('uStartExamBtn').onclick = ()=> startExam(course,subject);
   }
@@ -2510,9 +1999,9 @@
           item.innerHTML = `
             <div class="exam-quick-info">
               <div><strong>${course} - ${subject}</strong></div>
-              <div class="small muted">${exam.questions?.length || 0} questions • ${exam.duration} mins</div>
+              <div class="small muted">${exam.questions?.length || 0} questions â¢ ${exam.duration} mins</div>
             </div>
-          <div class="exam-quick-action">
+            <div class="exam-quick-action">
               <button class="btn-ok small" data-course="${course}" data-subject="${subject}">Start Exam</button>
             </div>
           `;
@@ -2663,7 +2152,7 @@
     $('userExamCard').style.display='none';
     $('uResultWrap').innerHTML = renderA4(res, name, email);
 
-    // also show in Profile → Results (this is the permanent place to view)
+    // also show in Profile â Results (this is the permanent place to view)
     const s = await get(ref(db, `results/${auth.currentUser.uid}`));
     renderResultsList('userResultsList', s, true);
     
@@ -2697,7 +2186,7 @@
           <div class="small">Father's Name: ${stu.father||''}</div>
           <div class="small">DOB: ${stu.dob||''}</div>
           <div class="small">Symbol No.: ${stu.symbol||''}</div>
-          <div class="small">Account: ${dispName||''} • ${dispEmail||''}</div>
+          <div class="small">Account: ${dispName||''} â¢ ${dispEmail||''}</div>
         </div>
         <div style="margin:8px 0">
           <table>
@@ -2731,7 +2220,7 @@
         const card=document.createElement('div');
         card.innerHTML = renderA4(r, '', '');
         wrap.appendChild(card);
-    });
+      });
     });
   }
 
@@ -2779,7 +2268,7 @@
           ${canDelete?`<button class="btn-ghost small" data-del="${n.key}"><i class="fa fa-trash"></i></button>`:''}
         </div>
         <div style="margin-top:6px">${n.text||''}</div>
-        ${n.photoDataUrl?`<img class="notice-img" src="${n.photoDataUrl}" alt="notice image" onclick="showFullscreenImage('${n.photoDataUrl}')">`:''}
+        ${n.photoDataUrl?`<img class="notice-img" src="${n.photoDataUrl}" alt="notice image">`:''}
       `;
       wrap.appendChild(card);
     });
@@ -2858,7 +2347,7 @@
           <i class="fas fa-file-pdf book-icon"></i>
           <div class="book-info">
             <div><b>${book.title}</b></div>
-            <div class="book-meta">by ${book.author} • ${book.course}</div>
+            <div class="book-meta">by ${book.author} â¢ ${book.course}</div>
           </div>
           <div class="book-view">View</div>
         </div>
@@ -2889,47 +2378,6 @@
     $('#pdfFrame').src = '';
   };
   
-  // Fullscreen image viewer functions
-  function showFullscreenImage(imageUrl) {
-    $('#fullscreenImage').src = imageUrl;
-    $('#imageViewer').classList.add('active');
-  }
-  
-  $('#closeImageViewer').onclick = () => {
-    $('#imageViewer').classList.remove('active');
-  };
-  
-  // Load user count for admin panel
-  async function loadUserCountForAdmin() {
-    try {
-      const usersSnapshot = await get(ref(db, 'users'));
-      let userCount = 0;
-      let adminCount = 0;
-      
-      if (usersSnapshot.exists()) {
-        usersSnapshot.forEach(user => {
-          const userData = user.val();
-          if (userData.role === 'admin') {
-            adminCount++;
-          } else {
-            userCount++;
-          }
-        });
-      }
-      
-      // Update user count display in exam tab
-      $('#userCountDisplay').textContent = `Total Users: ${userCount} | Admins: ${adminCount}`;
-      
-      // Update user count in help section
-      $('#adminUserStats').textContent = `Total Users: ${userCount} | Admins: ${adminCount}`;
-      
-    } catch (error) {
-      console.error('Error loading user count:', error);
-      $('#userCountDisplay').textContent = 'Total Users: Error loading';
-      $('#adminUserStats').textContent = 'Total Users: Error loading';
-    }
-  }
-
   /* ===== NOTIFICATION LISTENER ===== */
   function listenForNotifications() {
     // Listen for new messages in group chat
@@ -3010,30 +2458,315 @@
       });
     }
   }
-
-  // Initialize the application
-  function initApp() {
-    // Set up image viewer close button
-    $('#closeImageViewer').onclick = () => {
-      $('#imageViewer').classList.remove('active');
+  
+  /* ===== SEARCH FUNCTIONALITY ===== */
+  function showSearchModal(scope) {
+    $('#searchModal').classList.add('active');
+    $('#searchInput').value = '';
+    $('#searchResults').innerHTML = '';
+    
+    // Set up search input event listener
+    $('#searchInput').oninput = async (e) => {
+      const query = e.target.value.trim().toLowerCase();
+      if (query.length < 2) {
+        $('#searchResults').innerHTML = '';
+        return;
+      }
+      
+      let results = [];
+      
+      // Search in different areas based on scope
+      if (scope === 'user') {
+        // Search in user's messages
+        const messagesSnap = await get(ref(db, `groups/${GROUP_ID}/messages`));
+        if (messagesSnap.exists()) {
+          messagesSnap.forEach(ch => {
+            const msg = ch.val();
+            if (msg.text && msg.text.toLowerCase().includes(query)) {
+              results.push({
+                type: 'message',
+                title: `Message from ${msg.name}`,
+                content: msg.text,
+                timestamp: msg.ts
+              });
+            }
+          });
+        }
+        
+        // Search in notices
+        const noticesSnap = await get(ref(db, 'notices'));
+        if (noticesSnap.exists()) {
+          noticesSnap.forEach(ch => {
+            const notice = ch.val();
+            if (notice.text && notice.text.toLowerCase().includes(query)) {
+              results.push({
+                type: 'notice',
+                title: `Notice from ${notice.name}`,
+                content: notice.text,
+                timestamp: notice.ts
+              });
+            }
+          });
+        }
+        
+        // Search in books
+        const booksSnap = await get(ref(db, 'books'));
+        if (booksSnap.exists()) {
+          booksSnap.forEach(ch => {
+            const book = ch.val();
+            if ((book.title && book.title.toLowerCase().includes(query)) ||
+                (book.author && book.author.toLowerCase().includes(query))) {
+              results.push({
+                type: 'book',
+                title: `Book: ${book.title}`,
+                content: `By ${book.author}`,
+                timestamp: book.ts
+              });
+            }
+          });
+        }
+      } else if (scope === 'admin') {
+        // Admin can search in all user data, exam results, etc.
+        // Search in user results
+        const resultsSnap = await get(ref(db, 'results'));
+        if (resultsSnap.exists()) {
+          resultsSnap.forEach(user => {
+            user.forEach(result => {
+              const res = result.val();
+              if ((res.student.name && res.student.name.toLowerCase().includes(query)) ||
+                  (res.course && res.course.toLowerCase().includes(query)) ||
+                  (res.subject && res.subject.toLowerCase().includes(query))) {
+                results.push({
+                  type: 'result',
+                  title: `Result: ${res.student.name} - ${res.course} ${res.subject}`,
+                  content: `Score: ${res.correct}/${res.total} (${res.percent}%)`,
+                  timestamp: res.ts
+                });
+              }
+            });
+          });
+        }
+        
+        // Search in users
+        const usersSnap = await get(ref(db, 'users'));
+        if (usersSnap.exists()) {
+          usersSnap.forEach(ch => {
+            const user = ch.val();
+            if ((user.name && user.name.toLowerCase().includes(query)) ||
+                (user.email && user.email.toLowerCase().includes(query))) {
+              results.push({
+                type: 'user',
+                title: `User: ${user.name}`,
+                content: user.email,
+                timestamp: 0
+              });
+            }
+          });
+        }
+      }
+      
+      // Sort by timestamp (newest first)
+      results.sort((a, b) => b.timestamp - a.timestamp);
+      
+      // Display results
+      $('#searchResults').innerHTML = '';
+      if (results.length === 0) {
+        $('#searchResults').innerHTML = '<div class="muted">No results found</div>';
+        return;
+      }
+      
+      results.forEach(result => {
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+        item.innerHTML = `
+          <div><strong>${result.title}</strong></div>
+          <div class="small">${result.content}</div>
+        `;
+        $('#searchResults').appendChild(item);
+      });
     };
+  }
+  
+  /* ===== MOBILE BACK BUTTON HANDLING ===== */
+  function setupMobileBackButton() {
+    // Handle browser back button
+    window.addEventListener('popstate', function(event) {
+      // Check if we're in a sub-page that needs to go back to main view
+      if ($('user-results-page').classList.contains('active')) {
+        $('user-results-page').classList.remove('active');
+        $('user-profile-view').classList.add('active');
+        history.pushState(null, null, window.location.href);
+      } else if ($('user-edit-profile-page').classList.contains('active')) {
+        $('user-edit-profile-page').classList.remove('active');
+        $('user-profile-view').classList.add('active');
+        history.pushState(null, null, window.location.href);
+      } else if ($('admin-results-page').classList.contains('active')) {
+        $('admin-results-page').classList.remove('active');
+        $('admin-profile-view').classList.add('active');
+        history.pushState(null, null, window.location.href);
+      } else if ($('admin-edit-profile-page').classList.contains('active')) {
+        $('admin-edit-profile-page').classList.remove('active');
+        $('admin-profile-view').classList.add('active');
+        history.pushState(null, null, window.location.href);
+      } else if ($('searchModal').classList.contains('active')) {
+        $('searchModal').classList.remove('active');
+        history.pushState(null, null, window.location.href);
+      } else if ($('pdfViewer').classList.contains('active')) {
+        $('pdfViewer').classList.remove('active');
+        history.pushState(null, null, window.location.href);
+      } else if ($('photoSelector').classList.contains('active')) {
+        $('photoSelector').classList.remove('active');
+        history.pushState(null, null, window.location.href);
+      } else if (document.querySelector('.app').classList.contains('chat-fullscreen')) {
+        // If in chat fullscreen mode, go back to previous tab
+        const scope = role === 'admin' ? 'admin' : 'user';
+        setActiveTab(scope, 'profile');
+        history.pushState(null, null, window.location.href);
+      } else if (window.location.hash) {
+        // If there's a hash, remove it and stay on current page
+        window.location.hash = '';
+        history.pushState(null, null, window.location.href);
+      }
+    });
     
-    // Make showFullscreenImage function globally available
-    window.showFullscreenImage = showFullscreenImage;
-    
-    // Update header title as requested
-    $('user-header').querySelector('.title').textContent = 'दर्पण पाठशाला';
-    $('admin-header').querySelector('.title').textContent = 'दर्पण पाठशाला';
-    
-    console.log('Darpan Book application initialized');
+    // Add initial state
+    history.pushState(null, null, window.location.href);
   }
 
-  // Run initialization when DOM is loaded
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initApp);
-  } else {
-    initApp();
+// === Dynamic Header Title + Profile Header Fix ===
+function adjustHeaderVisibility(scope, tab) {
+  const titleMap = {
+    chat: "Chat",
+    friend: "Friend Request",
+    exam: "Exam",
+    book: "Book",
+    notice: "Notice",
+    profile: "Profile",
+    requests: "Requests"
+  };
+  const title = titleMap[tab] || "Dashboard";
+
+  if (scope === "user") {
+    document.querySelector('#user-header #dynamicHeaderTitle').innerText = title;
+    if (tab === "profile") {
+      document.getElementById("user-header").style.display = "none";   // hide green header in profile
+    } else {
+      document.getElementById("user-header").style.display = "flex";  // show in other tabs
+    }
+  } else if (scope === "admin") {
+    document.querySelector('#admin-header #dynamicHeaderTitle').innerText = title;
+    if (tab === "profile") {
+      document.getElementById("admin-header").style.display = "none"; // hide green header in profile
+    } else {
+      document.getElementById("admin-header").style.display = "flex"; // show in other tabs
+    }
   }
+}
+
 </script>
-</body>
-</html>
+
+<script id="ai-injected-script">
+// === AI Injected: Dynamic header title, profile subpages, chat search, and seen ticks ===
+(function(){
+  function byId(id){ return document.getElementById(id); }
+  function getScope(){
+    const user = byId('page-user'); const admin = byId('page-admin');
+    if (admin && !admin.classList.contains('hidden')) return 'admin';
+    return 'user';
+  }
+  function headerEl(){
+    const scope = getScope();
+    return document.querySelector('#' + scope + '-header .title') || document.querySelector('.header .title') || document.querySelector('.title');
+  }
+  function setHeader(title){
+    const h = headerEl(); if (!h) return;
+    let titleSpan = document.getElementById('dynamicHeaderTitle');
+    if (!titleSpan){
+      titleSpan = document.createElement('span');
+      titleSpan.id = 'dynamicHeaderTitle';
+      h.prepend(titleSpan);
+    }
+    titleSpan.textContent = title || '';
+  }
+  function showBack(show, onClick){
+    let btn = document.getElementById('headerBackBtn');
+    if (!btn){
+      btn = document.createElement('button');
+      btn.id = 'headerBackBtn';
+      btn.className = 'back-btn';
+      btn.textContent = 'âµ';
+      const h = headerEl();
+      if (h) h.prepend(btn);
+    }
+    btn.style.display = show ? '' : 'none';
+    if (onClick){
+      btn.onclick = onClick;
+    }else{
+      btn.onclick = null;
+    }
+  }
+
+  // Capitalize helper
+  function cap(s){ return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+
+  // Hook tab changes if app uses [data-tab] buttons/links
+  function attachTabListeners(){
+    document.addEventListener('click', function(e){
+      const t = e.target.closest('[data-tab]');
+      if (!t) return;
+      const tab = t.getAttribute('data-tab');
+      if (!tab) return;
+      // Update header title by tab
+      setHeader(cap(tab));
+      showBack(false);
+    });
+  }
+
+  // Profile list options: when user opens a sub-view, show its name in header and a back button
+  function attachProfileListeners(){
+    const root = document;
+    root.addEventListener('click', function(e){
+      const item = e.target.closest('[data-profile-option]');
+      if (!item) return;
+      const name = item.getAttribute('data-profile-option') || item.textContent.trim() || 'Profile';
+      const prev = 'Profile';
+      setHeader(name);
+      showBack(true, function(){
+        setHeader(prev);
+        showBack(false);
+        // If the app has a function to go back, try history back as a safe default
+        if (window.history && window.history.length > 1) { try { history.back(); } catch(e){} }
+      });
+    });
+  }
+
+  // Chat search: creates a input in chat toolbar/area and filters .message elements by text
+  function ensureChatSearch(){
+    // Try to find a place to mount
+    var chatTop = document.querySelector('#tab-chat, #panel-chat, .chat-panel, .chat');
+    if (!chatTop) return;
+    if (document.getElementById('chatSearchWrap')) return;
+    const wrap = document.createElement('div');
+    wrap.id = 'chatSearchWrap';
+    const input = document.createElement('input');
+    input.id = 'chatSearchInput';
+    input.type = 'search';
+    input.placeholder = 'Search messages...';
+    wrap.appendChild(input);
+    chatTop.prepend(wrap);
+
+    function filter(){
+      const q = input.value.toLowerCase();
+      const msgs = chatTop.querySelectorAll('.message');
+      msgs.forEach(m => {
+        const text = m.textContent.toLowerCase();
+        if (!q) m.classList.remove('hidden-by-search');
+        else if (text.includes(q)) m.classList.remove('hidden-by-search');
+        else m.classList.add('hidden-by-search');
+      });
+    }
+    input.addEventListener('input', filter);
+  }
+
+  // Seen ticks: add â or ââ and color when data-status is "seen"
+  function applySe
